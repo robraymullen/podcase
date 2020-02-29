@@ -35,6 +35,12 @@ public class PodcastRepositoryTest {
 	@Before
 	public void setUp() throws Exception {
 		podcast = new Podcast();
+		// setup non empty fields to prevent constraint violations
+		podcast.setName("name");
+		podcast.setLink("link");
+		podcast.setRssFeed("blank");
+		podcast.setLastBuildDate(new Date());
+		podcast.setDescription("description");
 	}
 
 	@After

@@ -1,7 +1,5 @@
 package com.podcase.model;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import java.util.Date;
 
 import javax.persistence.*;
