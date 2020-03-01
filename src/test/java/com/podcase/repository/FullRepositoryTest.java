@@ -28,7 +28,7 @@ import com.podcase.model.WatchState;
 @DataJpaTest
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
-public class FullRepositoryTest {
+public class FullRepositoryTest extends AbstractRepositoryTest {
 
 	@Autowired
 	WatchStateRepository watchStateRepository;
@@ -41,9 +41,6 @@ public class FullRepositoryTest {
 	
 	@Autowired
 	PodcastRepository podcastRepository;
-	
-	@Autowired
-    private TestEntityManager entityManager;
 	
 	WatchState watchState;
 	
@@ -88,8 +85,8 @@ public class FullRepositoryTest {
 		Optional<Podcast> actualPodcast = podcastRepository.findByName(actualUser.get().getSubscriptions().get(0).getName());
 		System.out.println("Episode title: " + actualPodcast.get().getEpisodes().get(0).getTitle());
 		Optional<Episode> actualEpisode = episodeRepository.findByTitle(actualPodcast.get().getEpisodes().get(0).getTitle());
-		assertEquals(actualPodcast.get().getName(), "podcast name");
-		assertEquals(actualEpisode.get().getTitle(), "episode title");
+		assertEquals("podcast name", actualPodcast.get().getName());
+		assertEquals("episode title", actualEpisode.get().getTitle());
 	}
 	
 	@Test
@@ -107,12 +104,12 @@ public class FullRepositoryTest {
 		persist(user);
 		
 		Optional<User> actualUser = userRepository.findByName("Name");
-		assertEquals(actualUser.get().getSubscriptions().size(), 2);
+		assertEquals(2, actualUser.get().getSubscriptions().size());
 		
 		Optional<Podcast> podcastOne = podcastRepository.findByName(actualUser.get().getSubscriptions().get(0).getName());
 		Optional<Podcast> podcastTwo = podcastRepository.findByName(actualUser.get().getSubscriptions().get(1).getName());
-		assertEquals(podcastOne.get().getName(), "podcast name");
-		assertEquals(podcastTwo.get().getName(), "podcast name 2");
+		assertEquals("podcast name", podcastOne.get().getName());
+		assertEquals("podcast name 2", podcastTwo.get().getName());
 	}
 	
 	@Test
@@ -187,21 +184,10 @@ public class FullRepositoryTest {
 		assertEquals(1, podcasts.size());
 		
 		List<Episode> episodes = episodeRepository.findAll();
-		assertEquals(1, podcasts.size());
+		assertEquals(1, episodes.size());
 		
 		List<WatchState> watchStates = watchStateRepository.findAll();
 		assertEquals(1, watchStates.size());
 	}
-
-	private void persist(Object entity) {
-		entityManager.persist(entity);
-		entityManager.flush();
-	}
-	
-	private void update(Object entity) {
-		entityManager.merge(entity);
-		entityManager.flush();
-	}
-	
 
 }

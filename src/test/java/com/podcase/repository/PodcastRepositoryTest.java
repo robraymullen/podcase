@@ -16,19 +16,17 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
-public class PodcastRepositoryTest {
+public class PodcastRepositoryTest extends AbstractRepositoryTest {
 	
 	@Autowired
 	PodcastRepository podcastRepository;
-	
-	@Autowired
-    private TestEntityManager entityManager;
 	
 	Podcast podcast;
 	
@@ -102,8 +100,52 @@ public class PodcastRepositoryTest {
 		assertEquals(description, actualPodcast.get().getDescription());
 	}
 	
-	private void persist(Podcast podcast) {
-		entityManager.persist(podcast);
-        entityManager.flush();
+	@Test
+	public void testAddEpisode() {
+		Episode episode = new Episode();
+		episode.setTitle("episode title");
+		episode.setLink("link");
+		episode.setFileUrl("fileUrl");
+		episode.setDescription("description");
+		episode.setPublicationDate(new Date());
+		podcast.addEpisode(episode);
+		persist(podcast);
+		
+		Optional<Podcast> actualPodcast = podcastRepository.findByName("name");
+		assertEquals(1, actualPodcast.get().getEpisodes().size());
 	}
+	
+	@Test
+	public void testRemoveEpisode() {
+		Episode episode = new Episode();
+		episode.setTitle("episode title");
+		episode.setLink("link");
+		episode.setFileUrl("fileUrl");
+		episode.setDescription("description");
+		episode.setPublicationDate(new Date());
+		podcast.addEpisode(episode);
+		persist(podcast);
+		
+		podcast.removeEpisode(episode);
+		update(podcast);
+		
+		Optional<Podcast> actualPodcast = podcastRepository.findByName("name");
+		assertEquals(0, actualPodcast.get().getEpisodes().size());
+	}
+	
+	@Test
+	public void testEpisodeIsLinkedToPodcast() {
+		Episode episode = new Episode();
+		episode.setTitle("episode title");
+		episode.setLink("link");
+		episode.setFileUrl("fileUrl");
+		episode.setDescription("description");
+		episode.setPublicationDate(new Date());
+		podcast.addEpisode(episode);
+		persist(podcast);
+		
+		Optional<Podcast> actualPodcast = podcastRepository.findByName("name");
+		assertNotNull(actualPodcast.get().getEpisodes().get(0).getPodcast());
+	}
+	
 }

@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolation;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,13 +29,10 @@ import com.podcase.model.User;
 @DataJpaTest
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
-public class UserRepositoryTest {
+public class UserRepositoryTest extends AbstractRepositoryTest {
 	
 	@Autowired
 	UserRepository userRepository;
-	
-	@Autowired
-    private TestEntityManager entityManager;
 	
 	User user;
 
@@ -56,9 +56,16 @@ public class UserRepositoryTest {
 		assertEquals(name, actualUser.get().getName());
 	}
 	
-	private void persist(User user) {
-		entityManager.persist(user);
-        entityManager.flush();
+	@Test(expected = PersistenceException.class)
+	public void testNoDuplicateNamesPossible() {
+		String name = "rob";
+		user.setName(name);
+		persist(user);
+		
+		User secondUser = new User();
+		secondUser.setName(name);
+		secondUser.setPassword("password");
+		persist(secondUser);
 	}
 
 }

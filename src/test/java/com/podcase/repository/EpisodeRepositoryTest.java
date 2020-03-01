@@ -3,14 +3,14 @@ package com.podcase.repository;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.Entity;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,40 +20,22 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.podcase.model.Episode;
-import com.podcase.model.User;
-import com.podcase.model.WatchState;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
-public class WatchStateRepositoryTest extends AbstractRepositoryTest {
-	
-	@Autowired
-	WatchStateRepository watchStateRepository;
-	
-	@Autowired
-	UserRepository userRepository;
+public class EpisodeRepositoryTest extends AbstractRepositoryTest {
 	
 	@Autowired
 	EpisodeRepository episodeRepository;
 	
-	WatchState watchState;
-	
-	User user;
-	
 	Episode episode;
-
 
 	@Before
 	public void setUp() throws Exception {
-		watchState = new WatchState();
-		user = new User();
-		user.setName("Name");
-		user.setPassword("password");
-		
 		episode = new Episode();
-		episode.setTitle("title");
+		episode.setTitle("episode title");
 		episode.setLink("link");
 		episode.setFileUrl("fileUrl");
 		episode.setDescription("description");
@@ -65,22 +47,12 @@ public class WatchStateRepositoryTest extends AbstractRepositoryTest {
 	}
 
 	@Test
-	public void testGetWatchStateByUserIdAndEpisodeId() {
-		persist(user);
-        
-        persist(episode);
-        
-		Long watchLength = new Long(1234);
-		watchState.setUser(user);
-		watchState.setEpisode(episode);
-		watchState.setWatchedLength(watchLength);
-		persist(watchState);
-		
-		Optional<User> actualUser = userRepository.findByName("Name");
-		Optional<Episode> actualEpisode = episodeRepository.findByTitle("title");
-		
-		Optional<WatchState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.get().getId());
-		assertEquals(watchLength, actualWatchState.get().getWatchedLength());
+	public void testGetSingleEpisodeById() {
+		persist(episode);
+		List<Episode> episodes = episodeRepository.findAll();
+		Long id = new Long(episodes.get(0).getId());
+		Optional<Episode> actualEpisode = episodeRepository.findById(id);
+		assertEquals(id, actualEpisode.get().getId());
 	}
 
 }
