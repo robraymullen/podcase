@@ -2,18 +2,15 @@ package com.podcase.repository;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolation;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +19,27 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.podcase.model.Podcast;
-import com.podcase.model.User;
+import com.podcase.model.Episode;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
-public class UserRepositoryTest extends AbstractRepositoryTest {
+public class EpisodeRepositoryTest extends AbstractRepositoryTest {
 	
 	@Autowired
-	UserRepository userRepository;
+	EpisodeRepository episodeRepository;
 	
-	User user;
+	Episode episode;
 
 	@Before
 	public void setUp() throws Exception {
-		user = new User();
-		user.setName("name");
-		user.setPassword("password");
+		episode = new Episode();
+		episode.setTitle("episode title");
+		episode.setLink("link");
+		episode.setFileUrl("fileUrl");
+		episode.setDescription("description");
+		episode.setPublicationDate(new Date());
 	}
 
 	@After
@@ -48,24 +47,12 @@ public class UserRepositoryTest extends AbstractRepositoryTest {
 	}
 
 	@Test
-	public void testGetSingleUserByName() {
-		String name = "rob";
-		user.setName(name);
-		persist(user);
-		Optional<User> actualUser = userRepository.findByName(name);
-		assertEquals(name, actualUser.get().getName());
-	}
-	
-	@Test(expected = PersistenceException.class)
-	public void testNoDuplicateNamesPossible() {
-		String name = "rob";
-		user.setName(name);
-		persist(user);
-		
-		User secondUser = new User();
-		secondUser.setName(name);
-		secondUser.setPassword("password");
-		persist(secondUser);
+	public void testGetSingleEpisodeById() {
+		persist(episode);
+		List<Episode> episodes = episodeRepository.findAll();
+		Long id = new Long(episodes.get(0).getId());
+		Optional<Episode> actualEpisode = episodeRepository.findById(id);
+		assertEquals(id, actualEpisode.get().getId());
 	}
 
 }
