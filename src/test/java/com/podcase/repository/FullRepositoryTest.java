@@ -3,6 +3,7 @@ package com.podcase.repository;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.After;
@@ -156,6 +157,40 @@ public class FullRepositoryTest {
 		
 		Optional<WatchState> actualUpdatedWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.getId());
 		assertEquals(new Long(12345), actualUpdatedWatchState.get().getWatchedLength());
+	}
+	
+	@Test
+	public void testNoDuplicatesAfterUpdateOfWatchState() {
+		podcast.addEpisode(episode);
+		user.addSubscription(podcast);
+		persist(user);
+		
+		Optional<User> actualUser = userRepository.findByName("Name");
+		Episode actualEpisode = actualUser.get().getSubscriptions().get(0).getEpisodes().get(0);
+		
+		watchState = new WatchState();
+		watchState.setWatchedLength(new Long(1234));
+		watchState.setEpisode(actualEpisode);
+		watchState.setUser(user);
+		persist(watchState);
+		
+		Optional<WatchState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.getId());
+		WatchState watchStateOne = actualWatchState.get();
+		
+		watchStateOne.setWatchedLength(new Long(12345));
+		update(watchStateOne);
+		
+		List<User> users = userRepository.findAll();
+		assertEquals(1, users.size());
+		
+		List<Podcast> podcasts = podcastRepository.findAll();
+		assertEquals(1, podcasts.size());
+		
+		List<Episode> episodes = episodeRepository.findAll();
+		assertEquals(1, podcasts.size());
+		
+		List<WatchState> watchStates = watchStateRepository.findAll();
+		assertEquals(1, watchStates.size());
 	}
 
 	private void persist(Object entity) {
