@@ -107,5 +107,21 @@ public class User {
 	public void setFavourites(List<Podcast> favourites) {
 		this.favourites = favourites;
 	}
+	
+	public void addSubscription(Podcast podcast) {
+		this.subscriptions.add(podcast);
+	}
+	
+	public void removeSubscription(Podcast podcast) {
+		this.subscriptions.remove(podcast);
+	}
+	
+	public void addFavourite(Podcast podcast) { 
+		this.favourites.add(podcast);
+	}
+	
+	public void removeFavourite(Podcast podcast) {
+		this.favourites.remove(podcast);
+	}
 
 }

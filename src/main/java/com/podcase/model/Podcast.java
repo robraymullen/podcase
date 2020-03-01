@@ -1,6 +1,8 @@
 package com.podcase.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,6 +11,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Podcast {
@@ -42,6 +46,11 @@ public class Podcast {
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	@Size(max = 4000)
 	private String description;
+	
+	@JsonManagedReference
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "podcast_id")
+	List<Episode> episodes = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -91,4 +100,23 @@ public class Podcast {
 	public String getDescription() {
 		return this.description;
 	}
+
+	public List<Episode> getEpisodes() {
+		return episodes;
+	}
+
+	public void setEpisodes(List<Episode> episodes) {
+		this.episodes = episodes;
+	}
+	
+	public void addEpisode(Episode episode) {
+		episodes.add(episode);
+		episode.setPodcast(this);
+	}
+	
+	public void removeEpisode(Episode episode) {
+		episodes.remove(episode);
+		episode.setPodcast(null);
+	}
+
 }
