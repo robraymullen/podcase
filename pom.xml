@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-parent</artifactId>
-    <version>2.2.5.RELEASE</version>
-    <relativePath>../spring-boot-parent</relativePath>
-  </parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-parent</artifactId>
+		<version>2.2.5.RELEASE</version>
+		<relativePath>../spring-boot-parent</relativePath>
+	</parent>
 	<groupId>com.podcase</groupId>
 	<artifactId>podcase</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -75,7 +75,7 @@
 			<artifactId>javassist</artifactId>
 			<version>3.22.0-GA</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search-orm</artifactId>
@@ -84,6 +84,19 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>2.0.2-beta</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

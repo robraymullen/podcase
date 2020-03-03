@@ -67,8 +67,22 @@ public class Episode {
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	String fileUrl;
 	
+	@Field
+	String fileType;
+	
+	@Field
+	Long fileLength;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Podcast podcast;
+
+	@Override
+	public String toString() {
+		return "Episode [id=" + id + ", title=" + title + ", link=" + link + ", publicationDate=" + publicationDate
+				+ ", description=" + description + ", subtitle=" + subtitle + ", keywords=" + keywords + ", summary="
+				+ summary + ", creator=" + creator + ", imageUrl=" + imageUrl + ", fileUrl=" + fileUrl + ", podcast="
+				+ podcast + "]";
+	}
 
 	public Long getId() {
 		return id;
@@ -164,6 +178,22 @@ public class Episode {
 
 	public void setPodcast(Podcast podcast) {
 		this.podcast = podcast;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
+	public Long getFileLength() {
+		return fileLength;
+	}
+
+	public void setFileLength(Long fileLength) {
+		this.fileLength = fileLength;
 	}
 	
 }
