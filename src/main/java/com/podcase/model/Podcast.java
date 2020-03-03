@@ -118,7 +118,7 @@ public class Podcast {
 	}
 	
 	public void addEpisode(Episode episode) {
-		this.episodes.add(episode);
+		episodes.add(episode);
 		episode.setPodcast(this);
 	}
 	
