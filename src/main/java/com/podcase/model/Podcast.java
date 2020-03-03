@@ -26,16 +26,24 @@ public class Podcast {
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	@Size(max = 4000)
 	private String name;
+	
+	@NotBlank
+	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
+	@Size(max = 4000)
+	private String author;
 
 	@NotBlank
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	@Size(max = 4000)
 	private String link;
 
-	@NotBlank
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	@Size(max = 4000)
 	private String rssFeed;
+	
+	@Field
+	@Size(max = 4000)
+	private String imageUrl;
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -110,13 +118,29 @@ public class Podcast {
 	}
 	
 	public void addEpisode(Episode episode) {
-		episodes.add(episode);
+		this.episodes.add(episode);
 		episode.setPodcast(this);
 	}
 	
 	public void removeEpisode(Episode episode) {
 		episodes.remove(episode);
 		episode.setPodcast(null);
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

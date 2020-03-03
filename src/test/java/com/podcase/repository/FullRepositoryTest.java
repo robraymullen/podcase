@@ -69,6 +69,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		podcast.setRssFeed("blank");
 		podcast.setLastBuildDate(new Date());
 		podcast.setDescription("description");
+		podcast.setAuthor("author");
 	}
 
 	@After
@@ -98,6 +99,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		pod2.setRssFeed("blank2");
 		pod2.setLastBuildDate(new Date());
 		pod2.setDescription("description2");
+		pod2.setAuthor("author");
 		
 		user.addSubscription(podcast);
 		user.addSubscription(pod2);

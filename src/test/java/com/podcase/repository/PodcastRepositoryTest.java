@@ -39,6 +39,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		podcast.setRssFeed("blank");
 		podcast.setLastBuildDate(new Date());
 		podcast.setDescription("description");
+		podcast.setAuthor("author");
 	}
 
 	@After
