@@ -16,8 +16,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
@@ -72,10 +74,12 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		podcast.setAuthor("author");
 	}
 
+	@Rollback
 	@After
 	public void tearDown() throws Exception {
 	}
 
+	@Transactional
 	@Test
 	public void testSubscribingAUserToASinglePodcast() {
 		podcast.addEpisode(episode);
@@ -90,6 +94,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		assertEquals("episode title", actualEpisode.get().getTitle());
 	}
 	
+	@Transactional
 	@Test
 	public void testSubscribingAUserToMultiplePodcasts() {
 		Podcast pod2 = new Podcast();
@@ -114,6 +119,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		assertEquals("podcast name 2", podcastTwo.get().getName());
 	}
 	
+	@Transactional
 	@Test
 	public void testSettingTheWatchStateForAnEpisodeThatAUserIsSubscribedTo() {
 		podcast.addEpisode(episode);
@@ -133,6 +139,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(new Long(1234), actualWatchState.get().getWatchedLength());
 	}
 	
+	@Transactional
 	@Test
 	public void testUpdateWatchStateForAnEpisodeThatAUserIsSubscribedTo() {
 		podcast.addEpisode(episode);
@@ -158,6 +165,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(new Long(12345), actualUpdatedWatchState.get().getWatchedLength());
 	}
 	
+	@Transactional
 	@Test
 	public void testNoDuplicatesAfterUpdateOfWatchState() {
 		podcast.addEpisode(episode);

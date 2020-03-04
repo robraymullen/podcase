@@ -19,8 +19,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.podcase.model.Podcast;
 import com.podcase.model.User;
@@ -43,10 +45,12 @@ public class UserRepositoryTest extends AbstractRepositoryTest {
 		user.setPassword("password");
 	}
 
+	@Rollback
 	@After
 	public void tearDown() throws Exception {
 	}
 
+	@Transactional
 	@Test
 	public void testGetSingleUserByName() {
 		String name = "rob";
@@ -56,6 +60,7 @@ public class UserRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(name, actualUser.get().getName());
 	}
 	
+	@Transactional
 	@Test(expected = PersistenceException.class)
 	public void testNoDuplicateNamesPossible() {
 		String name = "rob";

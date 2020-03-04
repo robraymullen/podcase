@@ -43,7 +43,6 @@ public class Episode {
 	@Column(name = "publication_date")
 	private Date publicationDate;
 	
-	@NotBlank
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	@Size(max = 4000)
 	private String description;
