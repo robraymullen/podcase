@@ -13,8 +13,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
@@ -42,10 +44,12 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		podcast.setAuthor("author");
 	}
 
+	@Rollback
 	@After
 	public void tearDown() throws Exception {
 	}
 
+	@Transactional
 	@Test
 	public void testGetSinglePodcastById() {
 		persist(podcast);	
@@ -56,6 +60,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(id, actualPodcast.get().getId());
 	}
 	
+	@Transactional
 	@Test
 	public void testGetSinglePodcastByName() {
 		String expectedName = "Podcast Name";
@@ -65,6 +70,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(expectedName, actualPodcast.get().getName());
 	}
 	
+	@Transactional
 	@Test
 	public void testGetPodcastLink() {
 		String expectedLink = "http://www.lasertimepodcast.com";
@@ -74,6 +80,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(expectedLink, actualPodcast.get().getLink());
 	}
 
+	@Transactional
 	@Test
 	public void testGetPodcastRssFeed() {
 		String expectedRssFeed = "http://www.lasertimepodcast.com/category/lasertimepodcast/feed/";
@@ -83,6 +90,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
         assertEquals(expectedRssFeed, actualPodcast.get().getRssFeed());
 	}
 	
+	@Transactional
 	@Test
 	public void testGetLastBuildDate() {
 		Date lastBuildDate = new Date();
@@ -92,6 +100,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(lastBuildDate, actualPodcast.get().getLastBuildDate());
 	}
 	
+	@Transactional
 	@Test
 	public void testGetDescription() {
 		String description = "Expected podcast description";
@@ -101,6 +110,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(description, actualPodcast.get().getDescription());
 	}
 	
+	@Transactional
 	@Test
 	public void testAddEpisode() {
 		Episode episode = new Episode();
@@ -116,6 +126,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(1, actualPodcast.get().getEpisodes().size());
 	}
 	
+	@Transactional
 	@Test
 	public void testRemoveEpisode() {
 		Episode episode = new Episode();
@@ -134,6 +145,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(0, actualPodcast.get().getEpisodes().size());
 	}
 	
+	@Transactional
 	@Test
 	public void testEpisodeIsLinkedToPodcast() {
 		Episode episode = new Episode();

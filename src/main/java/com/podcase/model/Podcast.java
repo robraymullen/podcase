@@ -27,7 +27,6 @@ public class Podcast {
 	@Size(max = 4000)
 	private String name;
 	
-	@NotBlank
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	@Size(max = 4000)
 	private String author;
@@ -50,7 +49,6 @@ public class Podcast {
 	@Column(name = "last_build_date")
 	private Date lastBuildDate;
 
-	@NotBlank
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	@Size(max = 4000)
 	private String description;
