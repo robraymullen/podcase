@@ -119,6 +119,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		episode.setFileUrl("fileUrl");
 		episode.setDescription("description");
 		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
 		podcast.addEpisode(episode);
 		persist(podcast);
 		
@@ -135,6 +136,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		episode.setFileUrl("fileUrl");
 		episode.setDescription("description");
 		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
 		podcast.addEpisode(episode);
 		persist(podcast);
 		
@@ -154,6 +156,7 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		episode.setFileUrl("fileUrl");
 		episode.setDescription("description");
 		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
 		podcast.addEpisode(episode);
 		persist(podcast);
 		
