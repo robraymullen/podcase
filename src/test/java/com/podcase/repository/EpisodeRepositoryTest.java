@@ -42,6 +42,7 @@ public class EpisodeRepositoryTest extends AbstractRepositoryTest {
 		episode.setFileUrl("fileUrl");
 		episode.setDescription("description");
 		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
 	}
 
 	@Rollback

@@ -2,7 +2,9 @@ package com.podcase.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -57,6 +59,9 @@ public class Podcast {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "podcast_id")
 	List<Episode> episodes = new ArrayList<>();
+	
+	@Transient
+	Set<String> episodeGuids = new HashSet<>();
 	
 	public Long getId() {
 		return id;
@@ -118,11 +123,13 @@ public class Podcast {
 	public void addEpisode(Episode episode) {
 		episodes.add(episode);
 		episode.setPodcast(this);
+		episodeGuids.add(episode.getGuid());
 	}
 	
 	public void removeEpisode(Episode episode) {
 		episodes.remove(episode);
 		episode.setPodcast(null);
+		episodeGuids.remove(episode.getGuid());
 	}
 
 	public String getAuthor() {
@@ -139,6 +146,14 @@ public class Podcast {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public Set<String> getEpisodeGuids() {
+		return episodeGuids;
+	}
+
+	public void setEpisodeGuids(Set<String> episodeGuids) {
+		this.episodeGuids = episodeGuids;
 	}
 
 }

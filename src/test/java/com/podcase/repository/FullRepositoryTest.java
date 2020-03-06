@@ -64,6 +64,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		episode.setFileUrl("fileUrl");
 		episode.setDescription("description");
 		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
 		
 		podcast = new Podcast();
 		podcast.setName("podcast name");

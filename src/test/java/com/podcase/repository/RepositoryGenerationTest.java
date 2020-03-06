@@ -65,6 +65,7 @@ public class RepositoryGenerationTest extends AbstractRepositoryTest {
 		episode.setFileUrl("fileUrl");
 		episode.setDescription("description");
 		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
 		
 		podcast = new Podcast();
 		podcast.setName("podcast name");
@@ -140,5 +141,12 @@ public class RepositoryGenerationTest extends AbstractRepositoryTest {
 			assertNotNull(episode.getFileType());
 			assertNotNull(episode.getFileLength());
 		}
+	}
+	
+	@Ignore
+	@Transactional
+	@Test
+	public void testThatOnlyNewestEpisodeGetsAddedToAnExistingPodcast() {
+		
 	}
 }
