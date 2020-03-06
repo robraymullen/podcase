@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.FeedException;
@@ -29,6 +32,7 @@ public class PodcastFactory {
 			podcast.setLastBuildDate(feed.getPublishedDate());
 			podcast.setAuthor(feed.getAuthor());
 			podcast.setLink(feed.getLink());
+			podcast.setRssFeed(url);
 			if(feed.getImage() != null) {
 				podcast.setImageUrl(feed.getImage().getUrl());
 			}
@@ -45,7 +49,23 @@ public class PodcastFactory {
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
+	
+	public static List<Episode> getNewEpisodes(Podcast podcast) {
+		try {
+			List<Episode> newEpisodes = new ArrayList<>(); 
+			Podcast updatedPodcast = PodcastFactory.generate(podcast.getRssFeed());
+			for (Episode episode : updatedPodcast.getEpisodes()) {
+				if (!podcast.getEpisodeGuids().contains(episode.getGuid())) {
+					newEpisodes.add(episode);
+				}
+			}
+			return newEpisodes;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ArrayList<Episode>();
+	}
+	
 
 }

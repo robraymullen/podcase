@@ -21,6 +21,7 @@ public class EpisodeFactory {
 		episode.setFileUrl(((List<SyndEnclosure>)entry.getEnclosures()).get(0).getUrl());
 		episode.setFileType(((List<SyndEnclosure>)entry.getEnclosures()).get(0).getType());
 		episode.setFileLength(((List<SyndEnclosure>)entry.getEnclosures()).get(0).getLength());
+		episode.setGuid(entry.getUri());
 		return Optional.of(episode);
 	}
 

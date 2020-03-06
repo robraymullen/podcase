@@ -6,6 +6,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -39,11 +40,9 @@ public class PodcastFactoryTest {
 
 	@Test
 	public void testPodcastDataForNonItunes() throws MalformedURLException, ParseException {
-		File file = new File(getClass().getClassLoader().getResource("lasertime.xml").getFile());
-		Podcast laserTime = PodcastFactory.generate(file.toURI().toURL().toString());
+		Podcast laserTime = PodcastFactory.generate(getFileUrl("lasertime.xml"));
 		
 		//Lasertime podcast Title has weird encoding. We'll skip checking. If the rest of the data is fine it doesn't matter
-		assertEquals("http://www.lasertimepodcast.com", laserTime.getLink());
 		assertEquals("", laserTime.getDescription());
 		assertEquals(localDateFormat.format((localDateFormat.parse("Sun Mar 01 06:39:21 GMT 2020"))), localDateFormat.format(laserTime.getLastBuildDate()));
 		assertEquals(null, laserTime.getAuthor());
@@ -51,30 +50,47 @@ public class PodcastFactoryTest {
 	
 	@Test
 	public void testPodcastDataForItunes() throws MalformedURLException, ParseException {
-		File file = new File(getClass().getClassLoader().getResource("sincast.xml").getFile());
-		Podcast sincast = PodcastFactory.generate(file.toURI().toURL().toString());
+		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml"));
 		
 		assertEquals("SinCast - Presented by CinemaSins", sincast.getName());
 		assertEquals("https://ssl-static.libsyn.com/p/assets/7/8/9/4/789403aa4ebc16f8/SinCast_Logo_final_centered_1.22.16.jpg", sincast.getImageUrl());
-		
 		assertEquals(localDateFormat.format(localDateFormat.parse("Sat Feb 29 11:00:00 GMT 2020")), localDateFormat.format(sincast.getLastBuildDate()));
 		assertEquals("cinemasinssincast@gmail.com (cinemasinssincast@gmail.com)", sincast.getAuthor());
 	}
 	
 	@Test
 	public void testPodcastEpisodeCountForNonItunes() throws MalformedURLException {
-		File file = new File(getClass().getClassLoader().getResource("lasertime.xml").getFile());
-		Podcast laserTime = PodcastFactory.generate(file.toURI().toURL().toString());
+		Podcast laserTime = PodcastFactory.generate(getFileUrl("lasertime.xml"));
 		
 		assertEquals(411, laserTime.getEpisodes().size());
 	}
 	
 	@Test
 	public void testPodcastEpisodeCountForItunes() throws MalformedURLException {
-		File file = new File(getClass().getClassLoader().getResource("sincast.xml").getFile());
-		Podcast sincast = PodcastFactory.generate(file.toURI().toURL().toString());
+		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml"));
 		
 		assertEquals(282, sincast.getEpisodes().size());
+	}
+	
+	@Test
+	public void testGetNewEpisodesForPodcastCountNonItunes() throws MalformedURLException {
+		Podcast lasertime = PodcastFactory.generate(getFileUrl("lasertime.xml"));
+		lasertime.setRssFeed(getFileUrl("lasertime-updated.xml"));
+		
+		assertEquals(1, PodcastFactory.getNewEpisodes(lasertime).size());
+	}
+	
+	@Test
+	public void testGetNewEpisodesForPodcastCountItunes() throws MalformedURLException {
+		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml"));
+		sincast.setRssFeed(getFileUrl("sincast-updated.xml"));
+		
+		assertEquals(2, PodcastFactory.getNewEpisodes(sincast).size());
+	}
+	
+	private String getFileUrl(String fileName) throws MalformedURLException {
+		File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
+		return file.toURI().toURL().toString();
 	}
 
 }

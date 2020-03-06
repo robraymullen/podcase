@@ -22,7 +22,7 @@ import org.hibernate.search.annotations.Field;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Episode {
+public class Episode implements Comparable<Episode> {
 
 	@Id
 	@GeneratedValue(generator = "episode_generator")
@@ -74,13 +74,23 @@ public class Episode {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Podcast podcast;
+	
+	@NotNull
+	@Field
+	Date retrievedDate = new Date();
+	
+	@NotBlank
+	@NotNull
+	@Field
+	String guid;
 
 	@Override
 	public String toString() {
 		return "Episode [id=" + id + ", title=" + title + ", link=" + link + ", publicationDate=" + publicationDate
 				+ ", description=" + description + ", subtitle=" + subtitle + ", keywords=" + keywords + ", summary="
-				+ summary + ", creator=" + creator + ", imageUrl=" + imageUrl + ", fileUrl=" + fileUrl + ", podcast="
-				+ podcast + "]";
+				+ summary + ", creator=" + creator + ", imageUrl=" + imageUrl + ", fileUrl=" + fileUrl + ", fileType="
+				+ fileType + ", fileLength=" + fileLength + ", podcast=" + podcast + ", retrievedDate=" + retrievedDate
+				+ ", guid=" + guid + "]";
 	}
 
 	public Long getId() {
@@ -194,5 +204,28 @@ public class Episode {
 	public void setFileLength(Long fileLength) {
 		this.fileLength = fileLength;
 	}
-	
+
+	public Date getRetrievedDate() {
+		return retrievedDate;
+	}
+
+	public void setRetrievedDate(Date retrievedDate) {
+		this.retrievedDate = retrievedDate;
+	}
+
+	public String getGuid() {
+		return guid;
+	}
+
+	public void setGuid(String guid) {
+		this.guid = guid;
+	}
+
+	/**
+	 * Sort by newest -> oldest
+	 */
+	@Override
+	public int compareTo(Episode o) {
+		return o.getRetrievedDate().compareTo(this.getRetrievedDate());
+	}
 }
