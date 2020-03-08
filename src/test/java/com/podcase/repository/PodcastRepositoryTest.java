@@ -2,6 +2,7 @@ package com.podcase.repository;
 
 import static org.junit.Assert.*;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -162,6 +163,25 @@ public class PodcastRepositoryTest extends AbstractRepositoryTest {
 		
 		Optional<Podcast> actualPodcast = podcastRepository.findByName("name");
 		assertNotNull(actualPodcast.get().getEpisodes().get(0).getPodcast());
+	}
+	
+	@Transactional
+	@Test
+	public void testGetAllRssFeeds() {
+		podcast.setRssFeed("http://rss.feed");
+		Episode episode = new Episode();
+		episode.setTitle("episode title");
+		episode.setLink("link");
+		episode.setFileUrl("fileUrl");
+		episode.setDescription("description");
+		episode.setPublicationDate(new Date());
+		episode.setGuid("guid");
+		podcast.addEpisode(episode);
+		persist(podcast);
+		
+		List<IRssFeed> rssFeeds = (List<IRssFeed>) podcastRepository.getRssFeeds();
+		assertEquals(1, rssFeeds.size());
+		assertTrue("http://rss.feed".equals(rssFeeds.get(0).getRss_Feed()));
 	}
 	
 }
