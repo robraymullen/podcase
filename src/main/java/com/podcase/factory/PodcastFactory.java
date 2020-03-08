@@ -60,6 +60,12 @@ public class PodcastFactory {
 					newEpisodes.add(episode);
 				}
 			}
+			/*
+			 * Podcasts are retrieved top down from the feed. But they need to be added bottom up
+			 * to ensure the id sequence is correct.
+			 * The newest episode should be the one added last.
+			 */
+			Collections.reverse(newEpisodes);
 			return newEpisodes;
 		} catch (Exception e) {
 			e.printStackTrace();

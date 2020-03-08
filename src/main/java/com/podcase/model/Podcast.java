@@ -77,7 +77,9 @@ public class Podcast {
 
 	@Override
 	public String toString() {
-		return "Podcast [id=" + id + ", name=" + name + ", link=" + link + "]";
+		return "Podcast [id=" + id + ", name=" + name + ", author=" + author + ", link=" + link + ", rssFeed=" + rssFeed
+				+ ", imageUrl=" + imageUrl + ", lastBuildDate=" + lastBuildDate + ", description=" + description
+				+ ", episodeGuids=" + episodeGuids + "]";
 	}
 
 	public void setLink(String link) {

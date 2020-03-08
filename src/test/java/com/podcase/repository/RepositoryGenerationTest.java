@@ -126,8 +126,7 @@ public class RepositoryGenerationTest extends AbstractRepositoryTest {
 	@Transactional
 	@Test
 	public void testRepositoryEpisodePropertiesFromItunes() throws MalformedURLException {
-		File file = new File(getClass().getClassLoader().getResource("sincast.xml").getFile());
-		podcast = PodcastFactory.generate(file.toURI().toURL().toString());
+		podcast = PodcastFactory.generate(getFileUrl("sincast.xml"));
 		persist(podcast);
 		
 		List<Episode> episodes = episodeRepository.findAll();
@@ -143,10 +142,8 @@ public class RepositoryGenerationTest extends AbstractRepositoryTest {
 		}
 	}
 	
-	@Ignore
-	@Transactional
-	@Test
-	public void testThatOnlyNewestEpisodeGetsAddedToAnExistingPodcast() {
-		
+	private String getFileUrl(String fileName) throws MalformedURLException {
+		File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
+		return file.toURI().toURL().toString();
 	}
 }
