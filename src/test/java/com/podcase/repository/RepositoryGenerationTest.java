@@ -25,7 +25,7 @@ import com.podcase.factory.PodcastFactory;
 import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
 import com.podcase.model.User;
-import com.podcase.model.WatchState;
+import com.podcase.model.PlayState;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -34,7 +34,7 @@ import com.podcase.model.WatchState;
 public class RepositoryGenerationTest extends AbstractRepositoryTest {
 	
 	@Autowired
-	WatchStateRepository watchStateRepository;
+	PlayStateRepository watchStateRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -45,7 +45,7 @@ public class RepositoryGenerationTest extends AbstractRepositoryTest {
 	@Autowired
 	PodcastRepository podcastRepository;
 	
-	WatchState watchState;
+	PlayState playState;
 	
 	User user;
 	

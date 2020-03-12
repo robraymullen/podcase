@@ -23,16 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.podcase.model.Episode;
 import com.podcase.model.User;
-import com.podcase.model.WatchState;
+import com.podcase.model.PlayState;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
-public class WatchStateRepositoryTest extends AbstractRepositoryTest {
+public class PlayStateRepositoryTest extends AbstractRepositoryTest {
 	
 	@Autowired
-	WatchStateRepository watchStateRepository;
+	PlayStateRepository watchStateRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -40,7 +40,7 @@ public class WatchStateRepositoryTest extends AbstractRepositoryTest {
 	@Autowired
 	EpisodeRepository episodeRepository;
 	
-	WatchState watchState;
+	PlayState playState;
 	
 	User user;
 	
@@ -49,7 +49,7 @@ public class WatchStateRepositoryTest extends AbstractRepositoryTest {
 
 	@Before
 	public void setUp() throws Exception {
-		watchState = new WatchState();
+		playState = new PlayState();
 		user = new User();
 		user.setName("Name");
 		user.setPassword("password");
@@ -76,16 +76,16 @@ public class WatchStateRepositoryTest extends AbstractRepositoryTest {
         persist(episode);
         
 		Long watchLength = new Long(1234);
-		watchState.setUser(user);
-		watchState.setEpisode(episode);
-		watchState.setWatchedLength(watchLength);
-		persist(watchState);
+		playState.setUser(user);
+		playState.setEpisode(episode);
+		playState.setPlayLength(watchLength);
+		persist(playState);
 		
 		Optional<User> actualUser = userRepository.findByName("Name");
 		Optional<Episode> actualEpisode = episodeRepository.findByTitle("title");
 		
-		Optional<WatchState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.get().getId());
-		assertEquals(watchLength, actualWatchState.get().getWatchedLength());
+		Optional<PlayState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.get().getId());
+		assertEquals(watchLength, actualWatchState.get().getPlayLength());
 	}
 
 }
