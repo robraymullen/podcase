@@ -28,4 +28,6 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
 	@Query(value = GET_PODCAST_RSS_FEEDS, nativeQuery = true)
 	public List<IRssFeed> getRssFeeds();
+
+	public List<Podcast> findAllByOrderById();
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -71,7 +72,7 @@ class PodcastUpdateJobTest extends AbstractRepositoryTest {
 	@Transactional
 	@Test
 	public void testEpisodeCountAfterUpdateNonItunes() throws MalformedURLException {
-		podcast = PodcastFactory.generate(getFileUrl("lasertime.xml"));
+		podcast = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
 		persist(podcast);
 		podcast.setRssFeed(getFileUrl("lasertime-updated.xml"));
 		update(podcast);
@@ -84,7 +85,7 @@ class PodcastUpdateJobTest extends AbstractRepositoryTest {
 	@Transactional
 	@Test
 	public void testNewEpisodePropertiesAfterUpdateNonItunes() throws MalformedURLException {
-		podcast = PodcastFactory.generate(getFileUrl("lasertime.xml"));
+		podcast = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
 		persist(podcast);
 		podcast.setRssFeed(getFileUrl("lasertime-updated.xml"));
 		update(podcast);
@@ -100,20 +101,20 @@ class PodcastUpdateJobTest extends AbstractRepositoryTest {
 	@Transactional
 	@Test
 	public void testEpisodeCountAfterUpdateItunes() throws MalformedURLException {
-		podcast = PodcastFactory.generate(getFileUrl("lasertime.xml"));
+		podcast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
 		persist(podcast);
-		podcast.setRssFeed(getFileUrl("lasertime-updated.xml"));
+		podcast.setRssFeed(getFileUrl("sincast-updated.xml"));
 		update(podcast);
 		updateJob.process();
 		
 		List<Episode> episodes = episodeRepository.findAll();
-		assertEquals(412, episodes.size());
+		assertEquals(284, episodes.size());
 	}
 	
 	@Transactional
 	@Test
 	public void testNewEpisodePropertiesAfterUpdateItunes() throws MalformedURLException {
-		podcast = PodcastFactory.generate(getFileUrl("sincast.xml"));
+		podcast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
 		persist(podcast);
 		podcast.setRssFeed(getFileUrl("sincast-updated.xml"));
 		update(podcast);
@@ -129,6 +130,41 @@ class PodcastUpdateJobTest extends AbstractRepositoryTest {
 		assertEquals("new-sincast-guid2", secondLatestEpisode.getGuid());
 		assertEquals("New sincast2", secondLatestEpisode.getTitle());
 		assertEquals("https://cinemasins.libsyn.com/sincast-fantasy-island-bonus-episode", secondLatestEpisode.getLink());
+	}
+	
+	@Test
+	@Transactional
+	public void testEpisodeCountAfterAddingTwoPodcasts() throws MalformedURLException {
+		podcast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
+		persist(podcast);
+		podcast.setRssFeed(getFileUrl("sincast-updated.xml"));
+		update(podcast);
+		Podcast podcast2 = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
+		persist(podcast2);
+		podcast2.setRssFeed(getFileUrl("lasertime-updated.xml"));
+		update(podcast2);
+		
+		updateJob.process();
+		List<Episode> episodes = episodeRepository.findAll();
+		assertEquals(696, episodes.size());
+	}
+	
+	@Transactional
+	@Test
+	public void testEpisodeCountPerPodcastAfterUpdatingWithTwoPodcasts() throws MalformedURLException {
+		podcast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
+		persist(podcast);
+		podcast.setRssFeed(getFileUrl("sincast-updated.xml"));
+		update(podcast);
+		Podcast podcast2 = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
+		persist(podcast2);
+		podcast2.setRssFeed(getFileUrl("lasertime-updated.xml"));
+		update(podcast2);
+		
+		updateJob.process();
+		List<Podcast> podcasts = podcastRepository.findAll();
+		assertEquals(284, podcasts.get(0).getEpisodes().size());
+		assertEquals(412, podcasts.get(1).getEpisodes().size());
 	}
 	
 	private String getFileUrl(String fileName) throws MalformedURLException {

@@ -128,6 +128,12 @@ public class Podcast {
 		episodeGuids.add(episode.getGuid());
 	}
 	
+	public void addAllEpisodes(List<Episode> episodes) {
+		for (Episode episode : episodes) {
+			addEpisode(episode);
+		}
+	}
+	
 	public void removeEpisode(Episode episode) {
 		episodes.remove(episode);
 		episode.setPodcast(null);
