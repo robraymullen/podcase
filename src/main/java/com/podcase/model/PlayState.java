@@ -11,11 +11,11 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.search.annotations.Field;
 
 @Entity
-public class WatchState {
+public class PlayState {
 	
 	@Id
-	@GeneratedValue(generator = "watchState_generator")
-	@SequenceGenerator(name = "watchState_generator", sequenceName = "watchState_sequence", initialValue = 1)
+	@GeneratedValue(generator = "playState_generator")
+	@SequenceGenerator(name = "playState_generator", sequenceName = "playState_sequence", initialValue = 1)
 	private Long id;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -27,10 +27,10 @@ public class WatchState {
 	Episode episode;
 	
 	@Field
-	Long watchedLength;
+	Long playLength;
 	
 	@Field
-	Boolean watched;
+	Boolean played;
 
 	public Long getId() {
 		return id;
@@ -56,20 +56,20 @@ public class WatchState {
 		this.episode = episode;
 	}
 
-	public Long getWatchedLength() {
-		return watchedLength;
+	public Long getPlayLength() {
+		return playLength;
 	}
 
-	public void setWatchedLength(Long watchedLength) {
-		this.watchedLength = watchedLength;
+	public void setPlayLength(Long playLength) {
+		this.playLength = playLength;
 	}
 
-	public Boolean getWatched() {
-		return watched;
+	public Boolean isPlayed() {
+		return played;
 	}
 
-	public void setWatched(Boolean watched) {
-		this.watched = watched;
+	public void setPlayed(Boolean played) {
+		this.played = played;
 	}
 	
 
