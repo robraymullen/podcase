@@ -1,5 +1,6 @@
 package com.podcase.factory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,11 +22,18 @@ import com.podcase.factory.EpisodeFactory;
 
 public class PodcastFactory {
 	
-	public static Podcast generate(String url) {
+	public static Optional<Podcast> generate(String url) {
 		try {
 			URL feedSource = new URL(url);
 			SyndFeedInput input = new SyndFeedInput();
-			SyndFeed feed = input.build(new XmlReader(feedSource));
+			SyndFeed feed;
+			try {
+				feed = input.build(new XmlReader(feedSource));
+			} catch (FileNotFoundException e) {
+				// TODO add logging here.
+				return Optional.empty();
+			}
+			
 			Podcast podcast = new Podcast();
 			podcast.setName(feed.getTitle());
 			podcast.setDescription(feed.getDescription());
@@ -38,13 +46,17 @@ public class PodcastFactory {
 			}
 			@SuppressWarnings("unchecked")
 			List<SyndEntryImpl> entries = feed.getEntries();
+			// TODO reverse order podcast additions?
+			List<Episode> episodes = new ArrayList<>();
 			for(SyndEntryImpl entry : entries) {
 				Optional<Episode> episode = EpisodeFactory.generate(entry);
 				if (episode.isPresent()) {
-					podcast.addEpisode(episode.get());
+					episodes.add(episode.get());
 				}
 			}
-			return podcast;
+			Collections.reverse(episodes);
+			podcast.addAllEpisodes(episodes);
+			return Optional.of(podcast);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,7 +66,14 @@ public class PodcastFactory {
 	public static List<Episode> getNewEpisodes(Podcast podcast) {
 		try {
 			List<Episode> newEpisodes = new ArrayList<>(); 
-			Podcast updatedPodcast = PodcastFactory.generate(podcast.getRssFeed());
+			Optional<Podcast> retrievedPodcast = PodcastFactory.generate(podcast.getRssFeed());
+			Podcast updatedPodcast;
+			if (retrievedPodcast.isPresent()) {
+				updatedPodcast = retrievedPodcast.get();
+			} else {
+				// TODO more logging here
+				return newEpisodes;
+			}
 			for (Episode episode : updatedPodcast.getEpisodes()) {
 				if (!podcast.getEpisodeGuids().contains(episode.getGuid())) {
 					newEpisodes.add(episode);
@@ -65,7 +84,6 @@ public class PodcastFactory {
 			 * to ensure the id sequence is correct.
 			 * The newest episode should be the one added last.
 			 */
-			Collections.reverse(newEpisodes);
 			return newEpisodes;
 		} catch (Exception e) {
 			e.printStackTrace();

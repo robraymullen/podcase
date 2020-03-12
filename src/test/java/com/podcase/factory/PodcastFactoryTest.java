@@ -40,7 +40,7 @@ public class PodcastFactoryTest {
 
 	@Test
 	public void testPodcastDataForNonItunes() throws MalformedURLException, ParseException {
-		Podcast laserTime = PodcastFactory.generate(getFileUrl("lasertime.xml"));
+		Podcast laserTime = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
 		
 		//Lasertime podcast Title has weird encoding. We'll skip checking. If the rest of the data is fine it doesn't matter
 		assertEquals("", laserTime.getDescription());
@@ -50,7 +50,7 @@ public class PodcastFactoryTest {
 	
 	@Test
 	public void testPodcastDataForItunes() throws MalformedURLException, ParseException {
-		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml"));
+		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
 		
 		assertEquals("SinCast - Presented by CinemaSins", sincast.getName());
 		assertEquals("https://ssl-static.libsyn.com/p/assets/7/8/9/4/789403aa4ebc16f8/SinCast_Logo_final_centered_1.22.16.jpg", sincast.getImageUrl());
@@ -60,21 +60,21 @@ public class PodcastFactoryTest {
 	
 	@Test
 	public void testPodcastEpisodeCountForNonItunes() throws MalformedURLException {
-		Podcast laserTime = PodcastFactory.generate(getFileUrl("lasertime.xml"));
+		Podcast laserTime = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
 		
 		assertEquals(411, laserTime.getEpisodes().size());
 	}
 	
 	@Test
 	public void testPodcastEpisodeCountForItunes() throws MalformedURLException {
-		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml"));
+		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
 		
 		assertEquals(282, sincast.getEpisodes().size());
 	}
 	
 	@Test
 	public void testGetNewEpisodesForPodcastCountNonItunes() throws MalformedURLException {
-		Podcast lasertime = PodcastFactory.generate(getFileUrl("lasertime.xml"));
+		Podcast lasertime = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
 		lasertime.setRssFeed(getFileUrl("lasertime-updated.xml"));
 		
 		assertEquals(1, PodcastFactory.getNewEpisodes(lasertime).size());
@@ -82,10 +82,20 @@ public class PodcastFactoryTest {
 	
 	@Test
 	public void testGetNewEpisodesForPodcastCountItunes() throws MalformedURLException {
-		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml"));
+		Podcast sincast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
 		sincast.setRssFeed(getFileUrl("sincast-updated.xml"));
 		
 		assertEquals(2, PodcastFactory.getNewEpisodes(sincast).size());
+	}
+	
+	@Test
+	public void testPodcastIsNotPresentWhenUrlIsIncorrect() {
+		assertTrue(PodcastFactory.generate("http://google.com/rss.xml").isEmpty());
+	}
+	
+	@Test
+	public void testValueIsPresentWhenUrlIsCorrect() throws MalformedURLException {
+		assertTrue(PodcastFactory.generate(getFileUrl("lasertime.xml")).isPresent());
 	}
 	
 	private String getFileUrl(String fileName) throws MalformedURLException {
