@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,6 +21,8 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Episode implements Comparable<Episode> {
@@ -83,6 +86,21 @@ public class Episode implements Comparable<Episode> {
 	@NotNull
 	@Field
 	String guid;
+	
+	@Size(max = 4000)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  
+	private String fileName;
+
+	@JsonIgnore
+	@Transient
+	private String fileLocation;
+	
+	/*
+	 * Path to the file from the root store: podcast.file.store
+	 */
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  
+	@Size(max = 10000)
+	private String filePath;
 
 	@Override
 	public String toString() {
@@ -90,7 +108,8 @@ public class Episode implements Comparable<Episode> {
 				+ ", description=" + description + ", subtitle=" + subtitle + ", keywords=" + keywords + ", summary="
 				+ summary + ", creator=" + creator + ", imageUrl=" + imageUrl + ", fileUrl=" + fileUrl + ", fileType="
 				+ fileType + ", fileLength=" + fileLength + ", podcast=" + podcast + ", retrievedDate=" + retrievedDate
-				+ ", guid=" + guid + "]";
+				+ ", guid=" + guid + ", fileName=" + fileName + ", fileLocation=" + fileLocation + ", filePath="
+				+ filePath + "]";
 	}
 
 	public Long getId() {
