@@ -70,12 +70,12 @@ public class PlayStateRepositoryTest extends AbstractRepositoryTest {
 
 	@Transactional
 	@Test
-	public void testGetPlayStateByUserIdAndEpisodeId() {
+	public void testGetWatchStateByUserIdAndEpisodeId() {
 		persist(user);
         
         persist(episode);
         
-		Long watchLength = Long.valueOf(1234);
+		Long watchLength = new Long(1234);
 		playState.setUser(user);
 		playState.setEpisode(episode);
 		playState.setPlayLength(watchLength);
