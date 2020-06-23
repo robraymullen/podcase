@@ -62,7 +62,7 @@ public class EpisodeFactoryTest {
 		assertEquals("http://link.com", episode.getLink());
 		assertEquals("file://myFile.mp3", episode.getFileUrl());
 		assertEquals("audio/mp3", episode.getFileType());
-		assertEquals(new Long(12345), episode.getFileLength());
+		assertEquals(Long.valueOf(12345), episode.getFileLength());
 	}
 	
 	@Test

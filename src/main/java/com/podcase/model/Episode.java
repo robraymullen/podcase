@@ -23,6 +23,8 @@ import org.hibernate.search.annotations.Field;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.podcase.serializer.PodcastSerializer;
 
 @Entity
 public class Episode implements Comparable<Episode> {
@@ -76,6 +78,7 @@ public class Episode implements Comparable<Episode> {
 	Long fileLength;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonSerialize(using = PodcastSerializer.class)
 	private Podcast podcast;
 	
 	@NotNull
