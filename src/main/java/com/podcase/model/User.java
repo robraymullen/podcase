@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,6 +27,7 @@ import org.hibernate.search.annotations.Field;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@Table(name = "users")
 public class User {
 	
 	@Id
@@ -50,12 +53,12 @@ public class User {
     private Map<String, String> preferences;
 	
 	@JsonManagedReference
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private List<Podcast> subscriptions = new ArrayList<>();
 	
 	@JsonManagedReference
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private List<Podcast> favourites = new ArrayList<>();
 	
