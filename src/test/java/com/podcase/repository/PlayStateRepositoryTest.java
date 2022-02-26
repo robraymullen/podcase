@@ -32,7 +32,7 @@ import com.podcase.model.PlayState;
 public class PlayStateRepositoryTest extends AbstractRepositoryTest {
 	
 	@Autowired
-	PlayStateRepository watchStateRepository;
+	PlayStateRepository playStateRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -84,7 +84,7 @@ public class PlayStateRepositoryTest extends AbstractRepositoryTest {
 		Optional<User> actualUser = userRepository.findByName("Name");
 		Optional<Episode> actualEpisode = episodeRepository.findByTitle("title");
 		
-		Optional<PlayState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.get().getId());
+		Optional<PlayState> actualWatchState = playStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.get().getId());
 		assertEquals(watchLength, actualWatchState.get().getPlayLength());
 	}
 
