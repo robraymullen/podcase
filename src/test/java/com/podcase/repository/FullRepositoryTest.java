@@ -119,6 +119,86 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		assertEquals("podcast name", podcastOne.get().getName());
 		assertEquals("podcast name 2", podcastTwo.get().getName());
 	}
+	/**
+	 * If 2 users subscribe to the same podcasts then there should be only
+	 * 2 podcasts not 4
+	 */
+	@Transactional
+	@Test
+	public void testSubscribingMultipleUsersToPodcasts() {
+		Podcast pod2 = new Podcast();
+		pod2 = new Podcast();
+		pod2.setName("podcast name 2");
+		pod2.setLink("link2");
+		pod2.setRssFeed("blank2");
+		pod2.setLastBuildDate(new Date());
+		pod2.setDescription("description2");
+		pod2.setAuthor("author");
+		
+		user.addSubscription(podcast);
+		user.addSubscription(pod2);
+		persist(user);
+		
+		User secondUser = new User();
+		secondUser.setName("second");
+		secondUser.setPassword("password");
+		secondUser.addSubscription(podcast);
+		secondUser.addSubscription(pod2);
+		persist(secondUser);
+		
+		List<Podcast> podcasts = podcastRepository.findAll();
+		assertEquals(2, podcasts.size());
+	}
+	
+	/**
+	 * Only 2 podcasts should be persisted
+	 * Each user should have one favourite
+	 */
+	@Transactional
+	@Test
+	public void testFavouritingMultipleUsersToAPodcast() {
+		Podcast pod2 = new Podcast();
+		pod2 = new Podcast();
+		pod2.setName("podcast name 2");
+		pod2.setLink("link2");
+		pod2.setRssFeed("blank2");
+		pod2.setLastBuildDate(new Date());
+		pod2.setDescription("description2");
+		pod2.setAuthor("author");
+		
+		user.addSubscription(podcast);
+		user.addSubscription(pod2);
+		persist(user);
+		
+		user.addFavourite(podcast);
+		persist(user);
+		
+		User secondUser = new User();
+		secondUser.setName("second");
+		secondUser.setPassword("password");
+		secondUser.addSubscription(podcast);
+		secondUser.addSubscription(pod2);
+		persist(secondUser);
+		
+		secondUser.addFavourite(pod2);
+		persist(secondUser);
+		
+		List<Podcast> podcasts = podcastRepository.findAll();
+		assertEquals(2, podcasts.size());
+		
+		Optional<User> firstUser = userRepository.findByName("Name");
+		List<Podcast> firstFavouritePodcasts = firstUser.get().getFavourites();
+		assertEquals(1, firstFavouritePodcasts.size());
+		assertEquals(2, firstUser.get().getSubscriptions().size());
+		
+		
+		Optional<User> secondDBUser = userRepository.findByName("second");
+		List<Podcast> secondFavouritePodcasts = secondDBUser.get().getFavourites();
+		assertEquals(1, secondDBUser.get().getFavourites().size());
+		assertEquals(2, secondDBUser.get().getSubscriptions().size());
+		
+		assertNotEquals(firstFavouritePodcasts.get(0).getId(), secondFavouritePodcasts.get(0).getId());
+	}
 	
 	@Transactional
 	@Test
