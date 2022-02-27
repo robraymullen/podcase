@@ -211,18 +211,18 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		Episode actualEpisode = actualUser.get().getSubscriptions().get(0).getEpisodes().get(0);
 		
 		watchState = new PlayState();
-		watchState.setPlayLength(new Long(1234));
+		watchState.setPlayLength(Long.valueOf(1234));
 		watchState.setEpisode(actualEpisode);
 		watchState.setUser(user);
 		persist(watchState);
 		
 		Optional<PlayState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.getId());
-		assertEquals(new Long(1234), actualWatchState.get().getPlayLength());
+		assertEquals(Long.valueOf(1234), actualWatchState.get().getPlayLength());
 	}
 	
 	@Transactional
 	@Test
-	public void testUpdateWatchStateForAnEpisodeThatAUserIsSubscribedTo() {
+	public void testUpdatePlayStateForAnEpisodeThatAUserIsSubscribedTo() {
 		podcast.addEpisode(episode);
 		user.addSubscription(podcast);
 		persist(user);
@@ -231,7 +231,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		Episode actualEpisode = actualUser.get().getSubscriptions().get(0).getEpisodes().get(0);
 		
 		watchState = new PlayState();
-		watchState.setPlayLength(new Long(1234));
+		watchState.setPlayLength(Long.valueOf(12345));
 		watchState.setEpisode(actualEpisode);
 		watchState.setUser(user);
 		persist(watchState);
@@ -239,16 +239,16 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		Optional<PlayState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.getId());
 		PlayState watchStateOne = actualWatchState.get();
 		
-		watchStateOne.setPlayLength(new Long(12345));
+		watchStateOne.setPlayLength(Long.valueOf(12345));
 		update(watchStateOne);
 		
 		Optional<PlayState> actualUpdatedWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.getId());
-		assertEquals(new Long(12345), actualUpdatedWatchState.get().getPlayLength());
+		assertEquals(Long.valueOf(12345), actualUpdatedWatchState.get().getPlayLength());
 	}
 	
 	@Transactional
 	@Test
-	public void testNoDuplicatesAfterUpdateOfWatchState() {
+	public void testNoDuplicatesAfterUpdateOfPlayState() {
 		podcast.addEpisode(episode);
 		user.addSubscription(podcast);
 		persist(user);
@@ -265,7 +265,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		Optional<PlayState> actualWatchState = watchStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.getId());
 		PlayState watchStateOne = actualWatchState.get();
 		
-		watchStateOne.setPlayLength(new Long(12345));
+		watchStateOne.setPlayLength(Long.valueOf(12345));
 		update(watchStateOne);
 		
 		List<User> users = userRepository.findAll();

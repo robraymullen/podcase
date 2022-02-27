@@ -32,6 +32,12 @@ public class EpisodeSerializer extends StdSerializer<List<Episode>> {
     		generator.writeNumber(episode.getId());
     		generator.writeFieldName("name");
     		generator.writeString(episode.getTitle());
+    		generator.writeFieldName("isDownloaded");
+    		generator.writeBoolean(episode.isDownloaded());
+    		generator.writeFieldName("fileUrl");
+    		generator.writeString(episode.getFileUrl());
+    		generator.writeFieldName("podcaseUrl");
+    		generator.writeString(episode.getPodcaseUrl());
     		generator.writeEndObject();
         }
     	generator.writeEndArray();

@@ -12,5 +12,7 @@ public interface EpisodeRepository extends JpaRepository<Episode, Long> {
 	Optional<Episode> findByTitle(String title);
 
 	List<Episode> findAllByOrderByIdDesc();
+	
+	List<Episode> findByDownloaded(boolean downloaded);
 
 }

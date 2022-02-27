@@ -93,6 +93,14 @@ public class Episode implements Comparable<Episode> {
 	@Size(max = 4000)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  
 	private String fileName;
+	
+	private boolean downloaded = false;
+	
+	/**
+	 * Generated URL for playing from podcase archive
+	 */
+	@Transient
+	private String podcaseUrl;
 
 	@JsonIgnore
 	@Transient
@@ -241,6 +249,22 @@ public class Episode implements Comparable<Episode> {
 
 	public void setGuid(String guid) {
 		this.guid = guid;
+	}
+
+	public boolean isDownloaded() {
+		return downloaded;
+	}
+
+	public void setDownloaded(boolean downloaded) {
+		this.downloaded = downloaded;
+	}
+
+	public String getPodcaseUrl() {
+		return podcaseUrl;
+	}
+
+	public void setPodcaseUrl(String podcaseUrl) {
+		this.podcaseUrl = podcaseUrl;
 	}
 
 	/**
