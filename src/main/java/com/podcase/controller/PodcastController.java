@@ -36,6 +36,7 @@ public class PodcastController {
 	
 	@PutMapping("/podcasts")
 	public Podcast addPodcast(@Valid @RequestBody PodcastRequestBody podcastRequest) {
+		//Todo run a job to add the podcast to the db and also download all episodes
 		Optional<Podcast> podcast = PodcastFactory.generate(podcastRequest.getPodcastUrl());
 		return podcastRepository.save(podcast.orElseThrow());
 	}

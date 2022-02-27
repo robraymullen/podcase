@@ -55,9 +55,26 @@ public class EpisodeRepositoryTest extends AbstractRepositoryTest {
 	public void testGetSingleEpisodeById() {
 		persist(episode);
 		List<Episode> episodes = episodeRepository.findAll();
-		Long id = new Long(episodes.get(0).getId());
+		Long id = Long.valueOf(episodes.get(0).getId());
 		Optional<Episode> actualEpisode = episodeRepository.findById(id);
 		assertEquals(id, actualEpisode.get().getId());
+	}
+	
+	@Transactional
+	@Test
+	public void testFindingAllEpisodesThatAreNotDownloaded() {
+		persist(episode);
+		Episode ep2 = new Episode();
+		ep2.setTitle("ep2 title");
+		ep2.setLink("link");
+		ep2.setFileUrl("fileUrl");
+		ep2.setDescription("description");
+		ep2.setPublicationDate(new Date());
+		ep2.setGuid("guid");
+		persist(ep2);
+		
+		List<Episode> episodes = episodeRepository.findByDownloaded(false);
+		assertEquals(2, episodes.size());
 	}
 
 }
