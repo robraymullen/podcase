@@ -46,7 +46,6 @@ public class Podcast {
 	@Size(max = 4000)
 	private String imageUrl;
 
-	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "last_build_date")
 	private Date lastBuildDate;

@@ -1,4 +1,4 @@
-package com.podcase.repository;
+package com.podcase.job;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,6 +29,7 @@ import com.podcase.factory.PodcastFactory;
 import com.podcase.job.ScheduledJob;
 import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
+import com.podcase.repository.AbstractRepositoryTest;
 import com.podcase.repository.EpisodeRepository;
 import com.podcase.repository.PodcastRepository;
 

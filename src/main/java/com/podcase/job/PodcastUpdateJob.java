@@ -17,11 +17,15 @@ import com.podcase.repository.PodcastRepository;
 @Qualifier("podcastUpdateJob")
 public class PodcastUpdateJob implements ScheduledJob {
 
-	@Autowired
 	PodcastRepository podcastRepository;
 	
-	@Autowired
 	EpisodeRepository episodeRepository;
+	
+	@Autowired
+	public PodcastUpdateJob(PodcastRepository podcastRepository, EpisodeRepository episodeRepository) {
+		this.podcastRepository = podcastRepository;
+		this.episodeRepository = episodeRepository;
+	}
 	
 	@Override
 	public void process() {

@@ -267,6 +267,30 @@ public class Episode implements Comparable<Episode> {
 		this.podcaseUrl = podcaseUrl;
 	}
 
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFileLocation() {
+		return fileLocation;
+	}
+
+	public void setFileLocation(String fileLocation) {
+		this.fileLocation = fileLocation;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
 	/**
 	 * Sort by newest -> oldest
 	 */
