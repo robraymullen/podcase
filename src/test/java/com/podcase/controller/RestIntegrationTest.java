@@ -3,6 +3,7 @@ package com.podcase.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,7 +52,7 @@ public class RestIntegrationTest {
 	
 	@Test
 	public void testAddPodcast() throws Exception {
-		mvc.perform(put("/podcasts")
+		mvc.perform(post("/podcasts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{ \"podcastUrl\": \"http://www.lasertimepodcast.com/category/lasertimepodcast/feed/\"}"))
 				.andExpect(status().isOk());
@@ -62,7 +63,7 @@ public class RestIntegrationTest {
 	
 	@Test
 	public void testGetAllPodcasts() throws Exception {
-		mvc.perform(put("/podcasts")
+		mvc.perform(post("/podcasts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{ \"podcastUrl\": \"http://www.lasertimepodcast.com/category/lasertimepodcast/feed/\"}"))
 				.andExpect(status().isOk());
@@ -78,7 +79,7 @@ public class RestIntegrationTest {
 	
 	@Test
 	public void testGetPodcastById() throws Exception {
-		mvc.perform(put("/podcasts")
+		mvc.perform(post("/podcasts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{ \"podcastUrl\": \"http://www.lasertimepodcast.com/category/lasertimepodcast/feed/\"}"))
 				.andExpect(status().isOk());
@@ -97,7 +98,7 @@ public class RestIntegrationTest {
 	
 	@Test
 	public void testGetEpisodeById() throws Exception {
-		mvc.perform(put("/podcasts")
+		mvc.perform(post("/podcasts")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{ \"podcastUrl\": \"http://www.lasertimepodcast.com/category/lasertimepodcast/feed/\"}"))
 				.andExpect(status().isOk());

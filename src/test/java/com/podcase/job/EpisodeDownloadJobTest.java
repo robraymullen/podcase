@@ -1,11 +1,9 @@
-package com.podcase.download;
+package com.podcase.job;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -23,6 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.podcase.job.EpisodeDownloadJob;
 import com.podcase.model.Episode;
 import com.podcase.repository.EpisodeRepository;
 
@@ -31,7 +30,7 @@ import com.podcase.repository.EpisodeRepository;
 @DataJpaTest
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
-class DownloadManagerTest {
+class EpisodeDownloadJobTest {
 	
 	Episode episode;
 	
@@ -42,8 +41,8 @@ class DownloadManagerTest {
     private TestEntityManager entityManager;
 	
 	@Autowired
-	@Qualifier("downloadManager")
-	DownloadManager manager;
+	@Qualifier("downloadJob")
+	EpisodeDownloadJob downloadJob;
 	
 	@Value("${audio.file.store}")
 	String audioStore;
@@ -74,7 +73,7 @@ class DownloadManagerTest {
 	@Test
 	void testFileDownload() {
 		persist(episode);
-		manager.startDownload();
+		downloadJob.process();
 		assertEquals(1, FileUtils.listFiles(new File(System.getProperty("user.dir")+audioStore), 
 				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).size());
 		assertEquals(0, repository.findByDownloaded(false).size());
