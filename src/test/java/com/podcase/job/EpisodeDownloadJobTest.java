@@ -69,15 +69,15 @@ class EpisodeDownloadJobTest {
 	 * Leaving as ignored to reduce build time.
 	 * Might reactivate and tie it to a very small file
 	 */
-	@Ignore
-	@Test
-	void testFileDownload() {
-		persist(episode);
-		downloadJob.process();
-		assertEquals(1, FileUtils.listFiles(new File(System.getProperty("user.dir")+audioStore), 
-				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).size());
-		assertEquals(0, repository.findByDownloaded(false).size());
-	}
+//	@Ignore
+//	@Test
+//	void testFileDownload() {
+//		persist(episode);
+//		downloadJob.process();
+//		assertEquals(1, FileUtils.listFiles(new File(System.getProperty("user.dir")+audioStore), 
+//				TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE).size());
+//		assertEquals(0, repository.findByDownloaded(false).size());
+//	}
 	
 	protected void persist(Object entity) {
 		entityManager.persist(entity);
