@@ -22,16 +22,12 @@ public class PodcastScheduler {
 		this.downloadJob = downloadJob;
 	}
 	
-//	@Scheduled(cron="0 0 */1 * * *")
-	@Scheduled(cron="0 */1 * * * *")
-	@Autowired
+	@Scheduled(cron="0 0 */1 * * *")
 	public void updateRepository() {
 		updateJob.process();
 	}
 	
-//	@Scheduled(cron="0 0 */1 * * *")
 	@Scheduled(cron="0 */5 * * * *") //every 5 mins
-	@Autowired
 	public void downloadEpisodes() {
 		downloadJob.process();
 	}
