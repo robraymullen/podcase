@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.After;
@@ -110,6 +111,27 @@ class PodcastUpdateJobTest extends AbstractRepositoryTest {
 		
 		List<Episode> episodes = episodeRepository.findAll();
 		assertEquals(284, episodes.size());
+	}
+	
+	/**
+	 * TestEntityManager seems to be ignoring the @Transient field specification for the Podcast episodeGuids
+	 * Here we specifically remove them to ensure they are not present. They
+	 * can be dynamically added during generation and retrieval (if not already present)
+	 * @throws MalformedURLException
+	 */
+	@Transactional
+	@Test
+	public void testEpisodeCountWithNoUpdate() throws MalformedURLException {
+		podcast = PodcastFactory.generate(getFileUrl("sincast.xml")).get();
+		podcast.setEpisodeGuids(new HashSet<String>());
+		persist(podcast);
+		podcast.setRssFeed(getFileUrl("sincast.xml"));
+		update(podcast);
+		podcast.setEpisodeGuids(new HashSet<String>());
+		updateJob.process();
+		
+		List<Episode> episodes = episodeRepository.findAll();
+		assertEquals(282, episodes.size());
 	}
 	
 	@Transactional

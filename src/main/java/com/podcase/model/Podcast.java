@@ -156,6 +156,11 @@ public class Podcast {
 	}
 
 	public Set<String> getEpisodeGuids() {
+		if (this.episodeGuids.isEmpty()) {
+			for (Episode episode : this.getEpisodes()) {
+				this.episodeGuids.add(episode.getGuid());
+			}
+		}
 		return episodeGuids;
 	}
 

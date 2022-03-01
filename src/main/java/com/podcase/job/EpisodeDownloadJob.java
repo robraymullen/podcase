@@ -34,35 +34,35 @@ public class EpisodeDownloadJob implements ScheduledJob {
 	
 	@Override
 	public void process() {
-		downloadQueue.addAll(repository.findByDownloaded(false));
-		while (!downloadQueue.isEmpty()) {
-			Episode episode = downloadQueue.poll();
-			try {
-				String[] splitFileUrl = episode.getFileUrl().split("/");
-				String fileName = episode.getGuid() + "_"+splitFileUrl[splitFileUrl.length - 1]; //A lot of podcasts use non-unique names for files!
-				String filePath = System.getProperty("user.dir")+audioStore+fileName;
-				episode.setFileName(fileName);
-				episode.setFilePath(filePath);
-				// Handle possible https redirects
-				URLConnection con = new URL( episode.getFileUrl() ).openConnection();
-				con.connect();
-				InputStream is = con.getInputStream();
-				URL endpointURL;
-				if (con.getHeaderField("Location") != null) {
-					endpointURL = new URL(con.getHeaderField("Location"));
-				} else {
-					endpointURL = new URL( episode.getFileUrl());
-				}
-				
-				is.close();
-				FileUtils.copyURLToFile(endpointURL, new File(filePath));
-				episode.setDownloaded(true);
-				repository.save(episode);
-			} catch (Exception e) {
-				//TODO setup 'dead download' queue
-				e.printStackTrace();
-			}
-		}
+//		downloadQueue.addAll(repository.findByDownloaded(false));
+//		while (!downloadQueue.isEmpty()) {
+//			Episode episode = downloadQueue.poll();
+//			try {
+//				String[] splitFileUrl = episode.getFileUrl().split("/");
+//				String fileName = episode.getGuid() + "_"+splitFileUrl[splitFileUrl.length - 1]; //A lot of podcasts use non-unique names for files!
+//				String filePath = System.getProperty("user.dir")+audioStore+fileName;
+//				episode.setFileName(fileName);
+//				episode.setFilePath(filePath);
+//				// Handle possible https redirects
+//				URLConnection con = new URL( episode.getFileUrl() ).openConnection();
+//				con.connect();
+//				InputStream is = con.getInputStream();
+//				URL endpointURL;
+//				if (con.getHeaderField("Location") != null) {
+//					endpointURL = new URL(con.getHeaderField("Location"));
+//				} else {
+//					endpointURL = new URL( episode.getFileUrl());
+//				}
+//				
+//				is.close();
+//				FileUtils.copyURLToFile(endpointURL, new File(filePath));
+//				episode.setDownloaded(true);
+//				repository.save(episode);
+//			} catch (Exception e) {
+//				//TODO setup 'dead download' queue
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 }

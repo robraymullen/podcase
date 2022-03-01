@@ -52,6 +52,7 @@ public class PodcastFactory {
 				Optional<Episode> episode = EpisodeFactory.generate(entry);
 				if (episode.isPresent()) {
 					episodes.add(episode.get());
+					podcast.getEpisodeGuids().add(episode.get().getGuid());
 				}
 			}
 			Collections.reverse(episodes);
