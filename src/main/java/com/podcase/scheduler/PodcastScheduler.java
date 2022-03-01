@@ -22,7 +22,8 @@ public class PodcastScheduler {
 		this.downloadJob = downloadJob;
 	}
 	
-	@Scheduled(cron="0 0 */1 * * *")
+//	@Scheduled(cron="0 0 */1 * * *")
+	@Scheduled(cron="0 */1 * * * *")
 	@Autowired
 	public void updateRepository() {
 		updateJob.process();
