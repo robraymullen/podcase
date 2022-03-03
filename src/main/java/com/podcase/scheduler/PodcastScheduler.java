@@ -27,7 +27,7 @@ public class PodcastScheduler {
 		updateJob.process();
 	}
 	
-	@Scheduled(cron="0 */5 * * * *") //every 5 mins
+	@Scheduled(cron="0 */1 * * * *") //every 5 mins
 	public void downloadEpisodes() {
 		downloadJob.process();
 	}
