@@ -54,7 +54,7 @@ public class Podcast {
 	@Size(max = 4000)
 	private String description;
 	
-	@JsonManagedReference
+//	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "podcast_id")
 	List<Episode> episodes = new ArrayList<>();
