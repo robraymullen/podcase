@@ -1,8 +1,10 @@
 package com.podcase.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -52,15 +55,15 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"))
     private Map<String, String> preferences;
 	
-	@JsonManagedReference
+//	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
-	private List<Podcast> subscriptions = new ArrayList<>();
+	private Set<Podcast> subscriptions = new HashSet<>();
 	
-	@JsonManagedReference
+//	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
-	private List<Podcast> favourites = new ArrayList<>();
+	private Set<Podcast> favourites = new HashSet<>();
 	
 
 	public Long getId() {
@@ -79,6 +82,7 @@ public class User {
 		this.name = name;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
@@ -87,11 +91,11 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Podcast> getSubscriptions() {
+	public Set<Podcast> getSubscriptions() {
 		return subscriptions;
 	}
 
-	public void setSubscriptions(List<Podcast> subscriptions) {
+	public void setSubscriptions(Set<Podcast> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
 
@@ -103,11 +107,11 @@ public class User {
 		this.preferences = preferences;
 	}
 
-	public List<Podcast> getFavourites() {
+	public Set<Podcast> getFavourites() {
 		return favourites;
 	}
 
-	public void setFavourites(List<Podcast> favourites) {
+	public void setFavourites(Set<Podcast> favourites) {
 		this.favourites = favourites;
 	}
 	
