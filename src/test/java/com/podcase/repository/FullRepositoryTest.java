@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -88,7 +89,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		persist(user);
 		
 		Optional<User> actualUser = userRepository.findByName("Name");
-		Optional<Podcast> actualPodcast = podcastRepository.findByName(actualUser.get().getSubscriptions().get(0).getName());
+		Optional<Podcast> actualPodcast = podcastRepository.findByName(actualUser.get().getSubscriptions().iterator().next().getName());
 		System.out.println("Episode title: " + actualPodcast.get().getEpisodes().get(0).getTitle());
 		Optional<Episode> actualEpisode = episodeRepository.findByTitle(actualPodcast.get().getEpisodes().get(0).getTitle());
 		assertEquals("podcast name", actualPodcast.get().getName());
@@ -113,11 +114,6 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		
 		Optional<User> actualUser = userRepository.findByName("Name");
 		assertEquals(2, actualUser.get().getSubscriptions().size());
-		
-		Optional<Podcast> podcastOne = podcastRepository.findByName(actualUser.get().getSubscriptions().get(0).getName());
-		Optional<Podcast> podcastTwo = podcastRepository.findByName(actualUser.get().getSubscriptions().get(1).getName());
-		assertEquals("podcast name", podcastOne.get().getName());
-		assertEquals("podcast name 2", podcastTwo.get().getName());
 	}
 	/**
 	 * If 2 users subscribe to the same podcasts then there should be only
@@ -187,17 +183,17 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		assertEquals(2, podcasts.size());
 		
 		Optional<User> firstUser = userRepository.findByName("Name");
-		List<Podcast> firstFavouritePodcasts = firstUser.get().getFavourites();
+		Set<Podcast> firstFavouritePodcasts = firstUser.get().getFavourites();
 		assertEquals(1, firstFavouritePodcasts.size());
 		assertEquals(2, firstUser.get().getSubscriptions().size());
 		
 		
 		Optional<User> secondDBUser = userRepository.findByName("second");
-		List<Podcast> secondFavouritePodcasts = secondDBUser.get().getFavourites();
+		Set<Podcast> secondFavouritePodcasts = secondDBUser.get().getFavourites();
 		assertEquals(1, secondDBUser.get().getFavourites().size());
 		assertEquals(2, secondDBUser.get().getSubscriptions().size());
 		
-		assertNotEquals(firstFavouritePodcasts.get(0).getId(), secondFavouritePodcasts.get(0).getId());
+		assertNotEquals(firstFavouritePodcasts.iterator().next().getId(), secondFavouritePodcasts.iterator().next().getId());
 	}
 	
 	@Transactional
@@ -208,7 +204,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		persist(user);
 		
 		Optional<User> actualUser = userRepository.findByName("Name");
-		Episode actualEpisode = actualUser.get().getSubscriptions().get(0).getEpisodes().get(0);
+		Episode actualEpisode = actualUser.get().getSubscriptions().iterator().next().getEpisodes().get(0);
 		
 		watchState = new PlayState();
 		watchState.setPlayLength(Long.valueOf(1234));
@@ -228,7 +224,7 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		persist(user);
 		
 		Optional<User> actualUser = userRepository.findByName("Name");
-		Episode actualEpisode = actualUser.get().getSubscriptions().get(0).getEpisodes().get(0);
+		Episode actualEpisode = actualUser.get().getSubscriptions().iterator().next().getEpisodes().get(0);
 		
 		watchState = new PlayState();
 		watchState.setPlayLength(Long.valueOf(12345));
@@ -254,10 +250,10 @@ public class FullRepositoryTest extends AbstractRepositoryTest {
 		persist(user);
 		
 		Optional<User> actualUser = userRepository.findByName("Name");
-		Episode actualEpisode = actualUser.get().getSubscriptions().get(0).getEpisodes().get(0);
+		Episode actualEpisode = actualUser.get().getSubscriptions().iterator().next().getEpisodes().get(0);
 		
 		watchState = new PlayState();
-		watchState.setPlayLength(new Long(1234));
+		watchState.setPlayLength(Long.valueOf(1234));
 		watchState.setEpisode(actualEpisode);
 		watchState.setUser(user);
 		persist(watchState);

@@ -24,8 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
+import com.podcase.model.User;
 import com.podcase.repository.EpisodeRepository;
 import com.podcase.repository.PodcastRepository;
+import com.podcase.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -44,12 +46,16 @@ public class RestIntegrationTest {
 	@Autowired
 	private EpisodeRepository episodeRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
 	@AfterEach
 	public void tearDown() {
 		podcastRepository.deleteAll();
 		podcastRepository.flush();
 	}
 	
+	@Transactional
 	@Test
 	public void testAddPodcast() throws Exception {
 		mvc.perform(post("/podcasts")
@@ -61,6 +67,7 @@ public class RestIntegrationTest {
 		assertTrue(episodeRepository.count() > 0);
 	}
 	
+	@Transactional
 	@Test
 	public void testGetAllPodcasts() throws Exception {
 		mvc.perform(post("/podcasts")
@@ -77,6 +84,7 @@ public class RestIntegrationTest {
 				  .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber());
 	}
 	
+	@Transactional
 	@Test
 	public void testGetPodcastById() throws Exception {
 		mvc.perform(post("/podcasts")
@@ -96,6 +104,7 @@ public class RestIntegrationTest {
 				  .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber());
 	}
 	
+	@Transactional
 	@Test
 	public void testGetEpisodeById() throws Exception {
 		mvc.perform(post("/podcasts")
@@ -111,6 +120,40 @@ public class RestIntegrationTest {
 			      .andExpect(status().isOk())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
 				  .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber());
+	}
+	
+	@Test
+	public void testAddUser() throws Exception {
+		mvc.perform(post("/users/add")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"name\": \"Rob\",\"password\": \"password\"}"))
+				.andExpect(status().isOk());
+		
+		List<User> users = userRepository.findAll();
+		assertEquals(1, users.size());
+		assertEquals("Rob", users.get(0).getName());
+	}
+	
+	@Test
+	public void testAddSubscriptionForUser() throws Exception {
+		mvc.perform(post("/podcasts")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{ \"podcastUrl\": \"http://www.lasertimepodcast.com/category/lasertimepodcast/feed/\"}"))
+				.andExpect(status().isOk());
+		
+		mvc.perform(post("/users/add")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"name\": \"Rob\",\"password\": \"password\"}"))
+				.andExpect(status().isOk());
+		
+		mvc.perform(put("/users/subscriptions")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"name\": \"Rob\",\"subscription\": \"Laser Time Podcast – Laser Time\"}"))
+				.andExpect(status().isOk());
+		
+		User user = userRepository.findAll().get(0);
+		assertEquals(1, user.getSubscriptions().size());
+		assertEquals("Laser Time Podcast – Laser Time", user.getSubscriptions().iterator().next().getName());
 	}
 
 }
