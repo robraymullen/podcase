@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.podcase.model.Podcast;
 import com.podcase.model.User;
 import com.podcase.repository.PodcastRepository;
-import com.podcase.repository.PodcastSubscription;
 import com.podcase.repository.UserRepository;
 import com.podcase.request.UserRequestBody;
 import com.podcase.serializer.PodcastSerializer;
