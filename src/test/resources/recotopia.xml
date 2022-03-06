@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:podcast="https://podcastindex.org/namespace/1.0">
+    <channel>
+        <generator>RedCircle VERIFY_TOKEN_6882dbf9-e315-4006-a190-07cdd39ef6ed</generator>
+        <title>Recotopia</title>
+        <link>https://redcircle.com/shows/sincast-presented-by-cinemasins</link>
+        <language>en</language>
+        <copyright>All rights reserved.</copyright>
+        <itunes:subtitle>A happy home for recommended movies, shows, &amp; music from two people you can totally trust.</itunes:subtitle>
+        <itunes:author>CinemaSins | Chris Atkinson &amp; Jeremy Scott</itunes:author>
+        <itunes:summary>A happy home for recommended movies, shows, &amp; music from two people you can totally trust. Chris and Jeremy take turns picking a movie each week to recommend, as well as talk about other pop culture stuff they are consuming. Become a member of the SinClub to interact LIVE with them each Monday!
+
+https://www.patreon.com/CinemaSins</itunes:summary>
+        <podcast:guid>6882dbf9-e315-4006-a190-07cdd39ef6ed</podcast:guid>
+        <description><![CDATA[<p>A happy home for recommended movies, shows, &amp; music from two people you can totally trust. Chris and Jeremy take turns picking a movie each week to recommend, as well as talk about other pop culture stuff they are consuming. Become a member of the SinClub to interact LIVE with them each week!</p><p>https://www.patreon.com/CinemaSins</p>]]></description>
+        <itunes:type>episodic</itunes:type>
+        <itunes:owner>
+            <itunes:name>CinemaSins | Chris Atkinson &amp; Jeremy Scott</itunes:name>
+            <itunes:email>recotopia@cinemasins.com</itunes:email>
+        </itunes:owner>
+            <itunes:new-feed-url>https://feeds.redcircle.com/6882dbf9-e315-4006-a190-07cdd39ef6ed</itunes:new-feed-url>
+        <itunes:image href="https://media.redcircle.com/images/2022/1/31/20/2ef6cdb4-456f-4561-af10-ae3de4959060_9207171d62_sincast_logo_final_centered_1.22.16.jpg"/>
+            <itunes:category text="TV &amp; Film">
+                <itunes:category text="Film Reviews"/>            
+                <itunes:category text="Film History"/>
+        </itunes:category>
+        <itunes:explicit>yes</itunes:explicit>
+    </channel>
+</rss>

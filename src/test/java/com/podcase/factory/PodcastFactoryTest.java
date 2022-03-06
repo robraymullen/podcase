@@ -59,6 +59,15 @@ public class PodcastFactoryTest {
 	}
 	
 	@Test
+	public void testPodcastDataForItunesForeignMarkup() throws MalformedURLException, ParseException {
+		Podcast recotopia = PodcastFactory.generate(getFileUrl("recotopia.xml")).get();
+		
+		assertEquals("Recotopia", recotopia.getName());
+		assertEquals("https://media.redcircle.com/images/2022/1/31/20/2ef6cdb4-456f-4561-af10-ae3de4959060_9207171d62_sincast_logo_final_centered_1.22.16.jpg", recotopia.getImageUrl());
+		assertEquals("CinemaSins | Chris Atkinson & Jeremy Scott", recotopia.getAuthor());
+	}
+	
+	@Test
 	public void testPodcastEpisodeCountForNonItunes() throws MalformedURLException {
 		Podcast laserTime = PodcastFactory.generate(getFileUrl("lasertime.xml")).get();
 		

@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -55,7 +56,7 @@ public class Podcast {
 	private String description;
 	
 //	@JsonManagedReference
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "podcast_id")
 	List<Episode> episodes = new ArrayList<>();
 	
@@ -155,6 +156,7 @@ public class Podcast {
 		this.imageUrl = imageUrl;
 	}
 
+	@JsonIgnore
 	public Set<String> getEpisodeGuids() {
 		if (this.episodeGuids.isEmpty()) {
 			for (Episode episode : this.getEpisodes()) {
