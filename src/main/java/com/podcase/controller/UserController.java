@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.podcase.dto.PodcastSubscription;
 import com.podcase.model.Podcast;
 import com.podcase.model.User;
 import com.podcase.repository.PodcastRepository;
 import com.podcase.repository.UserRepository;
 import com.podcase.request.UserRequestBody;
-import com.podcase.serializer.PodcastSerializer;
 
 @RestController
 public class UserController {
@@ -40,9 +39,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{userId}/subscriptions")
-	public Set<Podcast> getUserSubscriptions(@PathVariable("userId") Long userId) {
-		User user = userRepository.findById(userId).orElseThrow();
-		return user.getSubscriptions();
+	public Set<PodcastSubscription> getUserSubscriptions(@PathVariable("userId") Long userId) {
+		return userRepository.findSubscriptionsById(userId);
 	}
 	
 	@PostMapping("/users/add")

@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.jdom.Content;
+import org.jdom.Element;
+import org.jdom.Text;
+
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
@@ -41,11 +45,37 @@ public class PodcastFactory {
 			podcast.setAuthor(feed.getAuthor());
 			podcast.setLink(feed.getLink());
 			podcast.setRssFeed(url);
+			
+			feed.getForeignMarkup();
 			if(feed.getImage() != null) {
 				podcast.setImageUrl(feed.getImage().getUrl());
 			}
 			@SuppressWarnings("unchecked")
 			List<SyndEntryImpl> entries = feed.getEntries();
+			
+			if (feed.getForeignMarkup() != null) {
+				try {
+					List<Element> foreignElements = (ArrayList) feed.getForeignMarkup();
+					for (Element element : foreignElements) {
+						String name = element.getName();
+						switch (name) {
+							case "image":
+								if (podcast.getImageUrl() == null || podcast.getImageUrl().isEmpty() ) {
+									podcast.setImageUrl(element.getAttribute("href").getValue());
+								}
+								break;
+							case "author":
+								if (podcast.getAuthor() == null || podcast.getAuthor().isEmpty()) {
+									List<Content> contentList = element.getContent();
+									podcast.setAuthor(contentList.get(0).getValue());
+								}
+								break;
+						}
+					}
+				} catch (Exception e) {
+					
+				}
+			}
 			// TODO reverse order podcast additions?
 			List<Episode> episodes = new ArrayList<>();
 			for(SyndEntryImpl entry : entries) {
