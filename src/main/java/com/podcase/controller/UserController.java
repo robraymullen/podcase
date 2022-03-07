@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,11 +55,12 @@ public class UserController {
 	}
 	
 	@PutMapping("/users/subscriptions")
-	public User addSubscription(@Valid @RequestBody UserRequestBody user) {
+	public ResponseEntity<String> addSubscription(@Valid @RequestBody UserRequestBody user) {
 		User selectedUser = this.userRepository.findByName(user.getName()).orElseThrow();
 		Podcast podcast = this.podcastRepository.findByName(user.getSubscriptionName()).orElseThrow();
 		selectedUser.addSubscription(podcast);
-		return userRepository.save(selectedUser);
+		userRepository.save(selectedUser);
+		return new ResponseEntity<String>("User subscription added successfully. ", HttpStatus.OK);
 	}
 
 }
