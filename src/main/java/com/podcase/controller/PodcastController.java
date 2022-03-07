@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,8 +42,9 @@ public class PodcastController {
 	}
 	
 	@PostMapping("/podcasts")
-	public Podcast addPodcast(@Valid @RequestBody PodcastRequestBody podcastRequest) {
+	public ResponseEntity<String> addPodcast(@Valid @RequestBody PodcastRequestBody podcastRequest) {
 		Optional<Podcast> podcast = PodcastFactory.generate(podcastRequest.getPodcastUrl());
-		return podcastRepository.save(podcast.orElseThrow());
+		podcastRepository.save(podcast.orElseThrow());
+		return new ResponseEntity<String>("Podcast added successfully. ", HttpStatus.OK);
 	}
 }
