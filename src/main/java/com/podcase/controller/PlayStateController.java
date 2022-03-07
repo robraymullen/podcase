@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.podcase.model.PlayState;
 import com.podcase.repository.PlayStateRepository;
@@ -19,6 +21,12 @@ public class PlayStateController {
 	public PlayStateController(PlayStateRepository repository) {
 		this.repository = repository;
 	}
+	
+	@GetMapping("/playstate/{episodeId}/user/{userId}")
+	public PlayState getPlayState(@PathVariable("episodeId") Long episodeId, @PathVariable("userId") Long userId) {
+		return repository.findByUserIdAndEpisodeId(userId, episodeId).orElseThrow();
+	}
+	
 	
 	@MessageMapping("/playstate")
 	@SendTo("/topic/playstate")
