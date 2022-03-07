@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final String[] AUTH_ALLOW_LIST = { "/users/**", 
-			"/podcasts/**", "/episodes/**", "/playstate/**", };
+			"/podcasts/**", "/episodes/**", "/playstate/**", "/**"};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
