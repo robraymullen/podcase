@@ -1,5 +1,7 @@
 package com.podcase.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,5 +20,15 @@ public class EpisodeController {
 	@GetMapping("/episodes/{id}")
 	public Episode getEpisodeById(@PathVariable("id") Long id) {
 		return episodeRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+	}
+	
+	@GetMapping("/episodes/playstate/{podcastId}/user/{userId}") 
+	public List<Episode> getEpisodesWithPlayStateForUser(@PathVariable("podcastId") Long podcastId, @PathVariable("userId") Long userId) {
+		return episodeRepository.getEpisodesWithPlayState(podcastId, userId);
+	}
+	
+	@GetMapping("/episodes/recent")
+	public Episode getMostRecentUnfinishedEpisode() {
+		return episodeRepository.getMostRecentlyPlayed().orElseThrow(ResourceNotFoundException::new);
 	}
 }
