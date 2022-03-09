@@ -103,11 +103,11 @@ public class PlayStateRepositoryTest extends AbstractRepositoryTest {
 		
 		Episode episode2 = new Episode();
 		episode2.setTitle("title2");
-		episode.setLink("link2");
-		episode.setFileUrl("fileUrl2");
-		episode.setDescription("description2");
-		episode.setPublicationDate(new Date());
-		episode.setGuid("guid2");
+		episode2.setLink("link2");
+		episode2.setFileUrl("fileUrl2");
+		episode2.setDescription("description2");
+		episode2.setPublicationDate(new Date());
+		episode2.setGuid("guid2");
 		persist(episode2);
 		
 		PlayState state2 = new PlayState();
