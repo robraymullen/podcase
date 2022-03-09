@@ -1,5 +1,7 @@
 package com.podcase.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.search.annotations.Field;
 
@@ -31,6 +35,9 @@ public class PlayState {
 	
 	@Field
 	Boolean played;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	Date lastPlayed;
 
 	public Long getId() {
 		return id;
@@ -71,6 +78,12 @@ public class PlayState {
 	public void setPlayed(Boolean played) {
 		this.played = played;
 	}
-	
 
+	public Date getLastPlayed() {
+		return lastPlayed;
+	}
+
+	public void setLastPlayed(Date lastPlayed) {
+		this.lastPlayed = lastPlayed;
+	}
 }

@@ -27,25 +27,23 @@ import com.podcase.model.PlayState;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@TestPropertySource(
-		  locations = "classpath:application-integrationtest.properties")
+@TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class PlayStateRepositoryTest extends AbstractRepositoryTest {
-	
+
 	@Autowired
 	PlayStateRepository playStateRepository;
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	EpisodeRepository episodeRepository;
-	
-	PlayState playState;
-	
-	User user;
-	
-	Episode episode;
 
+	PlayState playState;
+
+	User user;
+
+	Episode episode;
 
 	@Before
 	public void setUp() throws Exception {
@@ -53,7 +51,7 @@ public class PlayStateRepositoryTest extends AbstractRepositoryTest {
 		user = new User();
 		user.setName("Name");
 		user.setPassword("password");
-		
+
 		episode = new Episode();
 		episode.setTitle("title");
 		episode.setLink("link");
@@ -72,20 +70,52 @@ public class PlayStateRepositoryTest extends AbstractRepositoryTest {
 	@Test
 	public void testGetPlayStateByUserIdAndEpisodeId() {
 		persist(user);
-        
-        persist(episode);
-        
-        Long watchLength = Long.valueOf(1234);
+
+		persist(episode);
+
+		Long watchLength = Long.valueOf(1234);
 		playState.setUser(user);
 		playState.setEpisode(episode);
 		playState.setPlayLength(watchLength);
 		persist(playState);
-		
+
 		Optional<User> actualUser = userRepository.findByName("Name");
 		Optional<Episode> actualEpisode = episodeRepository.findByTitle("title");
-		
-		Optional<PlayState> actualWatchState = playStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(), actualEpisode.get().getId());
+
+		Optional<PlayState> actualWatchState = playStateRepository.findByUserIdAndEpisodeId(actualUser.get().getId(),
+				actualEpisode.get().getId());
 		assertEquals(watchLength, actualWatchState.get().getPlayLength());
+	}
+
+	@Transactional
+	@Test
+	public void testGetLatestPlayedEpisode() {
+		persist(user);
+
+		persist(episode);
+
+		Long watchLength = Long.valueOf(1234);
+		playState.setUser(user);
+		playState.setEpisode(episode);
+		playState.setPlayLength(watchLength);
+		playState.setLastPlayed(new Date(1646859200));
+		persist(playState);
+		
+		Episode episode2 = new Episode();
+		episode2.setTitle("title2");
+		episode.setLink("link2");
+		episode.setFileUrl("fileUrl2");
+		episode.setDescription("description2");
+		episode.setPublicationDate(new Date());
+		episode.setGuid("guid2");
+		persist(episode2);
+		
+		PlayState state2 = new PlayState();
+		state2.setUser(user);
+		state2.setEpisode(episode);
+		state2.setPlayLength(watchLength);
+		state2.setLastPlayed(new Date(1646859255));
+		persist(playState);
 	}
 
 }
