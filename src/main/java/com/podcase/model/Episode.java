@@ -32,31 +32,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.podcase.serializer.PodcastSerializer;
 
 @Entity
-@SqlResultSetMapping(name="Episode",
-entities={
-    @EntityResult(entityClass=com.podcase.model.Episode.class, fields={
-        @FieldResult(name="id", column="id"),
-        @FieldResult(name="title", column="title"),
-        @FieldResult(name="link", column="link"),
-        @FieldResult(name="description", column="description"),
-        @FieldResult(name="subtitle", column="subtitle"),
-        @FieldResult(name="keywords", column="keywords"),
-        @FieldResult(name="summary", column="summary"),
-        @FieldResult(name="creator", column="creator"),
-        @FieldResult(name="imageUrl", column="image_url"),
-        @FieldResult(name="fileType", column="file_type"),
-        @FieldResult(name="fileLength", column="file_length"),
-        @FieldResult(name="fileName", column="file_name"),
-        @FieldResult(name="filePath", column="file_path"),
-        @FieldResult(name="fileUrl", column="file_url"),
-        @FieldResult(name="downloaded", column="downloaded"),
-        @FieldResult(name="guid", column="guid"),
-        @FieldResult(name="publicationDate", column="publication_date"),
-        @FieldResult(name="retrievedDate", column="retrieved_date")
-        })},
-columns={
-    @ColumnResult(name="play_length")}
-)
 public class Episode implements Comparable<Episode> {
 
 	@Id
@@ -142,42 +117,6 @@ public class Episode implements Comparable<Episode> {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)  
 	@Size(max = 10000)
 	private String filePath;
-	
-	@Transient
-	Long playLength;
-	
-//	//Good old JPA. All for setting the transient playlength from a join to avoid hundreds of additional queries
-//	//Need to find a better way
-//	public Episode(Long id, @NotBlank String title, @NotBlank @Size(max = 4000) String link,
-//			@NotNull Date publicationDate, @Size(max = 4000) String description, String subtitle, String keywords,
-//			String summary, String creator, String imageUrl, @NotBlank String fileUrl, String fileType, Long fileLength,
-//			Podcast podcast, @NotNull Date retrievedDate, @NotBlank @NotNull String guid,
-//			@Size(max = 4000) String fileName, boolean downloaded, String podcaseUrl, String fileLocation,
-//			@Size(max = 10000) String filePath, Long playLength) {
-//		super();
-//		this.id = id;
-//		this.title = title;
-//		this.link = link;
-//		this.publicationDate = publicationDate;
-//		this.description = description;
-//		this.subtitle = subtitle;
-//		this.keywords = keywords;
-//		this.summary = summary;
-//		this.creator = creator;
-//		this.imageUrl = imageUrl;
-//		this.fileUrl = fileUrl;
-//		this.fileType = fileType;
-//		this.fileLength = fileLength;
-//		this.podcast = podcast;
-//		this.retrievedDate = retrievedDate;
-//		this.guid = guid;
-//		this.fileName = fileName;
-//		this.downloaded = downloaded;
-//		this.podcaseUrl = podcaseUrl;
-//		this.fileLocation = fileLocation;
-//		this.filePath = filePath;
-//		this.playLength = playLength;
-//	}
 
 	@Override
 	public String toString() {
@@ -355,14 +294,6 @@ public class Episode implements Comparable<Episode> {
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
-	}
-
-	public Long getPlayLength() {
-		return playLength;
-	}
-
-	public void setPlayLength(Long playLength) {
-		this.playLength = playLength;
 	}
 
 	/**

@@ -44,6 +44,7 @@ public class PlayStateController {
 	
 	@PostMapping("/playstate/")
 	public ResponseEntity<String> postPlayState(@RequestBody PlayStateRequest playState) throws Exception {
+		updatePlayState(playState);
 		return new ResponseEntity<String>("PlayState added successfully. ", HttpStatus.OK);
 	}
 	
