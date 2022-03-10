@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.podcase.model.Episode;
 import com.podcase.model.SubscribedEpisode;
 import com.podcase.repository.EpisodeRepository;
-import com.podcase.repository.SubscribedEpisodeRepository;
+//import com.podcase.repository.SubscribedEpisodeRepository;
 
 @RestController
 public class EpisodeController {
 
 	
 	private EpisodeRepository episodeRepository;
-	private SubscribedEpisodeRepository subscribedRepository;
+//	private SubscribedEpisodeRepository subscribedRepository;
 	
 	@Autowired
-	public EpisodeController(EpisodeRepository episodeRepository, SubscribedEpisodeRepository subscribedRepository) {
+	public EpisodeController(EpisodeRepository episodeRepository) { //, SubscribedEpisodeRepository subscribedRepository) {
 		this.episodeRepository = episodeRepository;
-		this.subscribedRepository = subscribedRepository;
+//		this.subscribedRepository = subscribedRepository;
 	}
 	
 	@GetMapping("/episodes/{id}")
@@ -33,7 +33,7 @@ public class EpisodeController {
 	
 	@GetMapping("/episodes/playstate/{podcastId}/user/{userId}") 
 	public List<SubscribedEpisode> getEpisodesWithPlayStateForUser(@PathVariable("podcastId") Long podcastId, @PathVariable("userId") Long userId) {
-		return subscribedRepository.getEpisodesWithPlayState(podcastId, userId);
+		return episodeRepository.getEpisodesWithPlayState(podcastId, userId);
 	}
 	
 	@GetMapping("/episodes/recent")

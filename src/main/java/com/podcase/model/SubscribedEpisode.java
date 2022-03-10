@@ -20,44 +20,6 @@ import javax.persistence.ColumnResult;
  * Having to essentially just match an existing class just so that you can map a result to
  * an entity is irritating
  */
-@Entity
-@NamedNativeQuery(
-	    name = "find_subscribed_episodes",
-	    query =
-	    	"select episode.*, play_state.play_length from episode full outer join "
-	    	+ "play_state on episode.podcast_id = :podcastId and episode.id = play_state.episode_id "
-	    	+ "and play_state.user_id = :userId order by episode.id asc",
-	    resultSetMapping = "subscribed_episodes"
-	)
-@SqlResultSetMapping(
-		name = "subscribed_episodes",
-	    classes = @ConstructorResult(
-	        targetClass = SubscribedEpisode.class,
-	        columns = {
-	            @ColumnResult(name="id", type=BigInteger.class),
-	            @ColumnResult(name="podcast_id", type=BigInteger.class),
-	            @ColumnResult(name="title", type=String.class),
-	            @ColumnResult(name="link", type=String.class),
-	            @ColumnResult(name="description", type=String.class),
-	            @ColumnResult(name="subtitle", type=String.class),
-	            @ColumnResult(name="keywords", type=String.class),
-	            @ColumnResult(name="summary", type=String.class),
-	            @ColumnResult(name="creator", type=String.class),
-	            @ColumnResult(name="image_url", type=String.class),
-	            @ColumnResult(name="file_type", type=String.class),
-	            @ColumnResult(name="file_length", type=BigInteger.class),
-	            @ColumnResult(name="file_name", type=String.class),
-	            @ColumnResult(name="file_path", type=String.class),
-	            @ColumnResult(name="file_url", type=String.class),
-	            @ColumnResult(name="downloaded", type=Boolean.class),
-	            @ColumnResult(name="guid", type=String.class),
-	            @ColumnResult(name="publication_date", type=Date.class),
-	            @ColumnResult(name="retrieved_date", type=Date.class),
-	            @ColumnResult(name="play_length", type=BigInteger.class)
-
-	        }
-	    )
-	)
 public class SubscribedEpisode {
 	
 	private BigInteger play_length;
