@@ -26,6 +26,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.podcase.model.Episode;
+import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -43,6 +44,9 @@ public class EpisodeFactoryTest {
 	SyndEnclosure enclosure;
 	
 	@Mock
+	SyndContent content;
+	
+	@Mock
 	List<SyndEnclosure> enclosureList;
 
 	@Before
@@ -50,6 +54,8 @@ public class EpisodeFactoryTest {
 		Date date = new Date();
 		MockitoAnnotations.initMocks(this.getClass());
 		doReturn(date).when(entry).getPublishedDate();
+		doReturn("description").when(content).getValue();
+		doReturn(content).when(entry).getDescription();
 		doReturn("Title").when(entry).getTitle();
 		doReturn("http://link.com").when(entry).getLink();
 		doReturn(enclosureList).when(entry).getEnclosures();
@@ -67,11 +73,12 @@ public class EpisodeFactoryTest {
 	public void testEpisodePropertiesAreSetCorrectly() { 
 		Episode episode = EpisodeFactory.generate(entry).get();
 		
-		assertEquals("Title", entry.getTitle());
+		assertEquals("Title", episode.getTitle());
 		assertEquals("http://link.com", episode.getLink());
 		assertEquals("file://myFile.mp3", episode.getFileUrl());
 		assertEquals("audio/mp3", episode.getFileType());
 		assertEquals(Long.valueOf(12345), episode.getFileLength());
+		assertEquals("description", episode.getDescription());
 	}
 	
 	@Test

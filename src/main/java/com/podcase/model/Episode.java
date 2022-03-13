@@ -95,7 +95,7 @@ public class Episode implements Comparable<Episode> {
 	private Date publicationDate;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
-	@Size(max = 4000)
+	@Column(columnDefinition="LONGTEXT")
 	private String description;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
@@ -105,6 +105,7 @@ public class Episode implements Comparable<Episode> {
 	String keywords;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
+	@Column(columnDefinition="LONGTEXT")
 	String summary;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
