@@ -1,3 +1,4 @@
 /target/
 /audio/**
 /node_modules/**
+.env*

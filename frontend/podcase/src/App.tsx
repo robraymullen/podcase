@@ -1,24 +1,18 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { getUserSubscriptions } from './services/PodcaseAPIService';
+import { Podcast } from './Types';
+import PodcastGrid from './components/PodcastGrid/PodcastGrid';
 
 function App() {
+
+  const empty = getUserSubscriptions(1, (result:Podcast[]) => {console.log(result)}, () => {});
+  console.log(empty);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PodcastGrid></PodcastGrid>
     </div>
   );
 }
