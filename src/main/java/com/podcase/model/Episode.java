@@ -86,7 +86,7 @@ public class Episode implements Comparable<Episode> {
 	
 	@NotBlank
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
-	@Size(max = 4000)
+	@Column(columnDefinition="TEXT")
 	private String link;
 	
 	@NotNull
@@ -95,17 +95,18 @@ public class Episode implements Comparable<Episode> {
 	private Date publicationDate;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
-	@Column(columnDefinition="LONGTEXT")
+	@Column(columnDefinition="TEXT")
 	private String description;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
+	@Column(columnDefinition="TEXT")
 	String subtitle;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
 	String keywords;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
-	@Column(columnDefinition="LONGTEXT")
+	@Column(columnDefinition="TEXT")
 	String summary;
 	
 	@Field(analyzer = @Analyzer(definition = "textanalyzer"))
