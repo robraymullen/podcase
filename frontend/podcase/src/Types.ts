@@ -43,3 +43,14 @@ export interface User {
     preferences: any; //TODO separate interface
     subscriptions: Podcast[];
 }
+
+export enum GridRoutes {
+    PODCAST_ALL,
+    PODCAST_SUBSCRIPTION,
+    PODCAST_FAVOURITE,
+    SEARCH
+}
+
+export interface NavigationState {
+    podcastState: GridRoutes;
+}
