@@ -8,11 +8,18 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
+import {useNavigate} from "react-router-dom";
 
 const PodcastGridItem = (podcast: SubscribedPodcast) => {
+
+    const navigate = useNavigate();
+
     return (
         <Grid item xs={3}>
-            <Card sx={{ minWidth: 250, minHeight: 400 }}>
+            <Card sx={{ minWidth: 250, minHeight: 400 }} onClick={() => {
+                navigate(`/podcast/${podcast.id}`)
+                }
+            }>
                 <CardContent>
                     <Typography variant="h5" component="div" align="center">
                         {podcast.name}

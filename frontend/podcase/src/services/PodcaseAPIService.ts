@@ -1,4 +1,4 @@
-import { SubscribedPodcast } from "../Types";
+import { Episode, SubscribedPodcast } from "../Types";
 
 
 
@@ -36,8 +36,21 @@ export const getPlaystate = async (userId: number, episodeId: number) => {
 
 }
 
-export const getPodcastEpisodes = async (podcastId: number) => {
+export const getPodcastEpisodes = async (podcastId: number, success: Function, error: Function) => {
 
+    ///episodes/playstate/{podcastId}/user/{userId}
+    const url= `${process.env.REACT_APP_PODCASE_BASE_URL}episodes/playstate/${podcastId}/user/1`;
+    await fetch(url).then(
+        (response) => {
+            if (!response.ok) {
+                throw new Error(response.statusText)
+            }
+            return response.json() as unknown as Episode[];
+        }).then(episodes => {
+            success(episodes);
+        }).catch(exception =>{
+            error(exception);
+        });
 }
 
 export const addPocast = async (url: string) => {
