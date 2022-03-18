@@ -36,6 +36,30 @@ export interface Episode {
     playLength?: number;
 }
 
+export interface SubscribedEpisode {
+    id: number;
+    creator: string;
+    description: string;
+    downloaded: boolean;
+    file_length: number;
+    file_location: string;
+    file_name: string;
+    file_path: string;
+    file_type: string;
+    file_url: string;
+    guid: string;
+    image_url: string;
+    keywords: string;
+    link: string;
+    podcase_url: string;
+    publication_date: Date;
+    retrieved_date: Date;
+    subtitle: string;
+    summary: string;
+    title: string;
+    play_length?: number;
+}
+
 export interface User {
     id: number;
     name: string;

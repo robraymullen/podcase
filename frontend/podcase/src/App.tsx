@@ -2,14 +2,13 @@ import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import './App.css';
 import PodcastGrid from './components/PodcastGrid/PodcastGrid';
+import PodcastList from './components/PodcastList/PodcastList';
 import SideBar from "./components/SideBar/SideBar";
 import Box from '@mui/material/Box';
 import { Divider, Drawer, List, ListItem, ListItemText, Toolbar } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
-import PodcastsIcon from '@mui/icons-material/Podcasts';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
@@ -96,6 +95,7 @@ function App() {
           <Routes>
           <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION}></PodcastGrid>} />
           <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL}></PodcastGrid>} />
+          <Route path="/podcast/:id" element={<PodcastList></PodcastList>} />
         </Routes>
         </Box>
       </Box>

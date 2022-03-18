@@ -38,9 +38,16 @@ import com.podcase.serializer.PodcastSerializer;
 @NamedNativeQuery(
 	    name = "find_subscribed_episodes",
 	    query =
-	    	"select episode.*, play_state.play_length from episode full outer join "
-	    	+ "play_state on episode.podcast_id = :podcastId and episode.id = play_state.episode_id "
-	    	+ "and play_state.user_id = :userId order by episode.id asc",
+	    "select episode.*, play_state.play_length from episode left outer join" + 
+	    "	    	play_state" + 
+	    "			on episode.id = play_state.episode_id" + 
+	    "			and play_state.user_id = ?2" + 
+	    "			where \r\n" + 
+	    "			episode.podcast_id = ?1" + 
+	    "			order by episode.id asc",
+//	    	"select episode.*, play_state.play_length from episode full outer join "
+//	    	+ "play_state on episode.podcast_id = ?1 and episode.id = play_state.episode_id "
+//	    	+ "and play_state.user_id = ?2 order by episode.id asc",
 	    resultSetMapping = "subscribed_episodes"
 	)
 @SqlResultSetMapping(
