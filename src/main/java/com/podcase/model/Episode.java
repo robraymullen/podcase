@@ -74,8 +74,8 @@ import com.podcase.serializer.PodcastSerializer;
 	            @ColumnResult(name="guid", type=String.class),
 	            @ColumnResult(name="publication_date", type=Date.class),
 	            @ColumnResult(name="retrieved_date", type=Date.class),
-	            @ColumnResult(name="play_length", type=BigInteger.class)
-
+	            @ColumnResult(name="play_length", type=BigInteger.class),
+	            @ColumnResult(name="duration", type=Integer.class)
 	        }
 	    )
 	)
@@ -168,14 +168,17 @@ public class Episode implements Comparable<Episode> {
 	@Size(max = 10000)
 	private String filePath;
 
+	private Integer duration;
+
 	@Override
 	public String toString() {
 		return "Episode [id=" + id + ", title=" + title + ", link=" + link + ", publicationDate=" + publicationDate
 				+ ", description=" + description + ", subtitle=" + subtitle + ", keywords=" + keywords + ", summary="
 				+ summary + ", creator=" + creator + ", imageUrl=" + imageUrl + ", fileUrl=" + fileUrl + ", fileType="
 				+ fileType + ", fileLength=" + fileLength + ", podcast=" + podcast + ", retrievedDate=" + retrievedDate
-				+ ", guid=" + guid + ", fileName=" + fileName + ", fileLocation=" + fileLocation + ", filePath="
-				+ filePath + "]";
+				+ ", guid=" + guid + ", fileName=" + fileName + ", downloaded=" + downloaded + ", podcaseUrl="
+				+ podcaseUrl + ", fileLocation=" + fileLocation + ", filePath=" + filePath + ", duration=" + duration
+				+ "]";
 	}
 
 	public Long getId() {
@@ -345,6 +348,14 @@ public class Episode implements Comparable<Episode> {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+	
+	public Integer getDuration() {
+		return duration;
+	}
 
 	/**
 	 * Sort by newest -> oldest
@@ -353,4 +364,6 @@ public class Episode implements Comparable<Episode> {
 	public int compareTo(Episode o) {
 		return o.getRetrievedDate().compareTo(this.getRetrievedDate());
 	}
+
+	
 }

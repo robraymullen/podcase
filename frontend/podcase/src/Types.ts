@@ -58,6 +58,7 @@ export interface SubscribedEpisode {
     summary: string;
     title: string;
     play_length?: number;
+    duration: number;
 }
 
 export interface User {

@@ -44,6 +44,25 @@ public class EpisodeFactory {
 						case "summary":
 							episode.setSummary(contentList.get(0).getValue());
 							break;
+						case "duration":
+							//TODO cleanup
+							String duration = contentList.get(0).getValue();
+							if (duration.contains(":")) {
+								String hours, minutes, seconds;
+								String[] splits = duration.split(":");
+								if (splits.length > 2) {
+									hours = splits[0];
+									minutes = splits[1];
+									seconds = splits[2];
+								} else {
+									hours = "0";
+									minutes = splits[0];
+									seconds = splits[1];
+								}
+								int totalSeconds = (Integer.parseInt(hours)*60*60) + (Integer.parseInt(minutes) * 60) + Integer.parseInt(seconds);
+								duration = String.valueOf(totalSeconds);
+							}
+							episode.setDuration(Integer.parseInt(duration));
 					}
 				}
 			} catch (Exception e) {
