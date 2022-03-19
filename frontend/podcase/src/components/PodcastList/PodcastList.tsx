@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemText } from '@mui/material';
+import { Box, List, ListItem, ListItemText, CircularProgress } from '@mui/material';
 import { Podcast, SubscribedEpisode } from '../../Types';
 import EpisodeListItem from '../Episode/EpisodeListItem';
 import React, { useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ const PodcastList = (props: any) => {
                             })
                         }
                     </List>
-                    : <p>No episodes available</p>
+                    : <CircularProgress />
             }
         </Box>
     );
