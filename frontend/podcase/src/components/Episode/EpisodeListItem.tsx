@@ -21,13 +21,19 @@ const EpisodeListItem = ({ episode }: { episode: SubscribedEpisode }) => {
             <Grid container spacing={2}>
                 <Grid item>
                     <Box
+                        display="flex"
                         position="relative"
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <ListItemAvatar>
-                            <img src={episode.image_url} height="40" width="40" />
-                        </ListItemAvatar>
+                        <Box
+                            marginTop="20%"
+                        >
+                            <ListItemAvatar>
+                                <img src={episode.image_url} height="60" width="60" />
+                            </ListItemAvatar>
+                        </Box>
+
                     </Box>
                 </Grid>
                 <Grid item xs={12} sm container>
@@ -44,14 +50,18 @@ const EpisodeListItem = ({ episode }: { episode: SubscribedEpisode }) => {
                                 </Typography>
                             </ListItemText>
                         </Grid>
-                        <Grid item>
-                            <Box>
+                        <Grid item xs container direction="row" spacing={2}>
+                            <Grid item>
                                 <Box>
                                     <CalendarMonthIcon></CalendarMonthIcon>
-                                    <Typography variant="caption">
+                                    <Typography
+                                        variant="caption"
+                                    >
                                         {pubDate.toDateString()}
                                     </Typography>
                                 </Box>
+                            </Grid>
+                            <Grid item>
                                 <Box>
                                     <HeadphonesIcon />
                                     <Typography variant="caption">
@@ -60,8 +70,10 @@ const EpisodeListItem = ({ episode }: { episode: SubscribedEpisode }) => {
                                         }
                                     </Typography>
                                 </Box>
+                            </Grid>
+                            <Grid item>
                                 <Box sx={{ position: 'relative', display: 'inline-flex' }} >
-                                    <CircularProgress variant="determinate" {...percentageProps} size={25}/>
+                                    <CircularProgress variant="determinate" {...percentageProps} size={25} />
                                     <Box
                                         sx={{
                                             top: 0,
@@ -82,8 +94,10 @@ const EpisodeListItem = ({ episode }: { episode: SubscribedEpisode }) => {
                                         >{`${Math.round(percentageProps.value)}%`}</Typography>
                                     </Box>
                                 </Box>
+                            </Grid>
+                            <Grid item>
                                 <PlayCircleFilledIcon />
-                            </Box>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
