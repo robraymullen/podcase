@@ -49,8 +49,8 @@ public class EpisodeController {
 		return episodeRepository.getEpisodesWithPlayState(podcastId, userId);
 	}
 	
-	@GetMapping("/episodes/recent")
-	public Episode getMostRecentUnfinishedEpisode() {
-		return episodeRepository.getMostRecentlyPlayed().orElseThrow(ResourceNotFoundException::new);
+	@GetMapping("/episodes/recent/user/{userId}") //TODO return SubscribedEpisode to include play state
+	public Episode getMostRecentUnfinishedEpisode(@PathVariable("userId") Long userId) {
+		return episodeRepository.getMostRecentlyPlayed(userId).orElseThrow(ResourceNotFoundException::new);
 	}
 }

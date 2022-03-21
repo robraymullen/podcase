@@ -9,7 +9,7 @@ import CircularProgress, {
     CircularProgressProps,
 } from '@mui/material/CircularProgress';
 
-const EpisodeListItem = ({ episode }: { episode: SubscribedEpisode }) => {
+const EpisodeListItem = ({ episode, onClick }: { episode: SubscribedEpisode, onClick: Function }) => {
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const pubDate = new Date(episode.publication_date);

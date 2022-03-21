@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import './App.css';
 import PodcastGrid from './components/PodcastGrid/PodcastGrid';
@@ -12,10 +12,20 @@ import Typography from '@mui/material/Typography';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import {BrowserRouter,  Routes,  Route, useNavigate} from "react-router-dom";
-import { GridRoutes } from './Types';
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { GridRoutes, SubscribedEpisode, Episode } from './Types';
+import Playbar from './components/Playbar/Playbar';
+import {getMostRecentPlayedEpisode} from './services/PodcaseAPIService';
 
 function App() {
+
+  const [currentEpisode, setCurrentEpisode] = useState<Episode>(); //TODO use SubscribedEpisode when backend is updated
+
+  useEffect(() => {
+    if (!currentEpisode) {
+      getMostRecentPlayedEpisode(setCurrentEpisode, ()=>{});
+    }
+  }, []);
 
   const container = window !== undefined ? () => window.document.body : undefined;
   const drawerWidth = 240;
@@ -84,20 +94,23 @@ function App() {
               />
             </Search>
           </Toolbar>
-          
+
         </AppBar>
         <SideBar></SideBar>
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-        >
-          <Toolbar />
-          <Routes>
-          <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION}></PodcastGrid>} />
-          <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL}></PodcastGrid>} />
-          <Route path="/podcast/:id" element={<PodcastList></PodcastList>} />
-        </Routes>
+        <Box component="main" sx={{ width: "100%" }}>
+          <Box
+            sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3, paddingBottom: "150px", minWidth: "100%" }}
+          >
+            <Toolbar />
+            <Routes>
+              <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION}></PodcastGrid>} />
+              <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL}></PodcastGrid>} />
+              <Route path="/podcast/:id" element={<PodcastList setCurrentEpisode={setCurrentEpisode}></PodcastList>} />
+            </Routes>
+          </Box>
+          <Playbar currentEpisode={currentEpisode}></Playbar>
         </Box>
+
       </Box>
     </BrowserRouter>
 
