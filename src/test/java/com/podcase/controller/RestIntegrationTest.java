@@ -56,6 +56,7 @@ public class RestIntegrationTest {
 		podcastRepository.flush();
 	}
 	
+	@Ignore
 	@Transactional
 	@Test
 	public void testAddPodcast() throws Exception {
@@ -68,6 +69,7 @@ public class RestIntegrationTest {
 		assertTrue(episodeRepository.count() > 0);
 	}
 	
+	@Ignore
 	@Transactional
 	@Test
 	public void testGetAllPodcasts() throws Exception {
@@ -85,6 +87,7 @@ public class RestIntegrationTest {
 				  .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber());
 	}
 	
+	@Ignore
 	@Transactional
 	@Test
 	public void testGetPodcastById() throws Exception {
@@ -138,6 +141,7 @@ public class RestIntegrationTest {
 		assertEquals("Rob", users.get(0).getName());
 	}
 	
+	@Ignore
 	@Test
 	public void testAddSubscriptionForUser() throws Exception {
 		mvc.perform(post("/podcasts")
