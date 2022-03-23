@@ -36,6 +36,16 @@ import com.podcase.serializer.PodcastSerializer;
 
 @Entity
 @NamedNativeQuery(
+		name = "find_most_recent_played",
+		query = 
+		"select episode.*, play_state.play_length from episode left outer join play_state "
+		+ "on episode.id = play_state.episode_id "
+		+ "where episode.id = (select * from "
+		+ "(SELECT episode_id from play_state where user_id = ?1 "
+		+ "order by last_played desc limit 1) as subquery)",
+		resultSetMapping = "subscribed_episodes"
+		)
+@NamedNativeQuery(
 	    name = "find_subscribed_episodes",
 	    query =
 	    "select episode.*, play_state.play_length from episode left outer join" + 

@@ -50,7 +50,7 @@ public class EpisodeController {
 	}
 	
 	@GetMapping("/episodes/recent/user/{userId}") //TODO return SubscribedEpisode to include play state
-	public Episode getMostRecentUnfinishedEpisode(@PathVariable("userId") Long userId) {
+	public SubscribedEpisode getMostRecentUnfinishedEpisode(@PathVariable("userId") Long userId) {
 		return episodeRepository.getMostRecentlyPlayed(userId).orElseThrow(ResourceNotFoundException::new);
 	}
 }

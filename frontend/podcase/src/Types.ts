@@ -57,7 +57,7 @@ export interface SubscribedEpisode {
     subtitle: string;
     summary: string;
     title: string;
-    play_length?: number;
+    play_length: number;
     duration: number;
 }
 

@@ -1,12 +1,25 @@
+import React, { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { Episode } from '../../Types';
+import { SubscribedEpisode } from '../../Types';
+import Typography from '@mui/material/Typography';
 
 interface PlaybarProps {
-    currentEpisode: Episode | undefined;
+    currentEpisode: SubscribedEpisode | undefined;
 }
 
-const Playbar = ({currentEpisode}: PlaybarProps) => {
+const Playbar = ({ currentEpisode }: PlaybarProps) => {
+
+    const audioRef = useRef<HTMLAudioElement>(null);
+
+    useEffect(()=> {
+        if(currentEpisode && audioRef && audioRef.current){
+            audioRef!.current!.pause();
+            audioRef!.current!.load();
+            audioRef.current.currentTime = currentEpisode.play_length;
+        }
+    }, [currentEpisode]);
+
     return (
         <Box
             sx={{
@@ -22,19 +35,31 @@ const Playbar = ({currentEpisode}: PlaybarProps) => {
                 justifyContent="center"
 
                 sx={{
-                    paddingRight:"15%",
-                    paddingTop:"50px",
+                    paddingRight: "15%",
+                    paddingTop: "50px",
                 }}
             >
                 <Grid item>
-                    <audio controls>
-                        {
-                            currentEpisode && currentEpisode.fileUrl  &&
-                            <source src={currentEpisode.fileUrl} type="audio/mp3"/>
-                        }
-                        
-                        This browser does not support web audio.
-                    </audio>
+                    {
+                        currentEpisode &&
+                        <Box>
+                            <Typography>
+                                {currentEpisode.title}
+                            </Typography>
+                            <audio controls ref={audioRef} >
+                                {
+                                    currentEpisode.downloaded && 
+                                    <source src={`http://localhost:7070/podcast/audio/${currentEpisode.file_name}`} />
+                                }
+                                <source src={currentEpisode.file_url} type="audio/mp3" />
+
+                                This browser does not support web audio.
+                            </audio>
+                        </Box>
+
+
+                    }
+
                 </Grid>
             </Grid>
         </Box>

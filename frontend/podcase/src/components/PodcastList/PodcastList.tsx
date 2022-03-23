@@ -24,7 +24,7 @@ const PodcastList = (props: any) => {
                     <List sx={{ bgcolor: 'background.paper' }}>
                         {
                             episodes.map((ep: SubscribedEpisode) => {
-                                return <EpisodeListItem key={ep.id} episode={ep} onClick={props.setCurrentEpisode}></EpisodeListItem>
+                                return <EpisodeListItem key={ep.guid} episode={ep} setCurrentEpisode={props.setCurrentEpisode}></EpisodeListItem>
                             })
                         }
                     </List>
