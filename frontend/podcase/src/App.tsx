@@ -19,7 +19,7 @@ import {getMostRecentPlayedEpisode} from './services/PodcaseAPIService';
 
 function App() {
 
-  const [currentEpisode, setCurrentEpisode] = useState<Episode>(); //TODO use SubscribedEpisode when backend is updated
+  const [currentEpisode, setCurrentEpisode] = useState<SubscribedEpisode>(); //TODO use SubscribedEpisode when backend is updated
 
   useEffect(() => {
     if (!currentEpisode) {
