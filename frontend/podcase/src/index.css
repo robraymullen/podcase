@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.audioPlayer {
+  display: block;
+  width: 90%;
+}
+
+#listItemParent {
+  cursor: pointer;
+}
+
+#listItemParent :hover{
+  background-color: rgba(224, 224, 235, 0.5);
+}
+
+#listItemParent > * :hover {
+  background-color: transparent;
+}

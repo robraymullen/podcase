@@ -16,9 +16,14 @@ const EpisodeListItem = ({ episode, setCurrentEpisode }: { episode: SubscribedEp
     const percentPlayed = ((episode.play_length ? episode.play_length : 0) / episode.duration) * 100;
     const percentageProps: CircularProgressProps & { value: number } = { value: percentPlayed };
 
+    const selectStyle = {
+        cursor: "pointer"
+    };
+
     return (
-        <div onClick={() => { setCurrentEpisode(episode); }}>
-            <ListItem sx={{ border: 1, borderColor: 'primary.main', marginBottom: "1%", width:"100%" }}>
+        <div onClick={() => { setCurrentEpisode(episode); }} id="listItemParent" className="episodeListItem">
+            <ListItem 
+            sx={{ border: 1, borderColor: 'primary.main', marginBottom: "1%", width:"100%" }}>
 
                 <Grid container spacing={2}>
                     <Grid item>
@@ -38,7 +43,7 @@ const EpisodeListItem = ({ episode, setCurrentEpisode }: { episode: SubscribedEp
 
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm container>
+                    <Grid item xs={12} sm container className="listItemNoHover">
                         <Grid item xs container direction="column" spacing={2}>
                             <Grid item xs>
                                 <ListItemText  >
