@@ -8,8 +8,21 @@ import HeadphonesIcon from '@mui/icons-material/Headphones';
 import CircularProgress, {
     CircularProgressProps,
 } from '@mui/material/CircularProgress';
+import InfoIcon from '@mui/icons-material/Info';
+import ReactHtmlParser from 'react-html-parser';
+import IconButton from '@mui/material/IconButton';
 
-const EpisodeListItem = ({ episode, setCurrentEpisode }: { episode: SubscribedEpisode, setCurrentEpisode: Function }) => {
+
+interface EpisodeListItemInterface {
+    children: never[];
+    key: string;
+    episode: SubscribedEpisode;
+    setCurrentEpisode: Function;
+    setDialogOpen: Function;
+    setDialogDescription: Function;
+}
+
+const EpisodeListItem = ({ episode, setCurrentEpisode, setDialogOpen, setDialogDescription }: EpisodeListItemInterface) => {
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const pubDate = new Date(episode.publication_date);
@@ -20,10 +33,19 @@ const EpisodeListItem = ({ episode, setCurrentEpisode }: { episode: SubscribedEp
         cursor: "pointer"
     };
 
+    const handleShowDescription = () => {
+        setDialogDescription(ReactHtmlParser(episode.description));
+        setDialogOpen(true);
+    };
+
+    const handlePlay = () => {
+        setCurrentEpisode(episode);
+    };
+
     return (
-        <div onClick={() => { setCurrentEpisode(episode); }} id="listItemParent" className="episodeListItem">
-            <ListItem 
-            sx={{ border: 1, borderColor: 'primary.main', marginBottom: "1%", width:"100%" }}>
+        <div>
+            <ListItem
+                sx={{ border: 1, borderColor: 'primary.main', marginBottom: "1%", width: "100%" }}>
 
                 <Grid container spacing={2}>
                     <Grid item>
@@ -103,7 +125,16 @@ const EpisodeListItem = ({ episode, setCurrentEpisode }: { episode: SubscribedEp
                                     </Box>
                                 </Grid>
                                 <Grid item>
-                                    <PlayCircleFilledIcon />
+                                    <IconButton color="primary" onClick={handlePlay}>
+                                        <PlayCircleFilledIcon />
+                                    </IconButton>
+
+                                </Grid>
+                                <Grid item>
+                                    <IconButton color="primary" onClick={handleShowDescription}>
+                                        <InfoIcon />
+                                    </IconButton>
+
                                 </Grid>
                             </Grid>
                         </Grid>
