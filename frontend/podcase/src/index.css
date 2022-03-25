@@ -17,7 +17,7 @@ code {
   width: 90%;
 }
 
-#listItemParent {
+/* #listItemParent {
   cursor: pointer;
 }
 
@@ -27,4 +27,4 @@ code {
 
 #listItemParent > * :hover {
   background-color: transparent;
-}
+} */
