@@ -1,4 +1,4 @@
-import { Episode, SubscribedPodcast } from "../Types";
+import { Episode, Podcast, SubscribedPodcast } from "../Types";
 
 
 
@@ -15,6 +15,23 @@ export const getUserSubscriptions = async (userId: number, success: Function, er
         }).catch(exception => {
             error(exception);
         });
+}
+
+//TODO only return podcast and not its episodes
+export const getPodcast = async (podcastId: number, success: Function, error: Function) => {
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}podcasts/${podcastId}`;
+    await fetch(url).then(
+        (response) => {
+            if (!response.ok) {
+                throw new Error(response.statusText)
+            }
+            return response.json() as unknown as Podcast;
+        }
+    ).then(podcast => {
+        success(podcast);
+    }).catch(exception => {
+        error(exception);
+    })
 }
 
 export const getAllPodcasts = async (success: Function, error: Function) => {
