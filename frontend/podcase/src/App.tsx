@@ -13,14 +13,17 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { GridRoutes, SubscribedEpisode, Episode } from './Types';
+import { GridRoutes, SubscribedEpisode, Episode, Podcast } from './Types';
 import Playbar from './components/Playbar/Playbar';
 import {getMostRecentPlayedEpisode} from './services/PodcaseAPIService';
+import Header from './components/Header/Header';
 
 function App() {
 
   const [currentEpisode, setCurrentEpisode] = useState<SubscribedEpisode>(); //TODO use SubscribedEpisode when backend is updated
-
+  const [podcasts, setPodcasts] = useState<Podcast[]>([]);
+  const [headerText, setHeaderText] = useState<string>("");
+  
   useEffect(() => {
     if (!currentEpisode) {
       getMostRecentPlayedEpisode(setCurrentEpisode, ()=>{});
@@ -76,26 +79,7 @@ function App() {
     <BrowserRouter>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-        >
-          <Toolbar>
-            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-              Podcase
-          </Typography>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          </Toolbar>
-
-        </AppBar>
+        <Header headerText={headerText}></Header>
         <SideBar></SideBar>
         <Box component="main" sx={{ width: "100%" }}>
           <Box
@@ -103,9 +87,9 @@ function App() {
           >
             <Toolbar />
             <Routes>
-              <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION}></PodcastGrid>} />
-              <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL}></PodcastGrid>} />
-              <Route path="/podcast/:id" element={<PodcastList setCurrentEpisode={setCurrentEpisode}></PodcastList>} />
+              <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
+              <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
+              <Route path="/podcast/:id" element={<PodcastList setCurrentEpisode={setCurrentEpisode} setHeaderText={setHeaderText}></PodcastList>} />
             </Routes>
           </Box>
           <Playbar currentEpisode={currentEpisode}></Playbar>

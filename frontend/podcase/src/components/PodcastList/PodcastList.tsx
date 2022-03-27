@@ -2,7 +2,7 @@ import { Box, List, ListItem, ListItemText, CircularProgress } from '@mui/materi
 import { Podcast, SubscribedEpisode } from '../../Types';
 import EpisodeListItem from '../Episode/EpisodeListItem';
 import React, { useEffect, useState } from 'react';
-import { getPodcastEpisodes } from '../../services/PodcaseAPIService';
+import { getPodcast, getPodcastEpisodes } from '../../services/PodcaseAPIService';
 import { useParams } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -14,9 +14,15 @@ const PodcastList = (props: any) => {
     const [episodes, setEpisodes] = useState<SubscribedEpisode[]>();
     const [description, setDescription] = useState<string>("");
     const [open, setOpen] = useState<boolean>(false); 
+    const [podcast, setPodcast] = useState<Podcast>();
 
     useEffect(() => {
         if (id && id !== "") {
+            const setPodcastProps = (podcast: Podcast) => {
+                setPodcast(podcast);
+                props.setHeaderText(podcast.name);
+            }
+            getPodcast(parseInt(id), setPodcastProps, () => {});
             getPodcastEpisodes(parseInt(id), setEpisodes, () => { });
         }
     }, []);
