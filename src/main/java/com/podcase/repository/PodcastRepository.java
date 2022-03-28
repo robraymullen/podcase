@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.podcase.dto.PodcastSubscription;
 import com.podcase.model.Podcast;
+import com.podcase.projection.PodcastProjection;
 
 @Repository
 public interface PodcastRepository extends JpaRepository<Podcast, Long> {
@@ -25,6 +26,9 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 	Optional<Podcast> findByLastBuildDate(Date lastBuildDate);
 
 	Optional<Podcast> findByDescription(String description);
+	
+	@Query(value="SELECT id, author, description, image_url, last_build_date, link, name, rss_feed from podcast where id= ?1", nativeQuery=true)
+	Optional<PodcastProjection> getPodcastMetadataById(Long id);
 
 	public static final String GET_PODCAST_RSS_FEEDS = "SELECT id, rss_feed FROM podcast";
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.podcase.factory.PodcastFactory;
 import com.podcase.model.Podcast;
+import com.podcase.projection.PodcastProjection;
 import com.podcase.repository.PodcastRepository;
 import com.podcase.request.PodcastRequestBody;
 
@@ -37,8 +38,8 @@ public class PodcastController {
 	}
 	
 	@GetMapping("/podcasts/{id}")
-	public Podcast getPodcastById(@PathVariable("id") Long id) {
-		return podcastRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+	public PodcastProjection getPodcastById(@PathVariable("id") Long id) {
+		return podcastRepository.getPodcastMetadataById(id).orElseThrow(ResourceNotFoundException::new);
 	}
 	
 	@PostMapping("/podcasts")
