@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { getPodcast, getPodcastEpisodes } from '../../services/PodcaseAPIService';
 import { useParams } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
 
 const PodcastList = (props: any) => {
 

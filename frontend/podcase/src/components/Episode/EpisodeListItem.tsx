@@ -1,5 +1,5 @@
 import { SubscribedEpisode } from "../../Types";
-import { ListItem, ListItemText, ListItemAvatar, Avatar, Grid } from '@mui/material';
+import { ListItem, ListItemText, ListItemAvatar, Grid } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import Box from '@mui/material/Box';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
