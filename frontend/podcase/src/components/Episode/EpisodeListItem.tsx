@@ -20,9 +20,10 @@ interface EpisodeListItemInterface {
     setCurrentEpisode: Function;
     setDialogOpen: Function;
     setDialogDescription: Function;
+    imageUrl: string;
 }
 
-const EpisodeListItem = ({ episode, setCurrentEpisode, setDialogOpen, setDialogDescription }: EpisodeListItemInterface) => {
+const EpisodeListItem = ({ episode, setCurrentEpisode, setDialogOpen, setDialogDescription, imageUrl }: EpisodeListItemInterface) => {
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const pubDate = new Date(episode.publication_date);
@@ -59,7 +60,7 @@ const EpisodeListItem = ({ episode, setCurrentEpisode, setDialogOpen, setDialogD
                                 marginTop="20%"
                             >
                                 <ListItemAvatar>
-                                    <img src={episode.image_url} height="60" width="60" />
+                                    <img src={imageUrl} height="60" width="60" />
                                 </ListItemAvatar>
                             </Box>
 

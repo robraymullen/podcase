@@ -27,7 +27,7 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
 	Optional<Podcast> findByDescription(String description);
 	
-	@Query(value="SELECT id, author, description, image_url, last_build_date, link, name, rss_feed from podcast where id= ?1", nativeQuery=true)
+	@Query(value="SELECT id, author, description, image_url as imageUrl, last_build_date as lastBuildDate, link, name, rss_feed as rssFeed from podcast where id= ?1", nativeQuery=true)
 	Optional<PodcastProjection> getPodcastMetadataById(Long id);
 
 	public static final String GET_PODCAST_RSS_FEEDS = "SELECT id, rss_feed FROM podcast";

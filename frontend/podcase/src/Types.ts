@@ -10,7 +10,7 @@ export interface Podcast {
     rssFeed: string;
 }
 
-export type SubscribedPodcast = Pick<Podcast, "id" | "description" | "imageUrl" | "name">
+export type SubscribedPodcast = Pick<Podcast, "id" | "description" | "imageUrl" | "name">;
 
 export interface Episode {
     id: number;
