@@ -29,7 +29,7 @@ const PodcastList = (props: any) => {
     return (
         <Box>
             {
-                episodes && episodes.length > 0 ?
+                podcast && episodes && episodes.length > 0 ?
                     <div>
                         <Dialog open={open} onClose={() => {setOpen(false);}}>
                             {description}
@@ -41,6 +41,7 @@ const PodcastList = (props: any) => {
                                     setCurrentEpisode={props.setCurrentEpisode} 
                                     setDialogDescription={setDescription} 
                                     setDialogOpen={setOpen}
+                                    imageUrl={podcast.imageUrl}
                                     >                                        
                                     </EpisodeListItem>
                                 })
