@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
-import React, {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import { getUserSubscriptions, getAllPodcasts } from '../../services/PodcaseAPIService';
-import { GridRoutes, Podcast, SubscribedPodcast } from '../../Types';
+import { GridRoutes, Podcast } from '../../Types';
 import PodcastGridItem from '../PodcastGridItem/PodcastGridItem';
 import {useLocation} from "react-router-dom";
 

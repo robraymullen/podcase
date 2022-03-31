@@ -1,4 +1,3 @@
-import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
