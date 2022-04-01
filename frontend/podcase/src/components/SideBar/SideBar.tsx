@@ -28,7 +28,7 @@ const SideBar = () => {
         color: "white",
       }}>
         <Typography variant="h6">
-          Podcase
+          PODCASE
           </Typography>
       </Toolbar>
 
