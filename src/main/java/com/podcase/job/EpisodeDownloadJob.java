@@ -13,6 +13,9 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import org.apache.commons.io.FileUtils;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.AudioHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,11 +72,14 @@ public class EpisodeDownloadJob implements ScheduledJob {
 				File destination = new File(filePath);
 				FileUtils.copyURLToFile(endpointURL, destination);
 				if (episode.getDuration() == null || episode.getDuration() == 0) {
-					AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(destination);
-					AudioFormat format = audioInputStream.getFormat();
-					long frames = audioInputStream.getFrameLength();
-					double durationInSeconds = (frames+0.0) / format.getFrameRate(); 
-					episode.setDuration(Math.toIntExact(Math.round(durationInSeconds)));
+					AudioFile audioFile = AudioFileIO.read(destination);
+					AudioHeader header = audioFile.getAudioHeader();
+					episode.setDuration(header.getTrackLength());
+//					AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(destination);
+//					AudioFormat format = audioInputStream.getFormat();
+//					long frames = audioInputStream.getFrameLength();
+//					double durationInSeconds = (frames+0.0) / format.getFrameRate(); 
+//					episode.setDuration(Math.toIntExact(Math.round(durationInSeconds)));
 				}
 				episode.setDownloaded(true);
 				repository.save(episode);
