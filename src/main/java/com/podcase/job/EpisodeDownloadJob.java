@@ -5,7 +5,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayDeque;
+import java.util.Base64;
 import java.util.Deque;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +44,13 @@ public class EpisodeDownloadJob implements ScheduledJob {
 			Episode episode = downloadQueue.poll();
 			try {
 				String[] splitFileUrl = episode.getFileUrl().split("/");
-				String fileName = episode.getGuid() + "_"+splitFileUrl[splitFileUrl.length - 1]; //A lot of podcasts use non-unique names for files!
+				String guidForFileName = "";
+				if (episode.getGuid().contains("/")) {
+					guidForFileName = Base64.getEncoder().encodeToString(episode.getGuid().getBytes());
+				} else {
+					guidForFileName = episode.getGuid();
+				}
+				String fileName = guidForFileName + "_"+splitFileUrl[splitFileUrl.length - 1]; //A lot of podcasts use non-unique names for files!
 				String filePath = System.getProperty("user.dir")+audioStore+fileName;
 				episode.setFileName(fileName);
 				episode.setFilePath(filePath);
@@ -55,7 +66,15 @@ public class EpisodeDownloadJob implements ScheduledJob {
 				}
 				
 				is.close();
-				FileUtils.copyURLToFile(endpointURL, new File(filePath));
+				File destination = new File(filePath);
+				FileUtils.copyURLToFile(endpointURL, destination);
+				if (episode.getDuration() == null || episode.getDuration() == 0) {
+					AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(destination);
+					AudioFormat format = audioInputStream.getFormat();
+					long frames = audioInputStream.getFrameLength();
+					double durationInSeconds = (frames+0.0) / format.getFrameRate(); 
+					episode.setDuration(Math.toIntExact(Math.round(durationInSeconds)));
+				}
 				episode.setDownloaded(true);
 				repository.save(episode);
 			} catch (Exception e) {
