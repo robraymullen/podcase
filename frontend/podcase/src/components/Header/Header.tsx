@@ -4,8 +4,20 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { Toolbar } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
+import { KeyboardEvent } from 'react';
+import { search } from '../../services/ITunesSearchService';
 
 const Header = (props: any) => {
+
+    const doSearch = (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+            // Cancel the default action, if needed
+            const element = event.target as HTMLInputElement;
+            search(element.value);
+            console.log(event);
+        }
+
+    }
 
     const drawerWidth = 240;
 
@@ -65,6 +77,7 @@ const Header = (props: any) => {
                         <SearchIcon />
                     </SearchIconWrapper>
                     <StyledInputBase
+                        onKeyDown={doSearch}
                         placeholder="Search…"
                         inputProps={{ 'aria-label': 'search' }}
                     />
