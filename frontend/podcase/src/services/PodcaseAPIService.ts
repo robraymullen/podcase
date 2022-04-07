@@ -1,6 +1,18 @@
-import { Episode, Podcast, SubscribedPodcast } from "../Types";
+import { Episode, Podcast, SubscribedPodcast, User } from "../Types";
 
-
+export const getAllUsers = async(success: Function, error: Function) => {
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}users`;
+    await fetch(url).then(response => {
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        return response.json() as unknown as User[];
+    }).then(users => {
+        success(users);
+    }).catch(exception => {
+        error(exception);
+    });
+};
 
 export const getUserSubscriptions = async (userId: number, success: Function, error: Function) => {
     const url = `${process.env.REACT_APP_PODCASE_BASE_URL}users/${userId}/subscriptions`;

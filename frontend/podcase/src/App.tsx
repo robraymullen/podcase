@@ -13,6 +13,7 @@ import { GridRoutes, SubscribedEpisode, Podcast } from './Types';
 import Playbar from './components/Playbar/Playbar';
 import {getMostRecentPlayedEpisode} from './services/PodcaseAPIService';
 import Header from './components/Header/Header';
+import Users from './components/Users/Users';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
               <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
               <Route path="/podcast/:id" element={<PodcastList setCurrentEpisode={setCurrentEpisode} setHeaderText={setHeaderText}></PodcastList>} />
+              <Route path="/users" element={<Users></Users>} />
             </Routes>
           </Box>
           <Playbar currentEpisode={currentEpisode}></Playbar>
