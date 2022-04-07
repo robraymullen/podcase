@@ -5,6 +5,8 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { GridRoutes } from '../../Types';
 import Typography from '@mui/material/Typography';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 
 const SideBar = () => {
   const drawerWidth = 240;
@@ -53,6 +55,16 @@ const SideBar = () => {
         </ListItem>
       </List>
       <Divider />
+      <List>
+        <ListItem button key='Change user' onClick={() => navigate("/users")}>
+          <AccountCircleIcon></AccountCircleIcon>
+          <ListItemText primary='Change user'/>
+        </ListItem>
+        <ListItem button key='Admin' onClick={() => console.log("admin")}>
+          <SettingsSuggestIcon></SettingsSuggestIcon>
+          <ListItemText primary='Admin'/>
+        </ListItem>
+      </List>
     </Drawer >
   )
 }
