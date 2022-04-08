@@ -4,10 +4,24 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { Toolbar } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
-import { KeyboardEvent } from 'react';
+import { KeyboardEvent, useContext, useEffect } from 'react';
 import { search } from '../../services/ITunesSearchService';
+import { AppContext } from '../../context/context';
+import { getAllUsers } from '../../services/PodcaseAPIService';
+import { User } from '../../Types';
+import { changeUser } from '../../context/reducer';
 
 const Header = (props: any) => {
+
+    const { state, dispatch } = useContext(AppContext);
+
+    useEffect(() => {
+        if (state.currentUser == null) {
+            getAllUsers((users: User[]) => {
+                dispatch(changeUser(users[0]));
+              }, () => { });
+        }
+    }, []);
 
     const doSearch = (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
@@ -72,6 +86,14 @@ const Header = (props: any) => {
                 <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
                     {props.headerText}
                 </Typography>
+                {
+                    state.currentUser && state.currentUser.name ?
+                        <Typography variant="h6" component="div" sx={{ paddingRight: "20px" }}>
+                            {state.currentUser.name}
+                        </Typography>
+                    : <div></div>
+                }
+
                 <Search>
                     <SearchIconWrapper>
                         <SearchIcon />

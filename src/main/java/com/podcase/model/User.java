@@ -50,6 +50,8 @@ public class User {
 	@Field
 	private String password;
 	
+	private String imageUrl;
+	
 	@ElementCollection
     @MapKeyColumn(name = "key")
     @Column(name = "value")
@@ -131,6 +133,14 @@ public class User {
 	
 	public void removeFavourite(Podcast podcast) {
 		this.favourites.remove(podcast);
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

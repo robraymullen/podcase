@@ -22,7 +22,7 @@ const PodcastList = (props: any) => {
                 props.setHeaderText(podcast.name);
             }
             getPodcast(parseInt(id), setPodcastProps, () => {});
-            getPodcastEpisodes(parseInt(id), setEpisodes, () => { });
+            getPodcastEpisodes(props.currentUser.id, parseInt(id), setEpisodes, () => { });
         }
     }, []);
 

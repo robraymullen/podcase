@@ -67,6 +67,7 @@ export interface User {
     password: string;
     preferences: any; //TODO separate interface
     subscriptions: Podcast[];
+    imageUrl: string;
 }
 
 export enum GridRoutes {
@@ -79,3 +80,23 @@ export enum GridRoutes {
 export interface NavigationState {
     podcastState: GridRoutes;
 }
+
+export interface AppState {
+    currentUser: User | null;
+}
+
+export enum ActionType {
+    ChangeUser,
+}
+
+export interface ChangeUser {
+    type: ActionType.ChangeUser;
+    payload: User;
+}
+
+
+export type StateActions = ChangeUser;
+
+export const initialAppState: AppState = {
+    currentUser: null
+};

@@ -1,19 +1,23 @@
 import Grid from '@mui/material/Grid';
-import {useEffect} from 'react';
+import {useContext, useEffect} from 'react';
 import { getUserSubscriptions, getAllPodcasts } from '../../services/PodcaseAPIService';
 import { GridRoutes, Podcast } from '../../Types';
 import PodcastGridItem from '../PodcastGridItem/PodcastGridItem';
 import {useLocation} from "react-router-dom";
+import { AppContext } from '../../context/context';
 
 const PodcastGrid = (props: any) => {
 
+    const { state, dispatch } = useContext(AppContext);
     const location = useLocation();
 
     useEffect(() => {
         if (props && props.state === GridRoutes.PODCAST_ALL) {
             getAllPodcasts(props.setPodcasts, () => {});
         } else if (props && props.state === GridRoutes.PODCAST_SUBSCRIPTION) {
-            getUserSubscriptions(1, props.setPodcasts, () => {});
+            if (state.currentUser) {
+                getUserSubscriptions(state.currentUser.id, props.setPodcasts, () => {});
+            }
         }
         
     }, [location]);
