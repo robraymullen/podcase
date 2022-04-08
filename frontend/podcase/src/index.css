@@ -17,6 +17,18 @@ code {
   width: 90%;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
+.clickable :hover{
+  background-color: rgba(224, 224, 235, 0.5);
+}
+
+.clearClickable :hover {
+  background-color: transparent;
+}
+
 /* #listItemParent {
   cursor: pointer;
 }

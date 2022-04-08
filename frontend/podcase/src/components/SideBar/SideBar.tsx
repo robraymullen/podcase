@@ -56,7 +56,7 @@ const SideBar = () => {
       </List>
       <Divider />
       <List>
-        <ListItem button key='Change user' onClick={() => navigate("/users")}>
+        <ListItem button key='Change user' onClick={() => navigate("/users/change")}>
           <AccountCircleIcon></AccountCircleIcon>
           <ListItemText primary='Change user'/>
         </ListItem>

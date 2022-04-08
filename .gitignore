@@ -1,5 +1,6 @@
 /target/
 /audio/**
+/static/**
 /node_modules/**
 .env*
 *.log

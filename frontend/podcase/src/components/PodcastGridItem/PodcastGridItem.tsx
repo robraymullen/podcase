@@ -14,8 +14,8 @@ const PodcastGridItem = (podcast: SubscribedPodcast) => {
     const navigate = useNavigate();
 
     return (
-        <Grid item xs={3}>
-            <Card sx={{ minWidth: 250, minHeight: 400 }} onClick={() => {
+        <Grid item xs={3} className="clickable">
+            <Card className="clearClickable" sx={{ minWidth: 250, minHeight: 400 }} onClick={() => {
                 navigate(`/podcast/${podcast.id}`)
                 }
             }>
@@ -34,9 +34,6 @@ const PodcastGridItem = (podcast: SubscribedPodcast) => {
                         {ReactHtmlParser(podcast.description)}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Learn More</Button>
-                </CardActions>
             </Card>
         </Grid>
 
