@@ -3,22 +3,21 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { SubscribedEpisode } from '../../Types';
 import Typography from '@mui/material/Typography';
+import { AppContext } from '../../context/context';
+import { useContext } from 'react';
 
-interface PlaybarProps {
-    currentEpisode: SubscribedEpisode | undefined;
-}
-
-const Playbar = ({ currentEpisode }: PlaybarProps) => {
+const Playbar = () => {
 
     const audioRef = useRef<HTMLAudioElement>(null);
+    const { state, dispatch } = useContext(AppContext);
 
     useEffect(() => {
-        if (currentEpisode && audioRef && audioRef.current) {
+        if (state.currentEpisode && audioRef && audioRef.current) {
             audioRef!.current!.pause();
             audioRef!.current!.load();
-            audioRef.current.currentTime = currentEpisode.play_length;
+            audioRef.current.currentTime = state.currentEpisode.play_length;
         }
-    }, [currentEpisode]);
+    }, [state.currentEpisode]);
 
     return (
         <Box
@@ -47,7 +46,7 @@ const Playbar = ({ currentEpisode }: PlaybarProps) => {
                         width: 1,
                     }}>
                     {
-                        currentEpisode &&
+                        state.currentEpisode &&
                         <Box
                             sx={{
                                 paddingLeft:"10%",
@@ -64,7 +63,7 @@ const Playbar = ({ currentEpisode }: PlaybarProps) => {
                                         width: 1,
                                     }}>
                                     <Typography variant="h6" noWrap sx={{color:"white", paddingBottom: "5px"}}>
-                                        {currentEpisode.title}
+                                        {state.currentEpisode.title}
                                     </Typography>
                                 </Grid>
                                 <Grid item
@@ -73,10 +72,10 @@ const Playbar = ({ currentEpisode }: PlaybarProps) => {
                                     }}>
                                     <audio controls ref={audioRef} className="audioPlayer">
                                         {
-                                            currentEpisode.downloaded &&
-                                            <source src={`http://localhost:7070/podcast/audio/${currentEpisode.file_name}`} />
+                                            state.currentEpisode.downloaded &&
+                                            <source src={`http://localhost:7070/podcast/audio/${state.currentEpisode.file_name}`} />
                                         }
-                                        <source src={currentEpisode.file_url} type="audio/mp3" />
+                                        <source src={state.currentEpisode.file_url} type="audio/mp3" />
 
                                 This browser does not support web audio.
                             </audio>

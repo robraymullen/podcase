@@ -22,6 +22,7 @@ import javax.persistence.ColumnResult;
  */
 public class SubscribedEpisode {
 	
+	private BigInteger play_state_id;
 	private Integer duration;
 	private BigInteger play_length;
 	private Date retrieved_date;
@@ -69,7 +70,8 @@ public class SubscribedEpisode {
 			Date publication_date,
 			Date retrieved_date,
 			BigInteger play_length,
-			Integer duration) {
+			Integer duration,
+			BigInteger play_state_id) {
 				this.id = id;
 				this.podcast_id = podcast_id;
 				this.title = title;
@@ -91,7 +93,16 @@ public class SubscribedEpisode {
 				this.retrieved_date = retrieved_date;
 				this.play_length = play_length;
 				this.duration = duration;
+				this.play_state_id = play_state_id;
 		
+	}
+	
+	public BigInteger getPlay_state_id() {
+		return play_state_id;
+	}
+	
+	public void setPlay_state_id(BigInteger play_state_id) {
+		this.play_state_id = play_state_id;
 	}
 
 	public BigInteger getPlay_length() {

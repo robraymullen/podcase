@@ -38,8 +38,9 @@ import com.podcase.serializer.PodcastSerializer;
 @NamedNativeQuery(
 		name = "find_most_recent_played",
 		query = 
-		"select episode.*, play_state.play_length from episode left outer join play_state "
+		"select episode.*, play_state.play_length, play_state.id as play_state_id from episode left outer join play_state "
 		+ "on episode.id = play_state.episode_id "
+		+ "and play_state.user_id = ?1 "
 		+ "where episode.id = (select * from "
 		+ "(SELECT episode_id from play_state where user_id = ?1 "
 		+ "order by last_played desc limit 1) as subquery)",
@@ -48,11 +49,11 @@ import com.podcase.serializer.PodcastSerializer;
 @NamedNativeQuery(
 	    name = "find_subscribed_episodes",
 	    query =
-	    "select episode.*, play_state.play_length from episode left outer join" + 
+	    "select episode.*, play_state.play_length, play_state.id as play_state_id from episode left outer join" + 
 	    "	    	play_state" + 
 	    "			on episode.id = play_state.episode_id" + 
 	    "			and play_state.user_id = ?2" + 
-	    "			where \r\n" + 
+	    "			where " + 
 	    "			episode.podcast_id = ?1" + 
 	    "			order by episode.id asc",
 //	    	"select episode.*, play_state.play_length from episode full outer join "
@@ -85,7 +86,8 @@ import com.podcase.serializer.PodcastSerializer;
 	            @ColumnResult(name="publication_date", type=Date.class),
 	            @ColumnResult(name="retrieved_date", type=Date.class),
 	            @ColumnResult(name="play_length", type=BigInteger.class),
-	            @ColumnResult(name="duration", type=Integer.class)
+	            @ColumnResult(name="duration", type=Integer.class),
+	            @ColumnResult(name="play_state_id", type=BigInteger.class)
 	        }
 	    )
 	)
