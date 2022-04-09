@@ -11,20 +11,24 @@ import CircularProgress, {
 import InfoIcon from '@mui/icons-material/Info';
 import ReactHtmlParser from 'react-html-parser';
 import IconButton from '@mui/material/IconButton';
+import { AppContext } from "../../context/context";
+import { useContext } from 'react';
+import { changeEpisode } from "../../context/reducer";
+import { updateLastPlayed } from "../../services/PodcaseAPIService";
 
 
 interface EpisodeListItemInterface {
     children: never[];
     key: string;
     episode: SubscribedEpisode;
-    setCurrentEpisode: Function;
     setDialogOpen: Function;
     setDialogDescription: Function;
     imageUrl: string;
 }
 
-const EpisodeListItem = ({ episode, setCurrentEpisode, setDialogOpen, setDialogDescription, imageUrl }: EpisodeListItemInterface) => {
+const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUrl }: EpisodeListItemInterface) => {
 
+    const { state, dispatch } = useContext(AppContext);
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const pubDate = new Date(episode.publication_date);
     const percentPlayed = ((episode.play_length ? episode.play_length : 0) / episode.duration) * 100;
@@ -40,7 +44,10 @@ const EpisodeListItem = ({ episode, setCurrentEpisode, setDialogOpen, setDialogD
     };
 
     const handlePlay = () => {
-        setCurrentEpisode(episode);
+        dispatch(changeEpisode(episode));
+        if (state.currentUser) {
+            updateLastPlayed(state.currentUser.id, episode);
+        }
     };
 
     return (

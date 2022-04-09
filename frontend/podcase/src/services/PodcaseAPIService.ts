@@ -1,6 +1,6 @@
-import { Episode, Podcast, SubscribedPodcast, User } from "../Types";
+import { Episode, PlayState, Podcast, SubscribedEpisode, SubscribedPodcast, User } from "../Types";
 
-export const getAllUsers = async(success: Function, error: Function) => {
+export const getAllUsers = async (success: Function, error: Function) => {
     const url = `${process.env.REACT_APP_PODCASE_BASE_URL}users`;
     await fetch(url).then(response => {
         if (!response.ok) {
@@ -82,13 +82,35 @@ export const getPodcastEpisodes = async (userId: number, podcastId: number, succ
         });
 }
 
+export const updateLastPlayed = async (userId: number, episode: SubscribedEpisode) => {
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}playstate/`;
+    const payload: PlayState = {
+        userId: userId,
+        episodeId: episode.id,
+        playLength: episode.play_length,
+        lastPlayed: Date.now(),
+        id: null
+    }
+    if (episode.play_state_id) {
+        payload.id = episode.play_state_id;
+    }
+    await fetch(url, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+}
+
 export const addPocast = async (url: string) => {
 
 }
 
-export const getMostRecentPlayedEpisode = async (success: Function, error: Function) => {
+export const getMostRecentPlayedEpisode = async (userId: number, success: Function, error: Function) => {
     ///episodes/recent
-    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}episodes/recent/user/1`;
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}episodes/recent/user/${userId}`;
     await fetch(url).then(
         (response) => {
             if (!response.ok) {

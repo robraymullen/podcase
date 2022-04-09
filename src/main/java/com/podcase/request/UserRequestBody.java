@@ -13,6 +13,9 @@ public class UserRequestBody {
 	@JsonProperty("subscription")
 	String subscriptionName;
 	
+	@JsonProperty("imageUrl")
+	String imageUrl;
+	
 	public UserRequestBody() {
 		
 	}
@@ -50,6 +53,14 @@ public class UserRequestBody {
 	@JsonProperty("subscription")
 	public void setSubscriptionName(String podcastName) {
 		this.subscriptionName = podcastName;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

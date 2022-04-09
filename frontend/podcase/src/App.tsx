@@ -10,11 +10,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GridRoutes, SubscribedEpisode, Podcast, User, initialAppState } from './Types';
 import Playbar from './components/Playbar/Playbar';
-import { getAllUsers, getMostRecentPlayedEpisode } from './services/PodcaseAPIService';
+import { getAllUsers, getMostRecentPlayedEpisode, getUserSubscriptions } from './services/PodcaseAPIService';
 import Header from './components/Header/Header';
 import Users from './components/Users/Users';
 import { AppContext } from './context/context';
-import { changeUser, stateReducer } from './context/reducer';
+import { changeEpisode, changeUser, stateReducer } from './context/reducer';
 
 function App() {
 
@@ -24,13 +24,14 @@ function App() {
   const [state, dispatch] = useReducer(stateReducer, initialAppState);
 
   useEffect(() => {
-    if (!initialAppState.currentUser == null) {
+    if (initialAppState.currentUser == null) {
       getAllUsers((users: User[]) => {
         dispatch(changeUser(users[0]));
-      }, () => { });
-    }
-    if (!currentEpisode) {
-      getMostRecentPlayedEpisode(setCurrentEpisode, () => { });
+        getMostRecentPlayedEpisode(users[0].id, (episode: SubscribedEpisode) => {
+          dispatch(changeEpisode(episode));
+        }, () => {console.log("error getting recent episode") });
+        getUserSubscriptions(users[0].id, setPodcasts, () => {});
+      }, () => { console.log("error getting user")});
     }
   }, []);
 
@@ -49,11 +50,11 @@ function App() {
               <Routes>
                 <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
                 <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
-                <Route path="/podcast/:id" element={<PodcastList setCurrentEpisode={setCurrentEpisode} setHeaderText={setHeaderText}></PodcastList>} />
+                <Route path="/podcast/:id" element={<PodcastList setHeaderText={setHeaderText}></PodcastList>} />
                 <Route path="/users/change" element={<Users></Users>} />
               </Routes>
             </Box>
-            <Playbar currentEpisode={currentEpisode}></Playbar>
+            <Playbar></Playbar>
           </Box>
 
         </Box>

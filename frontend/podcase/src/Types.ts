@@ -59,6 +59,15 @@ export interface SubscribedEpisode {
     title: string;
     play_length: number;
     duration: number;
+    play_state_id: number;
+}
+
+export interface PlayState {
+    userId: number,
+    episodeId: number,
+    playLength: number,
+    lastPlayed: number,
+    id: number | null,
 }
 
 export interface User {
@@ -83,10 +92,12 @@ export interface NavigationState {
 
 export interface AppState {
     currentUser: User | null;
+    currentEpisode: SubscribedEpisode | null;
 }
 
 export enum ActionType {
     ChangeUser,
+    ChangeEpisode
 }
 
 export interface ChangeUser {
@@ -94,9 +105,14 @@ export interface ChangeUser {
     payload: User;
 }
 
+export interface ChangeEpisode {
+    type: ActionType.ChangeEpisode;
+    payload: SubscribedEpisode;
+}
 
-export type StateActions = ChangeUser;
+export type StateActions = ChangeUser | ChangeEpisode;
 
 export const initialAppState: AppState = {
-    currentUser: null
+    currentUser: null,
+    currentEpisode: null,
 };

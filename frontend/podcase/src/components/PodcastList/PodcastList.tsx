@@ -1,10 +1,11 @@
 import { Box, List, ListItem, ListItemText, CircularProgress } from '@mui/material';
 import { Podcast, SubscribedEpisode } from '../../Types';
 import EpisodeListItem from '../Episode/EpisodeListItem';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getPodcast, getPodcastEpisodes } from '../../services/PodcaseAPIService';
 import { useParams } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
+import { AppContext } from '../../context/context';
 
 const PodcastList = (props: any) => {
 
@@ -14,15 +15,16 @@ const PodcastList = (props: any) => {
     const [description, setDescription] = useState<string>("");
     const [open, setOpen] = useState<boolean>(false); 
     const [podcast, setPodcast] = useState<Podcast>();
+    const { state, dispatch } = useContext(AppContext);
 
     useEffect(() => {
-        if (id && id !== "") {
+        if (id && id !== "" && state.currentUser) {
             const setPodcastProps = (podcast: Podcast) => {
                 setPodcast(podcast);
                 props.setHeaderText(podcast.name);
             }
             getPodcast(parseInt(id), setPodcastProps, () => {});
-            getPodcastEpisodes(props.currentUser.id, parseInt(id), setEpisodes, () => { });
+            getPodcastEpisodes(state.currentUser.id, parseInt(id), setEpisodes, () => { });
         }
     }, []);
 
@@ -37,8 +39,7 @@ const PodcastList = (props: any) => {
                         <List sx={{ bgcolor: 'background.paper' }}>
                             {
                                 episodes.map((ep: SubscribedEpisode) => {
-                                    return <EpisodeListItem key={ep.guid} episode={ep} 
-                                    setCurrentEpisode={props.setCurrentEpisode} 
+                                    return <EpisodeListItem key={ep.guid} episode={ep}
                                     setDialogDescription={setDescription} 
                                     setDialogOpen={setOpen}
                                     imageUrl={podcast.imageUrl}
