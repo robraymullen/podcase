@@ -93,11 +93,13 @@ export interface NavigationState {
 export interface AppState {
     currentUser: User | null;
     currentEpisode: SubscribedEpisode | null;
+    headerText: string;
 }
 
 export enum ActionType {
     ChangeUser,
-    ChangeEpisode
+    ChangeEpisode,
+    ChangeHeaderText
 }
 
 export interface ChangeUser {
@@ -110,9 +112,15 @@ export interface ChangeEpisode {
     payload: SubscribedEpisode;
 }
 
-export type StateActions = ChangeUser | ChangeEpisode;
+export interface ChangeHeaderText {
+    type: ActionType.ChangeHeaderText;
+    payload: string;
+}
+
+export type StateActions = ChangeUser | ChangeEpisode | ChangeHeaderText;
 
 export const initialAppState: AppState = {
     currentUser: null,
     currentEpisode: null,
+    headerText: "",
 };
