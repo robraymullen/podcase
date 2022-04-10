@@ -6,6 +6,7 @@ import { getPodcast, getPodcastEpisodes } from '../../services/PodcaseAPIService
 import { useParams } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
 import { AppContext } from '../../context/context';
+import { changeHeaderText } from '../../context/reducer';
 
 const PodcastList = (props: any) => {
 
@@ -21,7 +22,7 @@ const PodcastList = (props: any) => {
         if (id && id !== "" && state.currentUser) {
             const setPodcastProps = (podcast: Podcast) => {
                 setPodcast(podcast);
-                props.setHeaderText(podcast.name);
+                dispatch(changeHeaderText(podcast.name));
             }
             getPodcast(parseInt(id), setPodcastProps, () => {});
             getPodcastEpisodes(state.currentUser.id, parseInt(id), setEpisodes, () => { });

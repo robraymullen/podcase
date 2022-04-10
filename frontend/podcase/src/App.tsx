@@ -40,7 +40,7 @@ function App() {
       <BrowserRouter>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
-          <Header headerText={headerText}></Header>
+          <Header></Header>
           <SideBar></SideBar>
           <Box component="main" sx={{ width: "100%" }}>
             <Box

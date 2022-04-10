@@ -5,6 +5,7 @@ import { GridRoutes, Podcast } from '../../Types';
 import PodcastGridItem from '../PodcastGridItem/PodcastGridItem';
 import {useLocation} from "react-router-dom";
 import { AppContext } from '../../context/context';
+import { changeHeaderText } from '../../context/reducer';
 
 const PodcastGrid = (props: any) => {
 
@@ -19,6 +20,7 @@ const PodcastGrid = (props: any) => {
                 getUserSubscriptions(state.currentUser.id, props.setPodcasts, () => {});
             }
         }
+        dispatch(changeHeaderText(""));
         
     }, [location]);
 
