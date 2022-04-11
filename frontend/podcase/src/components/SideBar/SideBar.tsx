@@ -7,10 +7,14 @@ import { GridRoutes } from '../../Types';
 import Typography from '@mui/material/Typography';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
+import { useContext } from 'react';
+import { AppContext } from '../../context/context';
 
 const SideBar = () => {
   const drawerWidth = 240;
   const navigate = useNavigate();
+
+  const { state, dispatch } = useContext(AppContext);
 
   return (
     <Drawer
@@ -58,12 +62,16 @@ const SideBar = () => {
       <List>
         <ListItem button key='Change user' onClick={() => navigate("/users/change")}>
           <AccountCircleIcon></AccountCircleIcon>
-          <ListItemText primary='Change user'/>
+          <ListItemText primary='Change user' />
         </ListItem>
-        <ListItem button key='Admin' onClick={() => console.log("admin")}>
-          <SettingsSuggestIcon></SettingsSuggestIcon>
-          <ListItemText primary='Admin'/>
-        </ListItem>
+        {
+          state.currentUser?.name === "Rob" ?
+            <ListItem button key='Admin' onClick={() => navigate("/admin")}>
+              <SettingsSuggestIcon></SettingsSuggestIcon>
+              <ListItemText primary='Admin' />
+            </ListItem>
+            : ""
+        }
       </List>
     </Drawer >
   )
