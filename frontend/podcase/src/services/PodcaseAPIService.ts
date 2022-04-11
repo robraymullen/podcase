@@ -125,6 +125,22 @@ export const getMostRecentPlayedEpisode = async (userId: number, success: Functi
 }
 
 
+export const addUser = async (name: string, password: string) => {
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}users/add`;
+    const payload = {
+        name: name,
+        password: password,
+    }
+    await fetch(url, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+}
+
 /**
  * Adds a podcast subscription from an RSS feed. This method should be used when 
  * adding a new podcast to the repository

@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import './App.css';
 import PodcastGrid from './components/PodcastGrid/PodcastGrid';
@@ -15,6 +15,7 @@ import Header from './components/Header/Header';
 import Users from './components/Users/Users';
 import { AppContext } from './context/context';
 import { changeEpisode, changeUser, stateReducer } from './context/reducer';
+import Admin from './components/Admin/Admin';
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
                 <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
                 <Route path="/podcast/:id" element={<PodcastList setHeaderText={setHeaderText}></PodcastList>} />
                 <Route path="/users/change" element={<Users></Users>} />
+                <Route path="/admin" element={<Admin></Admin>}/>
               </Routes>
             </Box>
             <Playbar></Playbar>
