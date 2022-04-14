@@ -16,6 +16,7 @@ import Users from './components/Users/Users';
 import { AppContext } from './context/context';
 import { changeEpisode, changeUser, stateReducer } from './context/reducer';
 import Admin from './components/Admin/Admin';
+import SearchResult from './components/SearchResult/SearchResult';
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
                 <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
                 <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
                 <Route path="/podcast/:id" element={<PodcastList setHeaderText={setHeaderText}></PodcastList>} />
+                <Route path="/search" element={<SearchResult></SearchResult> } />
                 <Route path="/users/change" element={<Users></Users>} />
                 <Route path="/admin" element={<Admin></Admin>}/>
               </Routes>

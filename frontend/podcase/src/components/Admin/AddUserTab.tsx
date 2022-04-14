@@ -12,9 +12,6 @@ import { addUser } from "../../services/PodcaseAPIService";
 
 const AddUserTab = () => {
 
-    const nameRef = useRef<HTMLDivElement>(null);
-    const passwordRef = useRef<HTMLDivElement>(null);
-
     const defaultName = "Name";
     const defaultPassword = "Password";
 
@@ -45,7 +42,6 @@ const AddUserTab = () => {
                     label="Username"
                     defaultValue={name}
                     onChange={(event) => {setName(event.target.value); setShowWarning(false);}}
-                    ref={nameRef}
                 />
                 <TextField
                     required
@@ -55,7 +51,6 @@ const AddUserTab = () => {
                     defaultValue=""
                     autoComplete="current-password"
                     onChange={(event) => {setPassword(event.target.value); setShowWarning(false);}}
-                    ref={passwordRef}
                 />
                 <Button variant="outlined" size="medium" onClick={postUser}>Add</Button>
             </Grid>
