@@ -8,12 +8,14 @@ import { KeyboardEvent, useContext, useEffect } from 'react';
 import { search } from '../../services/ITunesSearchService';
 import { AppContext } from '../../context/context';
 import { getAllUsers } from '../../services/PodcaseAPIService';
-import { User } from '../../Types';
+import { ITunesResult, User } from '../../Types';
 import { changeUser } from '../../context/reducer';
+import { useNavigate } from "react-router-dom";
 
 const Header = (props: any) => {
 
     const { state, dispatch } = useContext(AppContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (state.currentUser == null) {
@@ -27,7 +29,11 @@ const Header = (props: any) => {
         if (event.key === 'Enter') {
             // Cancel the default action, if needed
             const element = event.target as HTMLInputElement;
-            search(element.value);
+            const navigateToResults = (results: ITunesResult[]) => {
+                // onClick={() => navigate("/", { state: { podcastState: GridRoutes.PODCAST_SUBSCRIPTION } })}
+                navigate("/search", {state: {searchResult: results} });
+            }
+            search(element.value, navigateToResults, () => {console.log("error with search");});
             console.log(event);
         }
 

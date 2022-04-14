@@ -63,11 +63,11 @@ export interface SubscribedEpisode {
 }
 
 export interface PlayState {
-    userId: number,
-    episodeId: number,
-    playLength: number,
-    lastPlayed: number,
-    id: number | null,
+    userId: number;
+    episodeId: number;
+    playLength: number;
+    lastPlayed: number;
+    id: number | null;
 }
 
 export interface User {
@@ -77,6 +77,46 @@ export interface User {
     preferences: any; //TODO separate interface
     subscriptions: Podcast[];
     imageUrl: string;
+}
+
+export interface SearchResponse {
+    resultsCount: number;
+    results: ITunesResult[];
+}
+
+export interface ITunesResult {
+    artistName: string;
+    artworkUrl100: string;
+    artworkUrl30: string;
+    artworkUrl60: string;
+    artworkUrl600: string;
+    collectionCensoredName: string;
+    collectionExplicitness: string;
+    collectionHdPrice: number;
+    collectionId: number;
+    collectionName: string;
+    collectionPrice: 0;
+    collectionViewUrl: string;
+    contentAdvisoryRating: string;
+    country: string;
+    currency: string;
+    feedUrl: string;
+    genreIds: string[];
+    genres: string[];
+    kind: string;
+    primaryGenreName: string;
+    releaseDate: string;
+    trackCensoredName: string;
+    trackCount: number;
+    trackExplicitness: string;
+    trackHdPrice: number;
+    trackHdRentalPrice: number;
+    trackId: number;
+    trackName: string;
+    trackPrice: number;
+    trackRentalPrice: number;
+    trackViewUrl: string;
+    wrapperType: string;
 }
 
 export enum GridRoutes {
