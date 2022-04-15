@@ -8,13 +8,13 @@ import Box from '@mui/material/Box';
 import { Toolbar } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { GridRoutes, SubscribedEpisode, Podcast, User, initialAppState } from './Types';
+import { GridRoutes, SubscribedEpisode, Podcast, User, initialAppState, SubscribedPodcast } from './Types';
 import Playbar from './components/Playbar/Playbar';
 import { getAllUsers, getMostRecentPlayedEpisode, getUserSubscriptions } from './services/PodcaseAPIService';
 import Header from './components/Header/Header';
 import Users from './components/Users/Users';
 import { AppContext } from './context/context';
-import { changeEpisode, changeUser, stateReducer } from './context/reducer';
+import { changeEpisode, changeSubscriptions, changeUser, stateReducer } from './context/reducer';
 import Admin from './components/Admin/Admin';
 import SearchResult from './components/SearchResult/SearchResult';
 
@@ -32,7 +32,7 @@ function App() {
         getMostRecentPlayedEpisode(users[0].id, (episode: SubscribedEpisode) => {
           dispatch(changeEpisode(episode));
         }, () => {console.log("error getting recent episode") });
-        getUserSubscriptions(users[0].id, setPodcasts, () => {});
+        getUserSubscriptions(users[0].id, (podcasts: SubscribedPodcast[]) => {dispatch(changeSubscriptions(podcasts))}, () => {});
       }, () => { console.log("error getting user")});
     }
   }, []);
@@ -50,7 +50,7 @@ function App() {
             >
               <Toolbar />
               <Routes>
-                <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
+                <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION} podcasts={state.userSubscriptions} setPodcasts={changeSubscriptions}></PodcastGrid>} />
                 <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
                 <Route path="/podcast/:id" element={<PodcastList setHeaderText={setHeaderText}></PodcastList>} />
                 <Route path="/search" element={<SearchResult></SearchResult> } />

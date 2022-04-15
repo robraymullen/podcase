@@ -146,8 +146,23 @@ export const addUser = async (name: string, password: string) => {
  * adding a new podcast to the repository
  * @param url 
  */
-export const addUserSubscriptionFromRSS = async (url: string) => {
-
+export const addUserSubscriptionFromRSS = async (podcastUrl: string, podcastName: string, userName: string) => {
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}podcasts/subscription`;
+    const payload = {
+        podcastUrl: podcastUrl,
+        podcastName: podcastName,
+        userName: userName,
+    }
+    await fetch(url, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).catch(exception =>{
+        console.error(exception);
+    });
 }
 
 /**

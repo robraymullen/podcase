@@ -46,7 +46,7 @@ const AddUserTab = () => {
                 <TextField
                     required
                     id="outlined-password-input"
-                    label="Password"
+                    label={defaultPassword}
                     type="password"
                     defaultValue=""
                     autoComplete="current-password"

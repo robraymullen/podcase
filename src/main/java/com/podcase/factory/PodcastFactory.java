@@ -91,7 +91,7 @@ public class PodcastFactory {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return Optional.empty();
 	}
 	
 	public static List<Episode> getNewEpisodes(Podcast podcast) {

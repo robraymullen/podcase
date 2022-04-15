@@ -1,11 +1,11 @@
 import Grid from '@mui/material/Grid';
 import {useContext, useEffect} from 'react';
 import { getUserSubscriptions, getAllPodcasts } from '../../services/PodcaseAPIService';
-import { GridRoutes, Podcast } from '../../Types';
+import { GridRoutes, Podcast, SubscribedPodcast } from '../../Types';
 import PodcastGridItem from '../PodcastGridItem/PodcastGridItem';
 import {useLocation} from "react-router-dom";
 import { AppContext } from '../../context/context';
-import { changeHeaderText } from '../../context/reducer';
+import { changeHeaderText, changeSubscriptions } from '../../context/reducer';
 
 const PodcastGrid = (props: any) => {
 
@@ -17,7 +17,7 @@ const PodcastGrid = (props: any) => {
             getAllPodcasts(props.setPodcasts, () => {});
         } else if (props && props.state === GridRoutes.PODCAST_SUBSCRIPTION) {
             if (state.currentUser) {
-                getUserSubscriptions(state.currentUser.id, props.setPodcasts, () => {});
+                getUserSubscriptions(state.currentUser.id, ((podcasts: SubscribedPodcast[]) => dispatch(changeSubscriptions(podcasts))), () => {});
             }
         }
         dispatch(changeHeaderText(""));

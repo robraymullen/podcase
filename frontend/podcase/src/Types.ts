@@ -134,12 +134,15 @@ export interface AppState {
     currentUser: User | null;
     currentEpisode: SubscribedEpisode | null;
     headerText: string;
+    userSubscriptions: SubscribedPodcast[];
 }
 
 export enum ActionType {
     ChangeUser,
     ChangeEpisode,
-    ChangeHeaderText
+    ChangeHeaderText,
+    AddSubscription,
+    ChangeSubscriptions,
 }
 
 export interface ChangeUser {
@@ -157,10 +160,21 @@ export interface ChangeHeaderText {
     payload: string;
 }
 
-export type StateActions = ChangeUser | ChangeEpisode | ChangeHeaderText;
+export interface AddSubscription {
+    type: ActionType.AddSubscription;
+    payload: SubscribedPodcast;
+}
+
+export interface ChangeSubscriptions {
+    type: ActionType.ChangeSubscriptions;
+    payload: SubscribedPodcast[];
+}
+
+export type StateActions = ChangeUser | ChangeEpisode | ChangeHeaderText | AddSubscription | ChangeSubscriptions;
 
 export const initialAppState: AppState = {
     currentUser: null,
     currentEpisode: null,
     headerText: "",
+    userSubscriptions: [],
 };

@@ -1,6 +1,9 @@
-import { ListItem, ListItemText, ListItemAvatar, Grid, Box, Typography } from '@mui/material';
-import React from "react";
-import { ITunesResult } from '../../Types';
+import { ListItem, ListItemText, ListItemAvatar, Grid, Box, Typography, IconButton, Tooltip } from '@mui/material';
+import React, { useContext } from "react";
+import { ITunesResult, SubscribedPodcast } from '../../Types';
+import AddIcon from '@mui/icons-material/Add';
+import { AppContext } from '../../context/context';
+import { addUserSubscriptionFromRSS } from '../../services/PodcaseAPIService';
 
 interface SearchResultItemProps {
     children: never[];
@@ -10,7 +13,18 @@ interface SearchResultItemProps {
 
 const SearchResultItem = ({ item }: SearchResultItemProps) => {
 
-    console.log(item);
+    const { state, dispatch } = useContext(AppContext);
+    const isSubscribed = state.userSubscriptions.find((podcast: SubscribedPodcast) => podcast.name === item.collectionName) !== undefined;
+    const tooltipTitle = isSubscribed ? "Already subscribed to this podcast" : "Subscribe to podcast";
+
+    const subscribe = () => {
+        if (state.currentUser) {
+            addUserSubscriptionFromRSS(item.feedUrl, item.collectionName, state.currentUser.name);
+        } else {
+            console.error("Cannot add subscription without having a user selected");
+        }
+
+    };
 
     return (
         <div>
@@ -48,6 +62,15 @@ const SearchResultItem = ({ item }: SearchResultItemProps) => {
                                         {item.collectionName}
                                     </Typography>
                                 </ListItemText>
+                            </Grid>
+                            <Grid item xs>
+                                <Tooltip title={tooltipTitle} placement="bottom">
+                                    <span>
+                                        <IconButton color="primary" onClick={subscribe} disabled={isSubscribed}>
+                                            <AddIcon></AddIcon>
+                                        </IconButton>
+                                    </span>
+                                </Tooltip>
                             </Grid>
                         </Grid>
                     </Grid>

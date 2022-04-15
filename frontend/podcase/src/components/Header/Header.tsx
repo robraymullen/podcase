@@ -31,7 +31,7 @@ const Header = (props: any) => {
             const element = event.target as HTMLInputElement;
             const navigateToResults = (results: ITunesResult[]) => {
                 // onClick={() => navigate("/", { state: { podcastState: GridRoutes.PODCAST_SUBSCRIPTION } })}
-                navigate("/search", {state: {searchResult: results} });
+                navigate("/search", {state: {searchResults: results} });
             }
             search(element.value, navigateToResults, () => {console.log("error with search");});
             console.log(event);

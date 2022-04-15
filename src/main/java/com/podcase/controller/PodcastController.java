@@ -18,18 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.podcase.factory.PodcastFactory;
 import com.podcase.model.Podcast;
+import com.podcase.model.User;
 import com.podcase.projection.PodcastProjection;
 import com.podcase.repository.PodcastRepository;
+import com.podcase.repository.UserRepository;
 import com.podcase.request.PodcastRequestBody;
+import com.podcase.request.PodcastSubscriptionRequest;
 
 @RestController
 public class PodcastController {
 
 	PodcastRepository podcastRepository;
 	
+	UserRepository userRepository;
+	
 	@Autowired
-	public PodcastController(PodcastRepository podcastRepository) {
+	public PodcastController(PodcastRepository podcastRepository, UserRepository userRepository) {
 		this.podcastRepository = podcastRepository;
+		this.userRepository = userRepository;
 	}
 	
 	@GetMapping("/podcasts")
@@ -47,5 +53,23 @@ public class PodcastController {
 		Optional<Podcast> podcast = PodcastFactory.generate(podcastRequest.getPodcastUrl());
 		podcastRepository.save(podcast.orElseThrow());
 		return new ResponseEntity<String>("Podcast added successfully. ", HttpStatus.OK);
+	}
+	
+	@PostMapping("/podcasts/subscription")
+	public ResponseEntity<String> addSubscriptionPodcast(@Valid @RequestBody PodcastSubscriptionRequest podcastRequest) {
+		Optional<Podcast> optPodcast = podcastRepository.findByName(podcastRequest.getPodcastName());
+		Podcast podcast;
+		if (optPodcast.isPresent()) {
+			podcast = optPodcast.get();
+		} else {
+			Optional<Podcast> optGenPodcast = PodcastFactory.generate(podcastRequest.getPodcastUrl());
+			podcastRepository.save(optGenPodcast.orElseThrow());
+			podcast = optGenPodcast.get();
+		}
+		User selectedUser = this.userRepository.findByName(podcastRequest.getUserName()).orElseThrow();
+		selectedUser.addSubscription(podcast);
+		userRepository.save(selectedUser);
+		
+		return new ResponseEntity<String>("User subscription added successfully. ", HttpStatus.OK);
 	}
 }
