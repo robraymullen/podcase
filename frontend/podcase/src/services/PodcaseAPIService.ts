@@ -82,14 +82,14 @@ export const getPodcastEpisodes = async (userId: number, podcastId: number, succ
         });
 }
 
-export const updateLastPlayed = async (userId: number, episode: SubscribedEpisode) => {
+export const updateLastPlayed = async (userId: number, episode: SubscribedEpisode, success: Function) => {
     const url = `${process.env.REACT_APP_PODCASE_BASE_URL}playstate/`;
     const payload: PlayState = {
         userId: userId,
         episodeId: episode.id,
         playLength: episode.play_length,
         lastPlayed: Date.now(),
-        id: null
+        id: null,
     }
     if (episode.play_state_id) {
         payload.id = episode.play_state_id;
@@ -101,6 +101,15 @@ export const updateLastPlayed = async (userId: number, episode: SubscribedEpisod
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        return response.json() as unknown as PlayState;
+    }).then((playState) => {
+        success(playState);
+    }).catch((exception) => {
+        console.error(exception);
     });
 }
 

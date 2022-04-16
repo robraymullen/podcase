@@ -14,7 +14,11 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.search.annotations.Field;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.podcase.serializer.PlayStateSerializer;
+
 @Entity
+@JsonSerialize(using = PlayStateSerializer.class)
 public class PlayState {
 	
 	@Id

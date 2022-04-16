@@ -12,8 +12,8 @@ public class PlayStateRequest {
 	@JsonProperty("episodeId")
 	Long episodeId;
 	
-	@JsonProperty("playStateId")
-	Long playStateId;
+	@JsonProperty("id")
+	Long id;
 	
 	@JsonProperty("playLength")
 	Long playLength;
@@ -44,14 +44,14 @@ public class PlayStateRequest {
 		this.episodeId = episodeId;
 	}
 
-	@JsonProperty("playStateId")
-	public Long getPlayStateId() {
-		return playStateId;
+	@JsonProperty("id")
+	public Long getId() {
+		return id;
 	}
 
-	@JsonProperty("playStateId")
-	public void setPlayStateId(Long playStateId) {
-		this.playStateId = playStateId;
+	@JsonProperty("id")
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	@JsonProperty("playLength")

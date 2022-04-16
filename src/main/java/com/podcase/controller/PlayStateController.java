@@ -43,9 +43,9 @@ public class PlayStateController {
 	}
 	
 	@PostMapping("/playstate/")
-	public ResponseEntity<String> postPlayState(@RequestBody PlayStateRequest playState) throws Exception {
-		updatePlayState(playState);
-		return new ResponseEntity<String>("PlayState added successfully. ", HttpStatus.OK);
+	public ResponseEntity<PlayState> postPlayState(@RequestBody PlayStateRequest playState) throws Exception {
+		PlayState state = updatePlayState(playState);
+		return new ResponseEntity<PlayState>(state, HttpStatus.OK);
 	}
 	
 	
@@ -56,7 +56,7 @@ public class PlayStateController {
 	}
 	
 	private PlayState updatePlayState(PlayStateRequest playStateRequest) throws Exception {
-		repository.findById(playStateRequest.getPlayStateId() == null ? -1 : playStateRequest.getPlayStateId()).ifPresentOrElse((playState) -> {
+		repository.findById(playStateRequest.getId() == null ? -1 : playStateRequest.getId()).ifPresentOrElse((playState) -> {
 			playState.setPlayLength(playStateRequest.getPlayLength());
 			this.currentPlayState = repository.save(playState);
 		}, () -> {
