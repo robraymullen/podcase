@@ -1,4 +1,4 @@
-import { SubscribedEpisode } from "../../Types";
+import { PlayState, SubscribedEpisode } from "../../Types";
 import { ListItem, ListItemText, ListItemAvatar, Grid } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import Box from '@mui/material/Box';
@@ -44,9 +44,15 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
     };
 
     const handlePlay = () => {
-        dispatch(changeEpisode(episode));
+        // dispatch(changeEpisode(episode));
         if (state.currentUser) {
-            updateLastPlayed(state.currentUser.id, episode);
+            updateLastPlayed(state.currentUser.id, episode, (playState: PlayState) => {
+                if (playState.id && playState.id != episode.play_state_id) {
+                    episode.play_state_id = playState.id;
+                    episode.play_length = playState.playLength ? playState.playLength : 0;
+                    dispatch(changeEpisode(episode));
+                }
+            });
         }
     };
 

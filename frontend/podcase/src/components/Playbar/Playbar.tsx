@@ -1,15 +1,37 @@
 import { useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { SubscribedEpisode } from '../../Types';
+import { SubscribedEpisode, PlayState } from '../../Types';
 import Typography from '@mui/material/Typography';
 import { AppContext } from '../../context/context';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import { updateLastPlayed } from '../../services/PodcaseAPIService';
 
 const Playbar = () => {
 
     const audioRef = useRef<HTMLAudioElement>(null);
     const { state, dispatch } = useContext(AppContext);
+
+    let intervalId: any;
+
+    const startUpdates = () => {
+        if (!intervalId) {
+            intervalId = setInterval(sendUpdates, 5000);
+        }
+    };
+
+    const stopUpdates = () => {
+        clearInterval(intervalId);
+        intervalId = null;
+    };
+
+    const sendUpdates = () => {
+        if (state.currentUser && state.currentEpisode && audioRef.current) {
+            state.currentEpisode.play_length = Math.floor(audioRef.current.currentTime);
+            updateLastPlayed(state.currentUser.id, state.currentEpisode, (playState: PlayState) => {
+            });
+        }
+    };
 
     useEffect(() => {
         if (state.currentEpisode && audioRef && audioRef.current) {
@@ -70,7 +92,7 @@ const Playbar = () => {
                                     sx={{
                                         width: 1,
                                     }}>
-                                    <audio controls ref={audioRef} className="audioPlayer">
+                                    <audio controls ref={audioRef} className="audioPlayer" onPlaying={startUpdates} onPause={stopUpdates}>
                                         {
                                             state.currentEpisode.downloaded &&
                                             <source src={`http://localhost:7070/podcast/audio/${state.currentEpisode.file_name}`} />
