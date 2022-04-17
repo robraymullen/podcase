@@ -1,6 +1,7 @@
 package com.podcase.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,18 @@ public class EpisodeController {
 	@GetMapping("/episodes/recent/user/{userId}") //TODO return SubscribedEpisode to include play state
 	public SubscribedEpisode getMostRecentUnfinishedEpisode(@PathVariable("userId") Long userId) {
 		return episodeRepository.getMostRecentlyPlayed(userId).orElseThrow(ResourceNotFoundException::new);
+	}
+	
+	@GetMapping("/episodes/{episodeId}/next/user/{userId}")
+	public SubscribedEpisode getNextEpisode(@PathVariable("episodeId") Long episodeId, @PathVariable("userId") Long userId) {
+		Optional<Episode> initialEpisode = episodeRepository.findById(episodeId);
+		if (initialEpisode.isEmpty()) {
+			throw new ResourceNotFoundException("No episode found for id: "+episodeId);
+		}
+		Optional<SubscribedEpisode> nextEpisode = episodeRepository.getNextEpisodeForPodcast(initialEpisode.get().getPodcast().getId(), initialEpisode.get().getPublicationDate(), userId);
+		if (nextEpisode.isEmpty()) {
+			throw new ResourceNotFoundException("No next episode found for Podcast: "+initialEpisode.get().getPodcast().getName());
+		}
+		return nextEpisode.get();
 	}
 }
