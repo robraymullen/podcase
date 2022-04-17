@@ -1,5 +1,6 @@
 package com.podcase.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +24,7 @@ public interface EpisodeRepository extends JpaRepository<Episode, Long> {
 	
 	@Query(name="find_subscribed_episodes", nativeQuery=true)
 	List<SubscribedEpisode> getEpisodesWithPlayState(@Param("podcastId") Long podcastId, @Param("userId")  Long userId);
+	
+	@Query(name="find_next_episode", nativeQuery=true)
+	Optional<SubscribedEpisode> getNextEpisodeForPodcast(@Param("podcastId") Long podcastId, @Param("previousEpisodeDate") Date previousEpisodeDate, @Param("userId") Long userId);
 }

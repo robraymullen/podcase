@@ -5,7 +5,8 @@ import { SubscribedEpisode, PlayState } from '../../Types';
 import Typography from '@mui/material/Typography';
 import { AppContext } from '../../context/context';
 import { useContext, useState } from 'react';
-import { updateLastPlayed } from '../../services/PodcaseAPIService';
+import { getNextEpisode, updateLastPlayed } from '../../services/PodcaseAPIService';
+import { changeEpisode } from '../../context/reducer';
 
 const Playbar = () => {
 
@@ -29,6 +30,17 @@ const Playbar = () => {
         if (state.currentUser && state.currentEpisode && audioRef.current) {
             state.currentEpisode.play_length = Math.floor(audioRef.current.currentTime);
             updateLastPlayed(state.currentUser.id, state.currentEpisode, (playState: PlayState) => {
+            });
+        }
+    };
+
+    const nextEpisode = () => {
+        if (state.currentUser && state.currentEpisode && audioRef.current) {
+            getNextEpisode(state.currentEpisode.id, state.currentUser.id, (nextEpisode: SubscribedEpisode) => {
+                dispatch(changeEpisode(nextEpisode));
+                audioRef.current!.play();
+            }, (error: any) => {
+                console.error(error);
             });
         }
     };
@@ -92,7 +104,7 @@ const Playbar = () => {
                                     sx={{
                                         width: 1,
                                     }}>
-                                    <audio controls ref={audioRef} className="audioPlayer" onPlaying={startUpdates} onPause={stopUpdates}>
+                                    <audio controls ref={audioRef} className="audioPlayer" onPlaying={startUpdates} onPause={stopUpdates} onEnded={nextEpisode}>
                                         {
                                             state.currentEpisode.downloaded &&
                                             <source src={`http://localhost:7070/podcast/audio/${state.currentEpisode.file_name}`} />

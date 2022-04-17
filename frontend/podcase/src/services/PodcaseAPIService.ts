@@ -113,8 +113,19 @@ export const updateLastPlayed = async (userId: number, episode: SubscribedEpisod
     });
 }
 
-export const addPocast = async (url: string) => {
-
+export const getNextEpisode = async (episodeId: number, userId: number, success: Function, error: Function) => {
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}episodes/${episodeId}/next/user/${userId}`;
+    await fetch(url).then(
+        (response) => {
+            if (!response.ok) {
+                error(response);
+            }
+            return response.json() as unknown as SubscribedEpisode;
+        }).then(episode => {
+            success(episode);
+        }).catch(exception => {
+            error(exception);
+        });
 }
 
 export const getMostRecentPlayedEpisode = async (userId: number, success: Function, error: Function) => {
