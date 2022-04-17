@@ -131,6 +131,7 @@ export interface NavigationState {
 }
 
 export interface AppState {
+    autoPlay: boolean;
     currentUser: User | null;
     currentEpisode: SubscribedEpisode | null;
     headerText: string;
@@ -143,6 +144,7 @@ export enum ActionType {
     ChangeHeaderText,
     AddSubscription,
     ChangeSubscriptions,
+    SetAutoPlay,
 }
 
 export interface ChangeUser {
@@ -170,11 +172,17 @@ export interface ChangeSubscriptions {
     payload: SubscribedPodcast[];
 }
 
-export type StateActions = ChangeUser | ChangeEpisode | ChangeHeaderText | AddSubscription | ChangeSubscriptions;
+export interface SetAutoPlay {
+    type: ActionType.SetAutoPlay;
+    payload: boolean;
+}
+
+export type StateActions = ChangeUser | ChangeEpisode | ChangeHeaderText | AddSubscription | ChangeSubscriptions | SetAutoPlay;
 
 export const initialAppState: AppState = {
     currentUser: null,
     currentEpisode: null,
     headerText: "",
     userSubscriptions: [],
+    autoPlay: false,
 };

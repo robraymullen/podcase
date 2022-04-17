@@ -6,24 +6,24 @@ import Typography from '@mui/material/Typography';
 import { AppContext } from '../../context/context';
 import { useContext, useState } from 'react';
 import { getNextEpisode, updateLastPlayed } from '../../services/PodcaseAPIService';
-import { changeEpisode } from '../../context/reducer';
+import { changeEpisode, setAutoPlay } from '../../context/reducer';
 
 const Playbar = () => {
 
     const audioRef = useRef<HTMLAudioElement>(null);
     const { state, dispatch } = useContext(AppContext);
 
-    let intervalId: any;
+    const [intervalId, setIntervalId] = useState<any | null>(null);
 
     const startUpdates = () => {
         if (!intervalId) {
-            intervalId = setInterval(sendUpdates, 5000);
+            setIntervalId(setInterval(sendUpdates, 5000));
         }
     };
 
     const stopUpdates = () => {
         clearInterval(intervalId);
-        intervalId = null;
+        setIntervalId(null);
     };
 
     const sendUpdates = () => {
@@ -36,9 +36,10 @@ const Playbar = () => {
 
     const nextEpisode = () => {
         if (state.currentUser && state.currentEpisode && audioRef.current) {
+            stopUpdates();
             getNextEpisode(state.currentEpisode.id, state.currentUser.id, (nextEpisode: SubscribedEpisode) => {
+                dispatch(setAutoPlay(true));
                 dispatch(changeEpisode(nextEpisode));
-                audioRef.current!.play();
             }, (error: any) => {
                 console.error(error);
             });
@@ -47,11 +48,15 @@ const Playbar = () => {
 
     useEffect(() => {
         if (state.currentEpisode && audioRef && audioRef.current) {
+            stopUpdates();
             audioRef!.current!.pause();
             audioRef!.current!.load();
             audioRef.current.currentTime = state.currentEpisode.play_length;
+            if (state.autoPlay) {
+                audioRef.current.play();
+            }
         }
-    }, [state.currentEpisode]);
+    }, [state.currentEpisode, state.autoPlay]);
 
     return (
         <Box
@@ -104,7 +109,11 @@ const Playbar = () => {
                                     sx={{
                                         width: 1,
                                     }}>
-                                    <audio controls ref={audioRef} className="audioPlayer" onPlaying={startUpdates} onPause={stopUpdates} onEnded={nextEpisode}>
+                                    <audio controls ref={audioRef} className="audioPlayer" 
+                                    onPlaying={startUpdates} 
+                                    onPause={stopUpdates} 
+                                    onEnded={nextEpisode}
+                                    >
                                         {
                                             state.currentEpisode.downloaded &&
                                             <source src={`http://localhost:7070/podcast/audio/${state.currentEpisode.file_name}`} />

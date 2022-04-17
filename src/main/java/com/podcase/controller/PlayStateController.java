@@ -56,8 +56,10 @@ public class PlayStateController {
 	}
 	
 	private PlayState updatePlayState(PlayStateRequest playStateRequest) throws Exception {
-		repository.findById(playStateRequest.getId() == null ? -1 : playStateRequest.getId()).ifPresentOrElse((playState) -> {
+		Optional<PlayState> playStateOpt = repository.findByUserIdAndEpisodeId(playStateRequest.getUserId(), playStateRequest.getEpisodeId());
+		playStateOpt.ifPresentOrElse((playState) -> {
 			playState.setPlayLength(playStateRequest.getPlayLength());
+			playState.setLastPlayed(new Date());
 			this.currentPlayState = repository.save(playState);
 		}, () -> {
 			PlayState playState = new PlayState();

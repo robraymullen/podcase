@@ -1,4 +1,6 @@
-import { ActionType, AddSubscription, AppState, ChangeEpisode, ChangeHeaderText, ChangeSubscriptions, ChangeUser, StateActions, SubscribedEpisode, SubscribedPodcast, User } from "../Types";
+import { ActionType, AddSubscription, AppState, ChangeEpisode, 
+    ChangeHeaderText, ChangeSubscriptions, ChangeUser, StateActions, 
+    SubscribedEpisode, SubscribedPodcast, SetAutoPlay, User } from "../Types";
 
 export function stateReducer(state: AppState, action: StateActions): AppState {
     switch (action.type) {
@@ -12,6 +14,8 @@ export function stateReducer(state: AppState, action: StateActions): AppState {
             return { ...state, userSubscriptions: [...state.userSubscriptions, action.payload] };
         case ActionType.ChangeSubscriptions:
             return { ...state, userSubscriptions: action.payload};
+        case ActionType.SetAutoPlay:
+            return { ...state, autoPlay: action.payload};
         default:
         return state;
     }
@@ -41,3 +45,9 @@ export const changeSubscriptions = (subscriptions: SubscribedPodcast[]): ChangeS
     type: ActionType.ChangeSubscriptions,
     payload: subscriptions,
 });
+
+export const setAutoPlay = (autoPlay: boolean): SetAutoPlay => ({
+    type: ActionType.SetAutoPlay,
+    payload: autoPlay,
+});
+

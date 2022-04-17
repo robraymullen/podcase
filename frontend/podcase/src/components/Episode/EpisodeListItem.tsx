@@ -13,7 +13,7 @@ import ReactHtmlParser from 'react-html-parser';
 import IconButton from '@mui/material/IconButton';
 import { AppContext } from "../../context/context";
 import { useContext } from 'react';
-import { changeEpisode } from "../../context/reducer";
+import { changeEpisode, setAutoPlay } from "../../context/reducer";
 import { updateLastPlayed } from "../../services/PodcaseAPIService";
 
 
@@ -50,6 +50,7 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
                 if (playState.id && playState.id != episode.play_state_id) {
                     episode.play_state_id = playState.id;
                     episode.play_length = playState.playLength ? playState.playLength : 0;
+                    dispatch(setAutoPlay(true));
                     dispatch(changeEpisode(episode));
                 }
             });
