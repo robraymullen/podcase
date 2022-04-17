@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import { SubscribedEpisode, User } from "../../Types";
 import { AppContext } from "../../context/context";
 import { useContext } from 'react';
-import { changeEpisode, changeUser } from '../../context/reducer';
+import { changeEpisode, changeUser, setAutoPlay } from '../../context/reducer';
 import { getMostRecentPlayedEpisode } from "../../services/PodcaseAPIService";
 
 interface UserItemProperties {
@@ -22,6 +22,7 @@ const UserItem = (userDetails: UserItemProperties) => {
             <Card className="clearClickable" sx={{ maxWidth: 250, maxHeight: 400, border: isSelectedUser ? 1 : 0, borderColor: isSelectedUser ? "primary.main" : undefined }} onClick={() => {
                 dispatch(changeUser(userDetails.user));
                 getMostRecentPlayedEpisode(userDetails.user.id, (episode: SubscribedEpisode) => {
+                    dispatch(setAutoPlay(false));
                     dispatch(changeEpisode(episode));
                   }, () => { console.log("error getting most recently played for:"+userDetails.user.name) });
             }}>

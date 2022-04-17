@@ -14,7 +14,7 @@ import { getAllUsers, getMostRecentPlayedEpisode, getUserSubscriptions } from '.
 import Header from './components/Header/Header';
 import Users from './components/Users/Users';
 import { AppContext } from './context/context';
-import { changeEpisode, changeSubscriptions, changeUser, stateReducer } from './context/reducer';
+import { changeEpisode, changeSubscriptions, changeUser, stateReducer, setAutoPlay } from './context/reducer';
 import Admin from './components/Admin/Admin';
 import SearchResult from './components/SearchResult/SearchResult';
 
@@ -30,6 +30,7 @@ function App() {
       getAllUsers((users: User[]) => {
         dispatch(changeUser(users[0]));
         getMostRecentPlayedEpisode(users[0].id, (episode: SubscribedEpisode) => {
+          dispatch(setAutoPlay(false));
           dispatch(changeEpisode(episode));
         }, () => {console.log("error getting recent episode") });
         getUserSubscriptions(users[0].id, (podcasts: SubscribedPodcast[]) => {dispatch(changeSubscriptions(podcasts))}, () => {});
