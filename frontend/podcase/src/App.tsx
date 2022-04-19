@@ -14,9 +14,10 @@ import { getAllUsers, getMostRecentPlayedEpisode, getUserSubscriptions } from '.
 import Header from './components/Header/Header';
 import Users from './components/Users/Users';
 import { AppContext } from './context/context';
-import { changeEpisode, changeSubscriptions, changeUser, stateReducer, setAutoPlay } from './context/reducer';
+import { changeEpisode, changeSubscriptions, changeUser, stateReducer, setAutoPlay, changePlayMessage } from './context/reducer';
 import Admin from './components/Admin/Admin';
 import SearchResult from './components/SearchResult/SearchResult';
+import Alert from '@mui/material/Alert';
 
 function App() {
 
@@ -58,6 +59,17 @@ function App() {
                 <Route path="/users/change" element={<Users></Users>} />
                 <Route path="/admin" element={<Admin></Admin>}/>
               </Routes>
+            </Box>
+            <Box
+            sx={{
+              position: 'fixed',
+                bottom: "150px",
+                width: "100%",
+                height: "50px",
+            }}>
+              {
+                state.playMessage.visible && <Alert severity={state.playMessage.severity} onClose={() => {dispatch(changePlayMessage({severity: "info", visible: false, text: ""}))}}>{state.playMessage.text}</Alert>
+              }
             </Box>
             <Playbar></Playbar>
           </Box>
