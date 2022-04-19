@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { AppContext } from '../../context/context';
 import { useContext, useState } from 'react';
 import { getNextEpisode, updateLastPlayed } from '../../services/PodcaseAPIService';
-import { changeEpisode, setAutoPlay } from '../../context/reducer';
+import { changeEpisode, setAutoPlay, changePlayMessage } from '../../context/reducer';
 
 const Playbar = () => {
 
@@ -40,8 +40,20 @@ const Playbar = () => {
             getNextEpisode(state.currentEpisode.id, state.currentUser.id, (nextEpisode: SubscribedEpisode) => {
                 dispatch(setAutoPlay(true));
                 dispatch(changeEpisode(nextEpisode));
-            }, (error: any) => {
-                console.error(error);
+            }, (response: Response) => {
+                if (response.status === 404) {
+                    dispatch(changePlayMessage({
+                        text: `No next episode available for podcast!`,
+                        severity: "warning",
+                        visible: true, 
+                    }));
+                } else {
+                    dispatch(changePlayMessage({
+                        text: "Error fetching next episode!",
+                        severity: "error",
+                        visible: true, 
+                    }))
+                }
             });
         }
     };

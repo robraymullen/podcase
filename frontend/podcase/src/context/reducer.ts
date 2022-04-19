@@ -1,9 +1,11 @@
-import { ActionType, AddSubscription, AppState, ChangeEpisode, 
+import { ActionType, AddSubscription, AppState, PlayMessage, ChangeEpisode,
     ChangeHeaderText, ChangeSubscriptions, ChangeUser, StateActions, 
-    SubscribedEpisode, SubscribedPodcast, SetAutoPlay, User } from "../Types";
+    SubscribedEpisode, SubscribedPodcast, SetAutoPlay, User, ChangePlayMessage } from "../Types";
 
 export function stateReducer(state: AppState, action: StateActions): AppState {
     switch (action.type) {
+        case ActionType.ChangePlayMessage:
+            return { ...state, playMessage: action.payload};
         case ActionType.ChangeUser:
             return { ...state, currentUser: action.payload};
         case ActionType.ChangeEpisode:
@@ -20,6 +22,11 @@ export function stateReducer(state: AppState, action: StateActions): AppState {
         return state;
     }
 }
+
+export const changePlayMessage = (playMessage: PlayMessage): ChangePlayMessage => ({
+    type: ActionType.ChangePlayMessage,
+    payload: playMessage,
+});
 
 export const changeUser = (user: User): ChangeUser => ({
     type: ActionType.ChangeUser,

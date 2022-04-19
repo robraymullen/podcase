@@ -130,7 +130,14 @@ export interface NavigationState {
     podcastState: GridRoutes;
 }
 
+export interface PlayMessage {
+    severity: "error" | "warning" | "info" | "success";
+    text: string;
+    visible: boolean;
+}
+
 export interface AppState {
+    playMessage: PlayMessage;
     autoPlay: boolean;
     currentUser: User | null;
     currentEpisode: SubscribedEpisode | null;
@@ -139,12 +146,18 @@ export interface AppState {
 }
 
 export enum ActionType {
+    ChangePlayMessage,
     ChangeUser,
     ChangeEpisode,
     ChangeHeaderText,
     AddSubscription,
     ChangeSubscriptions,
     SetAutoPlay,
+}
+
+export interface ChangePlayMessage {
+    type: ActionType.ChangePlayMessage;
+    payload: PlayMessage;
 }
 
 export interface ChangeUser {
@@ -177,9 +190,10 @@ export interface SetAutoPlay {
     payload: boolean;
 }
 
-export type StateActions = ChangeUser | ChangeEpisode | ChangeHeaderText | AddSubscription | ChangeSubscriptions | SetAutoPlay;
+export type StateActions = ChangePlayMessage | ChangeUser | ChangeEpisode | ChangeHeaderText | AddSubscription | ChangeSubscriptions | SetAutoPlay;
 
 export const initialAppState: AppState = {
+    playMessage: { severity: "info", text: "", visible: false},
     currentUser: null,
     currentEpisode: null,
     headerText: "",
