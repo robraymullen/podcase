@@ -18,6 +18,7 @@ import { changeEpisode, changeSubscriptions, changeUser, stateReducer, setAutoPl
 import Admin from './components/Admin/Admin';
 import SearchResult from './components/SearchResult/SearchResult';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 function App() {
 
@@ -64,11 +65,14 @@ function App() {
             sx={{
               position: 'fixed',
                 bottom: "150px",
-                width: "100%",
+                width: "calc(100% - 240px)",
                 height: "50px",
             }}>
               {
-                state.playMessage.visible && <Alert severity={state.playMessage.severity} onClose={() => {dispatch(changePlayMessage({severity: "info", visible: false, text: ""}))}}>{state.playMessage.text}</Alert>
+                state.playMessage.visible && <Alert severity={state.playMessage.severity} 
+                onClose={() => {dispatch(changePlayMessage({severity: "info", visible: false, text: ""}))}}
+                >
+                  {state.playMessage.text}</Alert>
               }
             </Box>
             <Playbar></Playbar>

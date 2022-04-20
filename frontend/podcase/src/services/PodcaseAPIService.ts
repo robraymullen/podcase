@@ -1,3 +1,4 @@
+import { ResponseError } from "../Error/ResponseError";
 import { Episode, PlayState, Podcast, SubscribedEpisode, SubscribedPodcast, User } from "../Types";
 
 export const getAllUsers = async (success: Function, error: Function) => {
@@ -118,7 +119,7 @@ export const getNextEpisode = async (episodeId: number, userId: number, success:
     await fetch(url).then(
         (response) => {
             if (!response.ok) {
-                error(response);
+                throw new ResponseError(response);
             }
             return response.json() as unknown as SubscribedEpisode;
         }).then(episode => {

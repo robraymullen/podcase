@@ -7,6 +7,7 @@ import { AppContext } from '../../context/context';
 import { useContext, useState } from 'react';
 import { getNextEpisode, updateLastPlayed } from '../../services/PodcaseAPIService';
 import { changeEpisode, setAutoPlay, changePlayMessage } from '../../context/reducer';
+import { ResponseError } from '../../Error/ResponseError';
 
 const Playbar = () => {
 
@@ -40,8 +41,8 @@ const Playbar = () => {
             getNextEpisode(state.currentEpisode.id, state.currentUser.id, (nextEpisode: SubscribedEpisode) => {
                 dispatch(setAutoPlay(true));
                 dispatch(changeEpisode(nextEpisode));
-            }, (response: Response) => {
-                if (response.status === 404) {
+            }, (error: ResponseError) => {
+                if (error.getResponse().status === 404) {
                     dispatch(changePlayMessage({
                         text: `No next episode available for podcast!`,
                         severity: "warning",
