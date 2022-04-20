@@ -47,7 +47,10 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
         // dispatch(changeEpisode(episode));
         if (state.currentUser) {
             updateLastPlayed(state.currentUser.id, episode, (playState: PlayState) => {
-                if (playState.id && playState.id != episode.play_state_id) {
+                if (playState.id) {
+                    if (episode.play_length >= playState.playLength) {
+                        episode.play_length = 0;
+                    }
                     episode.play_state_id = playState.id;
                     episode.play_length = playState.playLength ? playState.playLength : 0;
                     dispatch(setAutoPlay(true));
