@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.ArrayDeque;
 import java.util.Base64;
 import java.util.Deque;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.podcase.model.Episode;
+import com.podcase.model.Podcast;
 import com.podcase.repository.EpisodeRepository;
 
 @Service
@@ -45,7 +47,11 @@ public class EpisodeDownloadJob implements ScheduledJob {
 		downloadQueue.addAll(repository.findByDownloaded(false));
 		while (!downloadQueue.isEmpty()) {
 			Episode episode = downloadQueue.poll();
+			Podcast podcast = episode.getPodcast();
 			try {
+				String podcastDirectory = System.getProperty("user.dir")+audioStore+podcast.getName().replaceAll("\\s+","");
+				File podcastDirFile = new File(podcastDirectory);
+				Files.createDirectories(podcastDirFile.toPath());
 				String[] splitFileUrl = episode.getFileUrl().split("/");
 				String guidForFileName = "";
 				if (episode.getGuid().contains("/")) {
@@ -54,7 +60,7 @@ public class EpisodeDownloadJob implements ScheduledJob {
 					guidForFileName = episode.getGuid();
 				}
 				String fileName = guidForFileName + "_"+splitFileUrl[splitFileUrl.length - 1]; //A lot of podcasts use non-unique names for files!
-				String filePath = System.getProperty("user.dir")+audioStore+fileName;
+				String filePath = podcastDirectory+"/"+fileName;
 				episode.setFileName(fileName);
 				episode.setFilePath(filePath);
 				// Handle possible https redirects

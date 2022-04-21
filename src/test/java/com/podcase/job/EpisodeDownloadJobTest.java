@@ -62,6 +62,7 @@ class EpisodeDownloadJobTest {
 
 	@AfterEach
 	void tearDown() throws Exception {
+		//TODO fix directory setup for downloading a podcast in this test, as its parent folder should be the name of the podcast
 		FileUtils.cleanDirectory(new File(System.getProperty("user.dir")+audioStore));
 	}
 
