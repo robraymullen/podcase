@@ -177,14 +177,14 @@ public class EpisodeRepositoryTest extends AbstractRepositoryTest {
 	
 	private void setupPlayState() {
 		PlayState playState = new PlayState();
-		playState.setEpisode(podcast.getEpisodes().get(0));
+		playState.setEpisode(episodeRepository.findByTitle("episode title").orElseThrow());
 		playState.setPlayLength(Long.valueOf(1234));
 		playState.setLastPlayed(new Date());
 		playState.setUser(user);
 		playStateRepository.save(playState);
 		
 		PlayState playState2 = new PlayState();
-		playState2.setEpisode(podcast.getEpisodes().get(1));
+		playState2.setEpisode(episodeRepository.findByTitle("ep2 title").orElseThrow());
 		playState2.setPlayLength(Long.valueOf(12345));
 		playState2.setLastPlayed(new Date());
 		playState2.setUser(user);
