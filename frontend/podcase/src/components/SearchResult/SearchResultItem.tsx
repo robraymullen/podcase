@@ -1,5 +1,5 @@
 import { ListItem, ListItemText, ListItemAvatar, Grid, Box, Typography, IconButton, Tooltip } from '@mui/material';
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ITunesResult, SubscribedPodcast } from '../../Types';
 import AddIcon from '@mui/icons-material/Add';
 import { AppContext } from '../../context/context';
@@ -14,17 +14,22 @@ interface SearchResultItemProps {
 const SearchResultItem = ({ item }: SearchResultItemProps) => {
 
     const { state, dispatch } = useContext(AppContext);
-    const isSubscribed = state.userSubscriptions.find((podcast: SubscribedPodcast) => podcast.name === item.collectionName) !== undefined;
+    const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
     const tooltipTitle = isSubscribed ? "Already subscribed to this podcast" : "Subscribe to podcast";
 
     const subscribe = () => {
         if (state.currentUser) {
             addUserSubscriptionFromRSS(item.feedUrl, item.collectionName, state.currentUser.name);
+            setIsSubscribed(true);
         } else {
             console.error("Cannot add subscription without having a user selected");
         }
 
     };
+
+    useEffect(() => {
+        setIsSubscribed(state.userSubscriptions.find((podcast: SubscribedPodcast) => podcast.name === item.collectionName) !== undefined);
+    }, []);
 
     return (
         <div>
