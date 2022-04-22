@@ -167,7 +167,7 @@ export const addUser = async (name: string, password: string) => {
  * adding a new podcast to the repository
  * @param url 
  */
-export const addUserSubscriptionFromRSS = async (podcastUrl: string, podcastName: string, userName: string) => {
+export const addUserSubscriptionFromRSS = async (podcastUrl: string, podcastName: string, userName: string, success?: Function, error?: Function) => {
     const url = `${process.env.REACT_APP_PODCASE_BASE_URL}podcasts/subscription`;
     const payload = {
         podcastUrl: podcastUrl,
@@ -181,8 +181,14 @@ export const addUserSubscriptionFromRSS = async (podcastUrl: string, podcastName
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
+    }).then(response => {
+        if (!response.ok) {
+            throw new ResponseError(response);
+        } else if(success) {
+            success(response);
+        }
     }).catch(exception =>{
-        console.error(exception);
+        error && error !== undefined ? error(exception) : console.error(exception);
     });
 }
 

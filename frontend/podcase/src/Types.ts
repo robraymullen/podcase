@@ -130,14 +130,15 @@ export interface NavigationState {
     podcastState: GridRoutes;
 }
 
-export interface PlayMessage {
+export interface Message {
     severity: "error" | "warning" | "info" | "success";
     text: string;
     visible: boolean;
+    title?: string;
 }
 
 export interface AppState {
-    playMessage: PlayMessage;
+    playMessage: Message;
     autoPlay: boolean;
     currentUser: User | null;
     currentEpisode: SubscribedEpisode | null;
@@ -157,7 +158,7 @@ export enum ActionType {
 
 export interface ChangePlayMessage {
     type: ActionType.ChangePlayMessage;
-    payload: PlayMessage;
+    payload: Message;
 }
 
 export interface ChangeUser {

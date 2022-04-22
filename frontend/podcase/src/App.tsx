@@ -19,6 +19,7 @@ import Admin from './components/Admin/Admin';
 import SearchResult from './components/SearchResult/SearchResult';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import AddPodcast from './components/AddPodcast/AddPocast';
 
 function App() {
 
@@ -57,6 +58,7 @@ function App() {
                 <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
                 <Route path="/podcast/:id" element={<PodcastList setHeaderText={setHeaderText}></PodcastList>} />
                 <Route path="/search" element={<SearchResult></SearchResult> } />
+                <Route path="/add/subscription" element={<AddPodcast></AddPodcast>} />
                 <Route path="/users/change" element={<Users></Users>} />
                 <Route path="/admin" element={<Admin></Admin>}/>
               </Routes>

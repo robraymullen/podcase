@@ -36,4 +36,6 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 	public List<IRssFeed> getRssFeeds();
 
 	public List<Podcast> findAllByOrderById();
+
+	Optional<Podcast> findAllByNameOrRssFeed(String podcastName, String podcastUrl);
 }
