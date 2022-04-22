@@ -53,7 +53,7 @@ const SideBar = () => {
           <BookmarkBorderIcon></BookmarkBorderIcon>
           <ListItemText primary='Favourites' />
         </ListItem>
-        <ListItem button key='Add Subscription'>
+        <ListItem button key='Add Subscription' onClick={()=> navigate("/add/subscription")}>
           <AddBoxIcon></AddBoxIcon>
           <ListItemText primary='Add Subscription' />
         </ListItem>

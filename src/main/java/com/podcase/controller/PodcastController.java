@@ -57,7 +57,7 @@ public class PodcastController {
 	
 	@PostMapping("/podcasts/subscription")
 	public ResponseEntity<String> addSubscriptionPodcast(@Valid @RequestBody PodcastSubscriptionRequest podcastRequest) {
-		Optional<Podcast> optPodcast = podcastRepository.findByName(podcastRequest.getPodcastName());
+		Optional<Podcast> optPodcast = podcastRepository.findAllByNameOrRssFeed(podcastRequest.getPodcastName(), podcastRequest.getPodcastUrl());
 		Podcast podcast;
 		if (optPodcast.isPresent()) {
 			podcast = optPodcast.get();

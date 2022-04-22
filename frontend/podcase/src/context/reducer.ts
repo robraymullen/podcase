@@ -1,4 +1,4 @@
-import { ActionType, AddSubscription, AppState, PlayMessage, ChangeEpisode,
+import { ActionType, AddSubscription, AppState, Message, ChangeEpisode,
     ChangeHeaderText, ChangeSubscriptions, ChangeUser, StateActions, 
     SubscribedEpisode, SubscribedPodcast, SetAutoPlay, User, ChangePlayMessage } from "../Types";
 
@@ -23,7 +23,7 @@ export function stateReducer(state: AppState, action: StateActions): AppState {
     }
 }
 
-export const changePlayMessage = (playMessage: PlayMessage): ChangePlayMessage => ({
+export const changePlayMessage = (playMessage: Message): ChangePlayMessage => ({
     type: ActionType.ChangePlayMessage,
     payload: playMessage,
 });
