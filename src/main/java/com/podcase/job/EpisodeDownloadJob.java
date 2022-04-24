@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
 import com.podcase.repository.EpisodeRepository;
+import com.podcase.utilities.EpisodeFileCleaner;
 
 @Service
 @Qualifier("downloadJob")
@@ -36,10 +37,13 @@ public class EpisodeDownloadJob implements ScheduledJob {
 	private Deque<Episode> downloadQueue = new ArrayDeque<Episode>();
 	
 	EpisodeRepository repository;
+
+	private EpisodeFileCleaner fileCleaner;
 	
 	@Autowired
-	public EpisodeDownloadJob(EpisodeRepository repository) {
+	public EpisodeDownloadJob(EpisodeRepository repository, EpisodeFileCleaner fileCleaner) {
 		this.repository = repository;
+		this.fileCleaner = fileCleaner;
 	}
 	
 	@Override
@@ -52,14 +56,7 @@ public class EpisodeDownloadJob implements ScheduledJob {
 				String podcastDirectory = System.getProperty("user.dir")+audioStore+podcast.getName().replaceAll("\\s+","");
 				File podcastDirFile = new File(podcastDirectory);
 				Files.createDirectories(podcastDirFile.toPath());
-				String[] splitFileUrl = episode.getFileUrl().split("/");
-				String guidForFileName = "";
-				if (episode.getGuid().contains("/")) {
-					guidForFileName = Base64.getEncoder().encodeToString(episode.getGuid().getBytes());
-				} else {
-					guidForFileName = episode.getGuid();
-				}
-				String fileName = guidForFileName + "_"+splitFileUrl[splitFileUrl.length - 1]; //A lot of podcasts use non-unique names for files!
+				String fileName = fileCleaner.getFileName(episode);
 				String filePath = podcastDirectory+"/"+fileName;
 				episode.setFileName(fileName);
 				episode.setFilePath(filePath);
