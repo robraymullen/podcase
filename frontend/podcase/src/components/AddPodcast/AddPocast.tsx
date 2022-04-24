@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useRef, useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AlertTitle from "@mui/material/AlertTitle";
 import { AppContext } from "../../context/context";
 import { changeHeaderText } from '../../context/reducer';
@@ -56,7 +56,10 @@ const AddPodcast = () => {
 
     useEffect(() => {
         dispatch(changeHeaderText("Add Subscription"));
-    }, []);
+        return () => {
+            dispatch(changeHeaderText(""));
+        }
+    }, [dispatch]);
 
     return (
         <Box component="form"
