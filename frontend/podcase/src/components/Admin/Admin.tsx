@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AddUserTab from './AddUserTab';
+import { AppContext } from "../../context/context";
+import { changeHeaderText } from '../../context/reducer';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -40,11 +42,19 @@ function a11yProps(index: number) {
 
 const Admin = () => {
 
+    const { state, dispatch } = useContext(AppContext);
     const [value, setValue] = useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
+    useEffect(() => {
+        dispatch(changeHeaderText("Admin"));
+        return () => {
+            dispatch(changeHeaderText(""));
+        }
+    }, [dispatch]);
 
     return (
         <Box sx={{ width: '100%' }}>
