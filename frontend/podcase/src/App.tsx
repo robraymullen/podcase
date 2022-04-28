@@ -55,7 +55,6 @@ function App() {
               <Toolbar />
               <Routes>
                 <Route path="/" element={<PodcastGrid state={GridRoutes.PODCAST_SUBSCRIPTION} podcasts={state.userSubscriptions} setPodcasts={changeSubscriptions}></PodcastGrid>} />
-                <Route path="all" element={<PodcastGrid state={GridRoutes.PODCAST_ALL} podcasts={podcasts} setPodcasts={setPodcasts}></PodcastGrid>} />
                 <Route path="/podcast/:id" element={<PodcastList setHeaderText={setHeaderText}></PodcastList>} />
                 <Route path="/search" element={<SearchResult></SearchResult> } />
                 <Route path="/add/subscription" element={<AddPodcast></AddPodcast>} />
