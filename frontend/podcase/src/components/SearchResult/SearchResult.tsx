@@ -1,7 +1,7 @@
-import { List, Box, CircularProgress } from '@mui/material';
+import { List, Box, Typography } from '@mui/material';
 import { ITunesResult, SearchResponse } from "../../Types";
 import SearchResultItem from "./SearchResultItem";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface Location {
     state: {
@@ -23,7 +23,7 @@ const SearchResult = () => {
                         <List sx={{ bgcolor: 'background.paper' }}>
                             {
                                 results.map((result: ITunesResult) => {
-                                    return <SearchResultItem key={result.collectionId+""} 
+                                    return <SearchResultItem key={result.collectionId + ""}
                                         item={result}
                                     >
                                     </SearchResultItem>
@@ -32,7 +32,17 @@ const SearchResult = () => {
                         </List>
                     </div>
 
-                    : <CircularProgress />
+                    :
+                    <Box>
+                        <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                        >
+                            No results found for your search!
+                        </Typography>
+                    </Box>
             }
         </Box>
     )

@@ -45,14 +45,6 @@ const SideBar = () => {
           <PodcastsIcon></PodcastsIcon>
           <ListItemText primary='Subscriptions' />
         </ListItem>
-        <ListItem button key='All Podcasts' onClick={() => navigate("/all", { state: { podcastState: GridRoutes.PODCAST_ALL } })}>
-          <PodcastsIcon></PodcastsIcon>
-          <ListItemText primary='All Podcasts' />
-        </ListItem>
-        <ListItem button key='Favourites'>
-          <BookmarkBorderIcon></BookmarkBorderIcon>
-          <ListItemText primary='Favourites' />
-        </ListItem>
         <ListItem button key='Add Subscription' onClick={()=> navigate("/add/subscription")}>
           <AddBoxIcon></AddBoxIcon>
           <ListItemText primary='Add Subscription' />
