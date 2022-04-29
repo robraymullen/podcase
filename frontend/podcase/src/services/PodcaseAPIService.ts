@@ -1,5 +1,5 @@
 import { ResponseError } from "../Error/ResponseError";
-import { Episode, PlayState, Podcast, SubscribedEpisode, SubscribedPodcast, User } from "../Types";
+import { Episode, PlayState, Podcast, SubscribedEpisode, SubscribedPodcast, User, DeadDownload } from "../Types";
 
 export const getAllUsers = async (success: Function, error: Function) => {
     const url = `${process.env.REACT_APP_PODCASE_BASE_URL}users`;
@@ -192,10 +192,16 @@ export const addUserSubscriptionFromRSS = async (podcastUrl: string, podcastName
     });
 }
 
-/**
- * Add a user subscription from an existing podcast in the repository
- * @param podcastId 
- */
-export const addUserSubscriptionFromExisting = async (podcastId: string) => {
-
-}
+export const getDeadDownloads = async (success: Function, error: Function) => {
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}deadDownloads`;
+    await fetch(url).then(response => {
+        if (!response.ok) {
+            throw new ResponseError(response);
+        }
+        return response.json() as unknown as DeadDownload[];
+    }).then((deadDownloads) => {
+        success(deadDownloads);
+    }).catch((exception) => {
+        error(exception);
+    })
+};
