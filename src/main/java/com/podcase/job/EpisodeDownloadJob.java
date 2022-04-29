@@ -7,7 +7,9 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.ArrayDeque;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Deque;
+import java.util.Optional;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -17,19 +19,27 @@ import org.apache.commons.io.FileUtils;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.AudioHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.podcase.model.DeadDownload;
 import com.podcase.model.Episode;
 import com.podcase.model.Podcast;
+import com.podcase.repository.DeadDownloadRepository;
 import com.podcase.repository.EpisodeRepository;
 import com.podcase.utilities.EpisodeFileCleaner;
 
 @Service
 @Qualifier("downloadJob")
 public class EpisodeDownloadJob implements ScheduledJob {
+	
+	private static int MAX_DOWNLOAD_ATTEMPTS = 10;
+	
+	Logger logger = LoggerFactory.getLogger(EpisodeDownloadJob.class);
 	
 	@Value("${audio.file.store}")
 	private String audioStore;
@@ -39,10 +49,13 @@ public class EpisodeDownloadJob implements ScheduledJob {
 	EpisodeRepository repository;
 
 	private EpisodeFileCleaner fileCleaner;
+
+	private DeadDownloadRepository deadDownloadRepository;
 	
 	@Autowired
-	public EpisodeDownloadJob(EpisodeRepository repository, EpisodeFileCleaner fileCleaner) {
+	public EpisodeDownloadJob(EpisodeRepository repository, DeadDownloadRepository deadDownloadRepository, EpisodeFileCleaner fileCleaner) {
 		this.repository = repository;
+		this.deadDownloadRepository = deadDownloadRepository;
 		this.fileCleaner = fileCleaner;
 	}
 	
@@ -52,6 +65,14 @@ public class EpisodeDownloadJob implements ScheduledJob {
 		while (!downloadQueue.isEmpty()) {
 			Episode episode = downloadQueue.poll();
 			Podcast podcast = episode.getPodcast();
+			
+			Optional<DeadDownload> download = this.deadDownloadRepository.findByEpisodeId(episode.getId());
+			if (download.isPresent()) {
+				if (download.get().getAttemptCount() >= MAX_DOWNLOAD_ATTEMPTS) {
+					logger.warn("Skipping download attempt for episode "+episode.getId()+" with name "+episode.getTitle()+ " as download attemtps has exceeded the limit");
+				}
+			}
+			
 			try {
 				String podcastDirectory = System.getProperty("user.dir")+audioStore+podcast.getName().replaceAll("\\s+","");
 				File podcastDirFile = new File(podcastDirectory);
@@ -87,8 +108,18 @@ public class EpisodeDownloadJob implements ScheduledJob {
 				episode.setDownloaded(true);
 				repository.save(episode);
 			} catch (Exception e) {
-				//TODO setup 'dead download' queue
-				e.printStackTrace();
+				DeadDownload deadDownload;
+				if (download.isPresent()) {
+					deadDownload = download.get();
+					deadDownload.setAttemptCount(deadDownload.getAttemptCount() + 1);
+				} else {
+					deadDownload = new DeadDownload();
+					deadDownload.setEpisode(episode);
+					deadDownload.setAttemptCount(1);
+				}
+				deadDownload.setLastDownloadAttempt(new Date());
+				deadDownloadRepository.save(deadDownload);
+				logger.error(e.getMessage(), e);
 			}
 		}
 	}
