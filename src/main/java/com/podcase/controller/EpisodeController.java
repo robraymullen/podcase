@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import com.podcase.repository.UserRepository;
 @RestController
 public class EpisodeController {
 
+	Logger logger = LoggerFactory.getLogger(EpisodeController.class);
 	
 	private EpisodeRepository episodeRepository;
 	private UserRepository userRepository;
@@ -45,7 +48,9 @@ public class EpisodeController {
 			}
 		}
 		if (!isSubscribed) {
-			throw new ResourceNotFoundException();
+			String message = "Cannot return playstate for podcast "+podcastId+" as user is not subscribed";
+			logger.error(message);
+			throw new ResourceNotFoundException(message);
 		}
 		return episodeRepository.getEpisodesWithPlayState(podcastId, userId);
 	}
@@ -63,7 +68,9 @@ public class EpisodeController {
 		}
 		Optional<SubscribedEpisode> nextEpisode = episodeRepository.getNextEpisodeForPodcast(initialEpisode.get().getPodcast().getId(), initialEpisode.get().getPublicationDate(), userId);
 		if (nextEpisode.isEmpty()) {
-			throw new ResourceNotFoundException("No next episode found for Podcast: "+initialEpisode.get().getPodcast().getName());
+			String message = "No next episode found for Podcast: "+initialEpisode.get().getPodcast().getName();
+			logger.error(message);
+			throw new ResourceNotFoundException(message);
 		}
 		return nextEpisode.get();
 	}

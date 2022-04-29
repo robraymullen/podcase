@@ -2,6 +2,8 @@
 /audio/**
 /static/**
 /node_modules/**
+/logging/**
+*.log*
 .env*
 *.log
 
