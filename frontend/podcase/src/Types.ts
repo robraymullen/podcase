@@ -70,6 +70,13 @@ export interface PlayState {
     id: number | null;
 }
 
+export interface DeadDownload {
+    id: number;
+    attemptCount: number;
+    episode_id: number;
+    lastDownloadAttempt: Date;
+}
+
 export interface User {
     id: number;
     name: string;
