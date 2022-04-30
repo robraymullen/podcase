@@ -70,6 +70,7 @@ public class EpisodeDownloadJob implements ScheduledJob {
 			if (download.isPresent()) {
 				if (download.get().getAttemptCount() >= MAX_DOWNLOAD_ATTEMPTS) {
 					logger.warn("Skipping download attempt for episode "+episode.getId()+" with name "+episode.getTitle()+ " as download attemtps has exceeded the limit");
+					continue;
 				}
 			}
 			
