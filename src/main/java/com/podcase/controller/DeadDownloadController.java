@@ -3,13 +3,13 @@ package com.podcase.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.podcase.model.DeadDownload;
+import com.podcase.projection.DeadDownloadProjection;
 import com.podcase.repository.DeadDownloadRepository;
 
-@Repository
+@RestController
 public class DeadDownloadController {
 
 	private DeadDownloadRepository deadDownloadRepository;
@@ -19,9 +19,9 @@ public class DeadDownloadController {
 		this.deadDownloadRepository = deadDownloadRepository;
 	}
 	
-	@GetMapping("deadDownloads")
-	public List<DeadDownload> getDeadDownloads() {
-		return deadDownloadRepository.findAll();
+	@GetMapping("/download/monitor")
+	public List<DeadDownloadProjection> getDeadDownloads() {
+		return deadDownloadRepository.findDeadDownloadsWithEpisodeData();
 	}
 	
 }

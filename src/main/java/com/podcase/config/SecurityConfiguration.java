@@ -11,7 +11,7 @@ import org.springframework.web.cors.CorsConfiguration;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final String[] AUTH_ALLOW_LIST = { "/users/**", 
-			"/podcasts/**", "/episodes/**", "/playstate/**", "/**"};
+			"/podcasts/**", "/episodes/**", "/playstate/**",  "/download/monitor","/**"};
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

@@ -73,8 +73,10 @@ export interface PlayState {
 export interface DeadDownload {
     id: number;
     attemptCount: number;
-    episode_id: number;
+    episodeId: number;
     lastDownloadAttempt: Date;
+    title: string;
+    fileUrl: string;
 }
 
 export interface User {

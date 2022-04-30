@@ -193,7 +193,7 @@ export const addUserSubscriptionFromRSS = async (podcastUrl: string, podcastName
 }
 
 export const getDeadDownloads = async (success: Function, error: Function) => {
-    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}deadDownloads`;
+    const url = `${process.env.REACT_APP_PODCASE_BASE_URL}download/monitor`;
     await fetch(url).then(response => {
         if (!response.ok) {
             throw new ResponseError(response);

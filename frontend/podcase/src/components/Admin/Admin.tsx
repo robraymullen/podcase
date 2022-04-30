@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import AddUserTab from './AddUserTab';
 import { AppContext } from "../../context/context";
 import { changeHeaderText } from '../../context/reducer';
+import DeadDownloadTab from './DeadDownloadTab';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -69,7 +70,7 @@ const Admin = () => {
                 <AddUserTab></AddUserTab>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <DeadDownloadTab></DeadDownloadTab>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Item Three
