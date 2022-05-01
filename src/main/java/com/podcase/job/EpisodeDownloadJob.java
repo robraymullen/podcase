@@ -108,6 +108,9 @@ public class EpisodeDownloadJob implements ScheduledJob {
 				}
 				episode.setDownloaded(true);
 				repository.save(episode);
+				if (download.isPresent()) {
+					deadDownloadRepository.delete(download.get());
+				}
 			} catch (Exception e) {
 				DeadDownload deadDownload;
 				if (download.isPresent()) {

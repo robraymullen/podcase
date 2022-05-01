@@ -62,7 +62,7 @@ const Admin = () => {
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Add User" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
+                    <Tab label="Download failures" {...a11yProps(1)} />
                     <Tab label="Item Three" {...a11yProps(2)} />
                 </Tabs>
             </Box>
