@@ -2,7 +2,6 @@ import { Box, List, ListItem, ListItemText, CircularProgress } from '@mui/materi
 import React, { useEffect, useState } from 'react';
 import { DeadDownload } from '../../Types';
 import { getDeadDownloads } from '../../services/PodcaseAPIService';
-import DeadDownloadListItem from './DeadDownloadListItem';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
