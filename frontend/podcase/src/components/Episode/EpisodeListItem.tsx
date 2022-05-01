@@ -1,5 +1,5 @@
 import { PlayState, SubscribedEpisode } from "../../Types";
-import { ListItem, ListItemText, ListItemAvatar, Grid } from '@mui/material';
+import { ListItem, ListItemText, ListItemAvatar, Grid, Tooltip } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import Box from '@mui/material/Box';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
@@ -99,24 +99,28 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
                             </Grid>
                             <Grid item xs container direction="row" spacing={2}>
                                 <Grid item>
-                                    <Box>
-                                        <CalendarMonthIcon></CalendarMonthIcon>
-                                        <Typography
-                                            variant="caption"
-                                        >
-                                            {pubDate.toDateString()}
-                                        </Typography>
-                                    </Box>
+                                    <Tooltip title="Publication date" placement="bottom">
+                                        <Box>
+                                            <CalendarMonthIcon></CalendarMonthIcon>
+                                            <Typography
+                                                variant="caption"
+                                            >
+                                                {pubDate.toDateString()}
+                                            </Typography>
+                                        </Box>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item>
-                                    <Box>
-                                        <HeadphonesIcon />
-                                        <Typography variant="caption">
-                                            {
-                                                new Date(episode.duration * 1000).toISOString().substr(11, 8)
-                                            }
-                                        </Typography>
-                                    </Box>
+                                    <Tooltip title="Length of episode" placement="bottom">
+                                        <Box>
+                                            <HeadphonesIcon />
+                                            <Typography variant="caption">
+                                                {
+                                                    new Date(episode.duration * 1000).toISOString().substr(11, 8)
+                                                }
+                                            </Typography>
+                                        </Box>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item>
                                     <Box sx={{ position: 'relative', display: 'inline-flex' }} >
@@ -133,26 +137,30 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
                                                 justifyContent: 'center',
                                             }}
                                         >
-                                            <Typography
-                                                variant="caption"
-                                                component="div"
-                                                color="text.secondary"
-                                                fontSize="0.5rem"
-                                            >{`${Math.round(percentageProps.value)}%`}</Typography>
+                                            <Tooltip title="% of episode played" placement="bottom">
+                                                <Typography
+                                                    variant="caption"
+                                                    component="div"
+                                                    color="text.secondary"
+                                                    fontSize="0.5rem"
+                                                >{`${Math.round(percentageProps.value)}%`}</Typography>
+                                            </Tooltip>
                                         </Box>
                                     </Box>
                                 </Grid>
                                 <Grid item>
-                                    <IconButton color="primary" onClick={handlePlay}>
-                                        <PlayCircleFilledIcon />
-                                    </IconButton>
-
+                                    <Tooltip title="Play" placement="bottom">
+                                        <IconButton color="primary" onClick={handlePlay}>
+                                            <PlayCircleFilledIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Grid>
                                 <Grid item>
-                                    <IconButton color="primary" onClick={handleShowDescription}>
-                                        <InfoIcon />
-                                    </IconButton>
-
+                                    <Tooltip title="Show description" placement="bottom">
+                                        <IconButton color="primary" onClick={handleShowDescription}>
+                                            <InfoIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Grid>
                             </Grid>
                         </Grid>
