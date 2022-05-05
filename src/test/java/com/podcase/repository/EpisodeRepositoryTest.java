@@ -118,6 +118,7 @@ public class EpisodeRepositoryTest extends AbstractRepositoryTest {
 		assertEquals("ep2 title", subscribedEpisodes.get(1).getTitle());
 	}
 	
+	@Ignore
 	@Transactional
 	@Rollback
 	@Test
