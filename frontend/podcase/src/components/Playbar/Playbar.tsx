@@ -8,6 +8,9 @@ import { useContext, useState } from 'react';
 import { getNextEpisode, updateLastPlayed } from '../../services/PodcaseAPIService';
 import { changeEpisode, setAutoPlay, changePlayMessage } from '../../context/reducer';
 import { ResponseError } from '../../Error/ResponseError';
+import FastRewindIcon from '@mui/icons-material/FastRewind';
+import IconButton from '@mui/material/IconButton';
+import FastForwardIcon from '@mui/icons-material/FastForward';
 
 const Playbar = () => {
 
@@ -46,17 +49,25 @@ const Playbar = () => {
                     dispatch(changePlayMessage({
                         text: `No next episode available for podcast!`,
                         severity: "warning",
-                        visible: true, 
+                        visible: true,
                     }));
                 } else {
                     dispatch(changePlayMessage({
                         text: "Error fetching next episode!",
                         severity: "error",
-                        visible: true, 
+                        visible: true,
                     }))
                 }
             });
         }
+    };
+
+    const rewind = () => {
+        audioRef!.current!.currentTime = audioRef!.current!.currentTime - 10;
+    };
+
+    const fastForward = () => {
+        audioRef!.current!.currentTime = audioRef!.current!.currentTime + 10;
     };
 
     useEffect(() => {
@@ -101,7 +112,7 @@ const Playbar = () => {
                         state.currentEpisode &&
                         <Box
                             sx={{
-                                paddingLeft:"10%",
+                                paddingLeft: "10%",
                                 width: 1,
                             }}
                         >
@@ -111,21 +122,33 @@ const Playbar = () => {
                                 }}
                             >
                                 <Grid item
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
                                     sx={{
                                         width: 1,
                                     }}>
-                                    <Typography variant="h6" noWrap sx={{color:"white", paddingBottom: "5px"}}>
+                                    <IconButton sx={{ color: "white", marginRight: "50px" }} onClick={rewind}>
+                                        <FastRewindIcon />
+                                    </IconButton>
+                                    <Typography variant="h6" noWrap sx={{ color: "white", paddingBottom: "5px" }}>
                                         {state.currentEpisode.title}
                                     </Typography>
+                                    <IconButton sx={{ color: "white", marginLeft: "50px" }} onClick={fastForward}>
+                                        <FastForwardIcon />
+                                    </IconButton>
                                 </Grid>
                                 <Grid item
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
                                     sx={{
                                         width: 1,
                                     }}>
-                                    <audio controls ref={audioRef} className="audioPlayer" 
-                                    onPlaying={startUpdates} 
-                                    onPause={stopUpdates} 
-                                    onEnded={nextEpisode}
+                                    <audio controls ref={audioRef} className="audioPlayer"
+                                        onPlaying={startUpdates}
+                                        onPause={stopUpdates}
+                                        onEnded={nextEpisode}
                                     >
                                         {
                                             state.currentEpisode.downloaded &&
