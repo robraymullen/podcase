@@ -12,9 +12,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import ReactHtmlParser from 'react-html-parser';
 import IconButton from '@mui/material/IconButton';
 import { AppContext } from "../../context/context";
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { changeEpisode, setAutoPlay } from "../../context/reducer";
 import { updateLastPlayed } from "../../services/PodcaseAPIService";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 interface EpisodeListItemInterface {
@@ -32,7 +33,8 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const pubDate = new Date(episode.publication_date);
     const percentPlayed = ((episode.play_length ? episode.play_length : 0) / episode.duration) * 100;
-    const percentageProps: CircularProgressProps & { value: number } = { value: percentPlayed };
+
+    const [percentageProps, setPercentageProps] = useState<CircularProgressProps & { value: number }>({value: percentPlayed});
 
     const selectStyle = {
         cursor: "pointer"
@@ -56,6 +58,15 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
                     dispatch(setAutoPlay(true));
                     dispatch(changeEpisode(episode));
                 }
+            });
+        }
+    };
+
+    const setPlayed = () => {
+        if (state.currentUser) {
+            episode.play_length = episode.duration;
+            updateLastPlayed(state.currentUser.id, episode, () => {
+                setPercentageProps({ value: 100 });
             });
         }
     };
@@ -159,6 +170,13 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
                                     <Tooltip title="Show description" placement="bottom">
                                         <IconButton color="primary" onClick={handleShowDescription}>
                                             <InfoIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Grid>
+                                <Grid item>
+                                    <Tooltip title="Mark as played" placement="bottom">
+                                        <IconButton color="primary" onClick={setPlayed}>
+                                            <CheckCircleIcon />
                                         </IconButton>
                                     </Tooltip>
                                 </Grid>
