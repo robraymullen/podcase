@@ -1,4 +1,4 @@
-import React, { createContext, Reducer, useReducer } from 'react';
+import React from 'react';
 import { AppState, initialAppState, StateActions } from '../Types';
 
 export const AppContext = React.createContext<{

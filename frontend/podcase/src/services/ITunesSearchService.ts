@@ -1,7 +1,6 @@
 import { ITunesResult } from "../Types";
 
 export const search = (searchTerm: string, success: Function, error: Function) => {
-    //ttps://itunes.apple.com/search?media=podcast&term=
     fetch(`https://itunes.apple.com/search?media=podcast&term=${searchTerm}`)
         .then((response) => {
                 if (!response.ok) {

@@ -1,7 +1,6 @@
 import { Divider, Drawer, List, ListItem, ListItemText, Toolbar } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import PodcastsIcon from '@mui/icons-material/Podcasts';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { GridRoutes } from '../../Types';
 import Typography from '@mui/material/Typography';

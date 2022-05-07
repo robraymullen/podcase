@@ -24,7 +24,7 @@ public class SubscribedEpisode {
 	
 	private BigInteger play_state_id;
 	private Integer duration;
-	private BigInteger play_length;
+	private Integer play_length;
 	private Date retrieved_date;
 	private Date publication_date;
 	private String guid;
@@ -69,7 +69,7 @@ public class SubscribedEpisode {
 			String guid,
 			Date publication_date,
 			Date retrieved_date,
-			BigInteger play_length,
+			Integer play_length,
 			Integer duration,
 			BigInteger play_state_id) {
 				this.id = id;
@@ -105,11 +105,11 @@ public class SubscribedEpisode {
 		this.play_state_id = play_state_id;
 	}
 
-	public BigInteger getPlay_length() {
+	public Integer getPlay_length() {
 		return play_length;
 	}
 
-	public void setPlay_length(BigInteger play_length) {
+	public void setPlay_length(Integer play_length) {
 		this.play_length = play_length;
 	}
 

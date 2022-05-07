@@ -1,5 +1,5 @@
 import { ListItem, ListItemText, ListItemAvatar, Grid, Box, Typography, IconButton, Tooltip } from '@mui/material';
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ITunesResult, SubscribedPodcast } from '../../Types';
 import AddIcon from '@mui/icons-material/Add';
 import { AppContext } from '../../context/context';

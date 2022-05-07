@@ -55,9 +55,16 @@ public class EpisodeController {
 		return episodeRepository.getEpisodesWithPlayState(podcastId, userId);
 	}
 	
-	@GetMapping("/episodes/recent/user/{userId}") //TODO return SubscribedEpisode to include play state
+	@GetMapping("/episodes/recent/user/{userId}")
 	public SubscribedEpisode getMostRecentUnfinishedEpisode(@PathVariable("userId") Long userId) {
-		return episodeRepository.getMostRecentlyPlayed(userId).orElseThrow(ResourceNotFoundException::new);
+		SubscribedEpisode episode = episodeRepository.getMostRecentlyPlayed(userId).orElseThrow(ResourceNotFoundException::new);
+		if ((episode.getPlay_length() != null && episode.getDuration() != null) && episode.getPlay_length() >= episode.getDuration()) {
+			episode = episodeRepository.getNextEpisodeForPodcast(episode.getPodcast_id().longValue(), episode.getPublication_date(), userId).orElseThrow(ResourceNotFoundException::new);
+			while ((episode.getPlay_length() != null && episode.getDuration() != null) && episode.getPlay_length() >= episode.getDuration()) {
+				episode = episodeRepository.getNextEpisodeForPodcast(episode.getPodcast_id().longValue(), episode.getPublication_date(), userId).orElseThrow(ResourceNotFoundException::new);
+			}
+		}
+		return episode;
 	}
 	
 	@GetMapping("/episodes/{episodeId}/next/user/{userId}")
