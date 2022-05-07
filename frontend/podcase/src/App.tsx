@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { useState, useEffect, useReducer } from 'react';
 import './App.css';
 import PodcastGrid from './components/PodcastGrid/PodcastGrid';
 import PodcastList from './components/PodcastList/PodcastList';
@@ -18,13 +17,10 @@ import { changeEpisode, changeSubscriptions, changeUser, stateReducer, setAutoPl
 import Admin from './components/Admin/Admin';
 import SearchResult from './components/SearchResult/SearchResult';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import AddPodcast from './components/AddPodcast/AddPocast';
 
 function App() {
 
-  const [currentEpisode, setCurrentEpisode] = useState<SubscribedEpisode>(); //TODO use SubscribedEpisode when backend is updated
-  const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [headerText, setHeaderText] = useState<string>("");
   const [state, dispatch] = useReducer(stateReducer, initialAppState);
 
@@ -82,9 +78,6 @@ function App() {
         </Box>
       </BrowserRouter>
     </AppContext.Provider>
-
-
-
   );
 }
 

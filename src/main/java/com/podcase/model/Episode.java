@@ -100,7 +100,7 @@ import com.podcase.serializer.PodcastSerializer;
 	            @ColumnResult(name="guid", type=String.class),
 	            @ColumnResult(name="publication_date", type=Date.class),
 	            @ColumnResult(name="retrieved_date", type=Date.class),
-	            @ColumnResult(name="play_length", type=BigInteger.class),
+	            @ColumnResult(name="play_length", type=Integer.class),
 	            @ColumnResult(name="duration", type=Integer.class),
 	            @ColumnResult(name="play_state_id", type=BigInteger.class)
 	        }

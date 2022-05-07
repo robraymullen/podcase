@@ -62,13 +62,7 @@ export const getAllPodcasts = async (success: Function, error: Function) => {
         });
 }
 
-export const getPlaystate = async (userId: number, episodeId: number) => {
-
-}
-
 export const getPodcastEpisodes = async (userId: number, podcastId: number, success: Function, error: Function) => {
-
-    ///episodes/playstate/{podcastId}/user/{userId}
     const url = `${process.env.REACT_APP_PODCASE_BASE_URL}episodes/playstate/${podcastId}/user/${userId}`;
     await fetch(url).then(
         (response) => {

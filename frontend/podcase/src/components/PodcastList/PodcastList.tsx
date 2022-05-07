@@ -1,7 +1,7 @@
-import { Box, List, ListItem, ListItemText, CircularProgress } from '@mui/material';
+import { Box, List, CircularProgress } from '@mui/material';
 import { Podcast, SubscribedEpisode } from '../../Types';
 import EpisodeListItem from '../Episode/EpisodeListItem';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getPodcast, getPodcastEpisodes } from '../../services/PodcaseAPIService';
 import { useParams } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';

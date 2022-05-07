@@ -30,15 +30,10 @@ interface EpisodeListItemInterface {
 const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUrl }: EpisodeListItemInterface) => {
 
     const { state, dispatch } = useContext(AppContext);
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const pubDate = new Date(episode.publication_date);
     const percentPlayed = ((episode.play_length ? episode.play_length : 0) / episode.duration) * 100;
 
     const [percentageProps, setPercentageProps] = useState<CircularProgressProps & { value: number }>({value: percentPlayed});
-
-    const selectStyle = {
-        cursor: "pointer"
-    };
 
     const handleShowDescription = () => {
         setDialogDescription(ReactHtmlParser(episode.description));
@@ -46,7 +41,6 @@ const EpisodeListItem = ({ episode, setDialogOpen, setDialogDescription, imageUr
     };
 
     const handlePlay = () => {
-        // dispatch(changeEpisode(episode));
         if (state.currentUser) {
             updateLastPlayed(state.currentUser.id, episode, (playState: PlayState) => {
                 if (playState.id) {

@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import AlertTitle from "@mui/material/AlertTitle";
 import { addUser } from "../../services/PodcaseAPIService";
 
