@@ -6,4 +6,4 @@
 *.log*
 .env*
 *.log
-
+application-prod.properties

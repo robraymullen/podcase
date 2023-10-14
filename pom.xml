@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.podcase</groupId>
 	<artifactId>podcase</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>podcase</name>
 	<description>Podcase: The home podcast streamer</description>
 
